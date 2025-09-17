@@ -1,11 +1,12 @@
-import { execSync } from 'child_process';
+import { exec } from 'child_process';
 import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * 构建项目
  */
 function main(): void {
-  console.log(">>> Run Test map");
+  console.log(">>> Run Test map...");
   const config = JSON.parse(fs.readFileSync('./config.json', 'utf-8'));
   const kkwePath = config.kkwe.path;
   if (!fs.existsSync(kkwePath)) {
@@ -13,10 +14,10 @@ function main(): void {
     process.exit(1);
   }
   try {
-    execSync(`"${kkwePath}/bin/YDWEConfig.exe" -launchwar3 -loadfile ./dist/map.w3x`);
-    console.log(">>> w2l build obj completed");
+    exec(`"${kkwePath}/bin/YDWEConfig.exe" -launchwar3 -loadfile "./dist/map.w3x"`);
+    console.log(">>> Run Map completed");
   } catch (error) {
-    console.error("Error during w2l build obj:", error);
+    console.error("Error during map execution:", error);
     process.exit(1);
   }
 }

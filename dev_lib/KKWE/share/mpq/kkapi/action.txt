@@ -1,0 +1,1271 @@
+﻿[KKAPISetLocalVariables]
+title = "设置【真】局部变量"
+description = "设置 [${类型}] ${变量名} = ${null}"
+comment = "注意此为真局部变量，不能穿透计时器和触发."
+category = TC_KKAPI
+[[.args]]
+type = typename
+[[.args]]
+type = scriptcode
+[[.args]]
+type = Null
+
+[KKAPISetAnyTypeLocalArray]
+title = "设置【真】局部变量数组 [New]"
+description = "设置 [${类型}] loc_${变量名}[${索引}] = ${null}"
+comment = "设置局部变量数组，注意: 数组不能穿透逆天计时器、逆天触发器"
+category = TC_KKAPI
+[[.args]]
+type = typename
+[[.args]]
+type = scriptcode
+[[.args]]
+type = integer
+default = 0
+[[.args]]
+type = Null
+
+[DzSetUnitPreselectUIVisible]
+title = "设置单位的鼠标指向UI和血条显示/隐藏"
+description = "设置 ${单位} 的鼠标指向UI和血条 ${显示}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = showhideoption
+
+[DzSetEffectModel]
+title = "设置特效模型"
+description = "设置 ${特效} 的模型： ${modelFile}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = modelfile
+
+[DzSetEffectTeamColor]
+title = "设置特效队伍颜色"
+description = "设置 ${特效} 的队伍颜色： ${Color}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = playercolorid
+default = "Color00"
+
+[DzSetEffectAnimation]
+title = "设置特效播放动画"
+description = "设置 ${特效} 播放第 ${编号} 号动画，播放方式${方式} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[DzPlayEffectAnimation]
+title = "设置特效播放动画"
+description = "设置 ${特效} 播放 ${death} 动画，附加动画链接名 ${alternate}"
+comment = "变身动画才需要附加链接名 一般情况填 “” 空字符串就行"
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = string
+[[.args]]
+type = string
+
+[DzBindEffect]
+title = "绑定特效"
+description = "在 ${单位} 附着点 ${origin} 绑定特效 ${特效}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = string
+[[.args]]
+type = effect
+
+[DzUnbindEffect]
+title = "解除绑定特效"
+description = "解除绑定的特效 ${特效}"
+comment = "可以让绑定在单位身上的特效分离出来，被分离的特效能设置坐标、缩放"
+category = TC_KKAPI
+[[.args]]
+type = effect
+
+[DzSetWidgetSpriteScale]
+title = "单位缩放"
+description = "设置 ${单位} 的缩放为 ${scale} "
+comment = "可以用来缩放单位"
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = real
+
+[DzSetEffectScale]
+title = "特效缩放"
+description = "设置 ${特效} 的缩放为 ${scale} "
+comment = "可以用来缩放特效"
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = real
+
+[DzSetEffectPos]
+title = "设置特效坐标"
+description = "设置 ${特效} 的坐标（ ${x},${y},${z}）"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzSetEffectVertexColor]
+title = "设置特效颜色"
+description = "设置 ${特效} 的颜色：${color} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = rgba2color
+default = "DzGetColor"
+
+[DzSetEffectVertexAlpha]
+title = "设置特效透明度"
+description = "设置 ${特效} 的透明度：${alpha} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = integer
+default = "255"
+
+[DzSetEffectVisible]
+title = "特效显示/隐藏"
+description = "设置 ${whichEffect}  ${Show/Hide}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = effect
+[[.args]]
+type = showhideoption
+default = "ShowHideHide"
+
+[DzFrameSetClip]
+title = "设置控件视口"
+description = "设置 ${frame} 的视口为 ${状态}"
+comment = "设置控件视口后，他的子控件在边缘超出部分不会显示"
+category = TC_KKAPI
+[[.args]]
+type = frame
+[[.args]]
+type = onoffoption
+default = OnOffOn
+
+[DzChangeWindowSize]
+title = "设置魔兽窗口大小"
+description = "设置魔兽窗口大小：${宽}/${高}"
+comment = "如修改窗口模式下的窗口大小为 1920/1080"
+category = TC_KKAPI
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[DzUnlockBlpSizeLimit]
+title = "解锁BLP像素限制"
+description = "解锁BLP像素限制：${true}"
+comment = "填true会解除原本魔兽高清图片的512像素限制"
+category = TC_KKAPI
+[[.args]]
+type = boolean
+
+[DzToggleFPS]
+title = "设置FPS显示/隐藏"
+description = "设置 FPS ${显示/隐藏}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = showhideoption
+default = ShowHideShow
+
+[DzModelRemoveFromCache]
+title = "清除模型内存缓存"
+description = "清除模型 ${模型} 内存缓存"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = modelfile
+
+[DzModelRemoveAllFromCache]
+title = "清除所有模型内存缓存"
+description = "清除所有模型内存缓存"
+comment = ""
+category = TC_KKAPI
+
+[DzWidgetSetMinimapIcon]
+title = "自定义指定单位的小地图图标"
+description = "设置指定 ${单位} 的小地图图标：${imagefile}"
+comment = "图标大小只支持16×16，设置图标之前需要开启：中立建筑 - 小地图特殊标志"
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = imagefile
+
+[DzWidgetSetMinimapIconEnable]
+title = "开启/关闭自定义指定单位的小地图图标"
+description = "设置 ${单位} ${On/Off} 自定义小地图图标"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = onoffoption
+default = "OnOffOn"
+
+[DzSimpleMessageFrameAddMessage]
+title = "显示游戏提示信息"
+description = "设置 ${消息界面} 显示 ${消息} 颜色：${颜色}，持续 ${时间} 秒，${是/否}永久显示"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = frame
+[[.args]]
+type = string
+[[.args]]
+type = rgba2color
+default = "DzGetColor"
+[[.args]]
+type = real
+[[.args]]
+type = YESNO
+default = "NO"
+
+[DzSimpleMessageFrameClear]
+title = "清理游戏提示信息"
+description = "清理 ${消息界面} 的游戏提示信息"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = frame
+
+[DzRegisterOnBuildLocal]
+title = "监听建筑选位置"
+description = "监听建筑选位置"
+comment = ""
+category = TC_KKAPI
+
+[DzRegisterOnTargetLocal]
+title = "监听技能预选目标"
+description = "监听技能预选目标"
+comment = ""
+category = TC_KKAPI
+
+[DzOpenQQGroupUrl]
+title = "打开QQ群链接"
+description = "打开QQ群链接：${地址}"
+comment = "必须包括http://qm.qq.com开头的QQ群链接，调用后触发玩家加群，注意每分钟只能触发一次。"
+category = TC_KKAPI
+[[.args]]
+type = string
+
+[DzSetClipboard]
+title = "设置剪切板 [NEW]"
+description = "设置剪切板 ${内容}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = string
+
+[DzFrameEnableClipRect]
+title = "游戏界面限制设置"
+description = "界面 ${是/否} 限制在游戏窗口内"
+comment = "当为 ‘否’ 时游戏里的界面可以拖到游戏外面 "
+category = TC_KKAPI
+[[.args]]
+type = YESNO
+default = "YES"
+
+[DzSetUnitName]
+title = "设置单位名字"
+description = "设置 ${单位} 名字：${name} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = string
+
+[DzSetUnitProperName]
+title = "设置英雄称谓"
+description = "设置 ${英雄} 称谓：${name} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = string
+
+[DzSetUnitDescription]
+title = "设置单位描述"
+description = "设置 ${单位} 的描述： ${value} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = string
+
+[DzSetUnitPortrait]
+title = "设置单位头像模型"
+description = "设置 ${单位} 头像模型：${modelFile} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = modelfile
+
+[DzSetUnitMissileModel]
+title = "设置单位普攻弹道模型"
+description = "设置 ${单位} 普攻弹道模型：${modelFile} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = modelfile
+
+[DzSetUnitMissileArc]
+title = "设置单位普攻弹道弧度"
+description = "设置 ${单位} 普攻弹道弧度：${arc} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = real
+
+[DzSetUnitMissileHoming]
+title = "设置单位普攻弹道自导允许"
+description = "设置 ${单位} 普攻弹道自导：${enable} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = boolean
+
+[DzSetUnitMissileSpeed]
+title = "设置单位普攻弹道速度"
+description = "设置 ${单位} 普攻弹道速度：${seed} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = real
+
+[DzReviveUnit]
+title = "复活单位"
+description = "设置 ${whichUnit} 复活为 ${whichPlayer} 的单位，生命值：${hp}，魔法值：${mp}，坐标(${x},${y})"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = player
+[[.args]]
+type = real
+min = 0
+[[.args]]
+type = real
+min = 0
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzAttackAbilityEndCooldown]
+title = "结束普攻技能CD"
+description = "结束普攻 ${whichAbility} 的技能CD"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = ability
+
+[DzDoodadCreate]
+title = "新建地形装饰物"
+description = "创建 ${doodadid} 样式：${var} 坐标：(${x}，${Y}，${z}) 角度：${rotate} 缩放：${scale}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodadcode
+[[.args]]
+type = integer
+default = "0"
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = degree
+default = "GetRandomDirectionDeg"
+[[.args]]
+type = real
+default = "1"
+
+[DzDoodadRemove]
+title = "删除装饰物  [NEW]"
+description = "删除 ${doodad} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+
+[DzDoodadSetModel]
+title = "设置装饰物模型"
+description = "设置 ${doodad} 的模型：${modelFile} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = modelfile
+
+[DzDoodadSetTeamColor]
+title = "改变装饰物队伍颜色"
+description = "改变 ${doodad} 的队伍颜色：${Color}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = playercolorid
+default = "Color00"
+
+[DzDoodadSetColor]
+title = "设置装饰物颜色"
+description = "设置 ${doodad} 的颜色：${color} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = rgba2color
+default = "DzGetColor"
+
+[DzDoodadSetPosition]
+title = "设置装饰物位置"
+description = "设置 ${doodad} 的坐标：(${x}，${Y}，${z})"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+
+[DzDoodadSetOrientMatrixRotate]
+title = "设置装饰物旋转"
+description = "设置 ${doodad} 旋转，角度：${rotate} 方向：(${axisX}，${axisY}，${axisZ})"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = degree
+default = "GetRandomDirectionDeg"
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+
+[DzDoodadSetOrientMatrixScale]
+title = "修改装饰物尺寸"
+description = "设置 ${doodad} 缩放：(${x}，${y}，${z})"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+[[.args]]
+type = real
+default = "0"
+
+[DzDoodadSetOrientMatrixResize]
+title = "装饰物重置大小"
+description = "设置 ${doodad} 重置大小"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+
+[DzDoodadSetVisible]
+title = "装饰物显示/隐藏"
+description = "设置 ${doodad} ${Show/Hide}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = showhideoption
+default = "ShowHideHide"
+
+[DzDoodadSetAnimation]
+title = "装饰物播放动画"
+description = "设置 ${doodad} 播放${Animation Name}  随机播放${inNoAnim}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = string
+default = "\"death\""
+[[.args]]
+type = boolean
+
+[DzDoodadSetTimeScale]
+title = "设置装饰物动画播放速度"
+description = "设置 ${doodad} 的动画播放速度为正常速度的 ${Percent} 倍"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = doodad
+[[.args]]
+type = real
+default = "1"
+min = 0
+
+[DzAbilitySetStringData]
+title = "设置技能数据-字符串"
+description = "设置 ${技能} 的字符串 ${名字} 数据为 ${内容}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = ability
+[[.args]]
+type = string
+[[.args]]
+type = string
+
+[DzAbilitySetEnable]
+title = "设置技能启用/禁用"
+description = "设置 ${技能} 的启用状态为 ${启用} ，隐藏UI为 ${隐藏}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = ability
+[[.args]]
+type = boolean
+[[.args]]
+type = boolean
+default = "false"
+
+[DzUnitSetMoveType]
+title = "设置单位实例的移动类型"
+description = "设置 ${单位} 实例的移动类型为 ${Value}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+default = "GetTriggerUnit"
+[[.args]]
+type = MoveTypeName
+default = "MoveTypeName01"
+
+[KKWESetObjectTableData]
+title = "【对象表】设置数据"
+description = "【对象表】设置 [${类型}] ${null} 的 [${类型}]${null} 的数据 [${类型}] ${null} "
+comment = "设置某个对象为表主目录和子目录下存储的数据。"
+category = TC_KKAPI
+[[.args]]
+type = typename
+[[.args]]
+type = Null
+[[.args]]
+type = typename
+[[.args]]
+type = Null
+[[.args]]
+type = typename
+[[.args]]
+type = Null
+
+[KKWEFlushObjectTableData]
+title = "【对象表】清除数据"
+description = "【对象表】 清除 [${类型}] ${null}  的 [${类型}] ${null} 的 ${属性} 数据"
+comment = "清空某个数据的某项自定义属性。"
+category = TC_KKAPI
+[[.args]]
+type = typename
+[[.args]]
+type = Null
+[[.args]]
+type = typename
+[[.args]]
+type = Null
+[[.args]]
+type = typename
+
+[DzFrameSetAnimateByIndex]
+title = "设置模型界面播放动画（编号）"
+description = "设置 ${模型界面} 播放第 ${index}）个动画，播放方式${flag}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+default = 0
+[[.args]]
+type = integer
+default = 0
+
+
+[KKWESetUnitDataCacheInteger]
+title = "设置单位整数物编数据"
+description = "设置 ${单位} 的 ${id} 数值为 ${data}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = UnitCacheIntegerData
+[[.args]]
+type = integer
+
+[KKWEUnitUIAddUpgradesIds]
+title = "设置单位物编数据(建筑升级)"
+description = "设置 ${单位} 的第 ${id} 个建筑升级 ${单位类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = unitcode
+
+[KKWEUnitUIAddBuildsIds]
+title = "设置单位物编数据(农民可建造建筑)"
+description = "设置 ${单位} 的第 ${id} 个可建造建筑 ${单位类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = unitcode
+
+[KKWEUnitUIAddResearchesIds]
+title = "设置单位物编数据(可研究的科技)"
+description = "设置 ${单位} 的第 ${id} 个可研究的科技 ${科技类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = techcode
+
+[KKWEUnitUIAddTrainsIds]
+title = "设置单位物编数据(可训练的单位)"
+description = "设置 ${单位} 的第 ${id} 个可训练的单位 ${单位类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = unitcode
+
+[KKWEUnitUIAddSellsUnitIds]
+title = "设置单位物编数据(出售的单位)"
+description = "设置 ${单位} 的第 ${id} 个可出售的单位 ${单位类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = unitcode
+
+[KKWEUnitUIAddSellsItemIds]
+title = "设置单位物编数据(出售的物品)"
+description = "设置 ${单位} 的第 ${id} 个可出售的物品 ${物品类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = itemcode
+
+[KKWEUnitUIAddMakesItemIds]
+title = "设置单位物编数据(制造的物品)"
+description = "设置 ${单位} 的第 ${id} 个可制造的物品 ${物品类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = itemcode
+
+[KKWEUnitUIAddRequiresUnitCode]
+title = "设置单位物编数据(科技需求)[单位]"
+description = "设置 ${单位} 的第 ${id} 个科技需求 ${单位类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = unitcode
+
+[KKWEUnitUIAddRequiresTechcode]
+title = "设置单位物编数据(科技需求)[科技]"
+description = "设置 ${单位} 的第 ${id} 个科技需求 ${科技类型}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = techcode
+
+[KKWEUnitUIAddRequiresAmounts]
+title = "设置单位物编数据(科技需求值)"
+description = "设置 ${单位} 的第 ${id} 个科技需求值 ${数量}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unitcode
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[DzItemSetModel]
+title = "设置物品模型 [NEW]"
+description = "设置 ${whichItem} 的模型：${modelFile} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = item
+[[.args]]
+type = modelfile
+
+[DzItemSetPortrait]
+title = "设置物品头像 [NEW]"
+description = "设置 ${whichItem} 的头像：${modelFile} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = item
+[[.args]]
+type = modelfile
+
+[DzItemSetVertexColor]
+title = "设置物品颜色 [NEW]"
+description = "设置 ${whichItem} 的颜色：${color} "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = item
+[[.args]]
+type = rgba2color
+default = "DzGetColor"
+
+[DzItemSetAlpha]
+title = "设置物品透明度(0-255) [NEW]"
+description = "设置 ${whichItem} 的透明度为 ${alpha}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = item
+[[.args]]
+type = integer
+default = "255"
+
+[DzUnlockOpCodeLimit]
+title = "解锁JASS字节码限制 [NEW]"
+description = " ${是/否} 解锁JASS字节码限制"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = YESNO
+default = "NO"
+
+[DzRemovePlayerTechResearched]
+title = "降低玩家科技等级 [NEW]"
+description = " 降低${玩家} 的 ${科技} ${等级} 个等级"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = player
+[[.args]]
+type = techcode
+[[.args]]
+type = integer
+
+[DzFrameHookHpBar]
+title = "血条刷新事件 [NEW]"
+description = "血条刷新事件"
+comment = ""
+category = TC_KKAPI
+
+[DzWriteLog]
+title = "打印调试信息到平台日志 [NEW]"
+description = "打印 ${信息} 到平台日志"
+comment = "用于调试，打印信息到平台日志文件"
+category = TC_KKAPI
+[[.args]]
+type = string
+
+[DzTextTagSetFont]
+title = "设置漂浮文字字体 [NEW]"
+description = "设置漂浮文字字体：${font}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = string
+
+[DzTextTagSetStartAlpha]
+title = "设置漂浮文字透明度 [NEW]"
+description = "设置 ${漂浮文字} 透明度：${alpha}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = texttag
+[[.args]]
+type = integer
+
+[DzTextTagSetShadowColor]
+title = "设置漂浮文字阴影颜色 [NEW]"
+description = "设置 ${漂浮文字} 阴影颜色：${color}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = texttag
+[[.args]]
+type = rgba2color
+default = "DzGetColor"
+
+[DzQueueGroupImmediateOrderById]
+title = "对单位组添加命令到队列(无目标) [NEW]"
+description = "对单位组 ${whichGroup} 添加 ${order} 命令到队列"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = group
+[[.args]]
+type = ordercodenotarg
+
+[DzQueueGroupPointOrderById]
+title = "对单位组添加命令到队列(指定坐标) [NEW]"
+description = "对单位组 ${whichGroup} 添加 ${order} 命令到队列，位置 (${x}, ${y}) "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = group
+[[.args]]
+type = ordercodeptarg
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzQueueGroupTargetUnitOrderById]
+title = "对单位组添加命令到队列(指定单位) [NEW]"
+description = "对单位组 ${whichGroup} 添加 ${order} 命令到队列，目标 ${targetWidget}"
+comment = ""
+script_name = DzQueueGroupTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = group
+[[.args]]
+type = ordercodeutarg
+[[.args]]
+type = unit
+
+[DzQueueGroupTargetDestructableOrderById]
+title = "对单位组添加命令到队列(指定可破坏物) [NEW]"
+description = "对单位组 ${whichGroup} 添加 ${order} 命令到队列，目标 ${targetWidget}"
+comment = ""
+script_name = DzQueueGroupTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = group
+[[.args]]
+type = ordercodedtarg
+[[.args]]
+type = destructable
+
+[DzQueueGroupTargetItemOrderById]
+title = "对单位组添加命令到队列(指定物品) [NEW]"
+description = "对单位组 ${whichGroup} 添加 ${order} 命令到队列，目标 ${targetWidget}"
+comment = ""
+script_name = DzQueueGroupTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = group
+[[.args]]
+type = ordercodeitarg
+[[.args]]
+type = item
+
+[DzQueueIssueImmediateOrderById]
+title = "对单位添加命令到队列(无目标) [NEW]"
+description = "对单位 ${whichUnit} 添加 ${order} 命令到队列"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodenotarg
+
+[DzQueueIssuePointOrderById]
+title = "对单位添加命令到队列(指定坐标) [NEW]"
+description = "对单位 ${whichUnit} 添加 ${order} 命令到队列，位置 (${x}, ${y}) "
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodeptarg
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzQueueIssueTargetUnitOrderById]
+title = "对单位添加命令到队列(指定单位) [NEW]"
+description = "对单位 ${whichUnit} 添加 ${order} 命令到队列，目标 ${targetWidget}"
+comment = ""
+script_name = DzQueueIssueTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodeutarg
+[[.args]]
+type = unit
+
+[DzQueueIssueTargetDestructableOrderById]
+title = "对单位添加命令到队列(指定可破坏物) [NEW]"
+description = "对单位 ${whichUnit} 添加 ${order} 命令到队列，目标 ${targetWidget}"
+comment = ""
+script_name = DzQueueIssueTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodedtarg
+[[.args]]
+type = destructable
+
+[DzQueueIssueTargetItemOrderById]
+title = "对单位添加命令到队列(指定物品) [NEW]"
+description = "对单位 ${whichUnit} 添加 ${order} 命令到队列，目标 ${targetWidget}"
+comment = ""
+script_name = DzQueueIssueTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodeitarg
+[[.args]]
+type = item
+
+[DzQueueIssueNeutralImmediateOrderById]
+title = "添加中介命令到队列(无目标) [NEW]"
+description = "使 ${forWhichPlayer} 对 ${neutralStructure} 添加 ${unitId} 命令到队列"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = player
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodenotarg
+
+[DzQueueIssueNeutralPointOrderById]
+title = "添加中介命令到队列(指定坐标) [NEW]"
+description = "使 ${forWhichPlayer} 对 ${neutralStructure} 添加 ${unitId} 命令到队列，位置 (${x}, ${y})"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = player
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodeptarg
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzQueueIssueNeutralTargetUnitOrderById]
+title = "添加中介命令到队列(指定单位) [NEW]"
+description = "使 ${forWhichPlayer} 对单位 ${neutralStructure} 添加 ${unitId} 命令到队列，目标 ${TargetWidget}"
+comment = ""
+script_name=DzQueueIssueNeutralTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = player
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodeutarg
+[[.args]]
+type = unit
+
+[DzQueueIssueNeutralTargetDestructableOrderById]
+title = "添加中介命令到队列(指定可破坏物) [NEW]"
+description = "使 ${forWhichPlayer} 对单位 ${neutralStructure} 添加 ${unitId} 命令到队列，目标 ${TargetWidget}"
+comment = ""
+script_name=DzQueueIssueNeutralTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = player
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodedtarg
+[[.args]]
+type = destructable
+
+[DzQueueIssueNeutralTargetItemOrderById]
+title = "添加中介命令到队列(指定物品) [NEW]"
+description = "使 ${forWhichPlayer} 对单位 ${neutralStructure} 添加 ${unitId} 命令到队列，目标 ${TargetWidget}"
+comment = ""
+script_name=DzQueueIssueNeutralTargetOrderById
+category = TC_KKAPI
+[[.args]]
+type = player
+[[.args]]
+type = unit
+[[.args]]
+type = ordercodeitarg
+[[.args]]
+type = item
+
+[DzQueueIssueBuildOrderById]
+title = "对单位添加建造命令到队列 [NEW]"
+description = "对单位 ${whichPeon} 添加建造 ${unitId} 命令到队列，位置 (${x}, ${y})"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = unitcode
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzUnitOrdersReverse]
+title = "反转单位命令队列 [NEW]"
+description = "反转 ${u} 命令队列"
+comment = "原本单位添加命令队列后，会"
+category = TC_KKAPI
+[[.args]]
+type = unit
+
+[DzUnitOrdersClear]
+title = "清除单位命令队列 [NEW]"
+description = "清除单位 ${u} 命令，清理规则： ${b} 仅清理队列里的命令"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = boolean
+
+[DzUnitOrdersExec]
+title = "执行单位的命令队列 [NEW]"
+description = "执行单位 ${u} 的命令队列"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+
+[DzUnitOrdersForceStop]
+title = "强制停止单位当前命令 [NEW]"
+description = "强制停止单位 ${u} 的当前命令，${b} 清理队列里的命令"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = unit
+[[.args]]
+type = boolean
+
+[DzXlsxClose]
+title = "关闭工作表 [NEW]"
+description = "关闭工作表：${docHandle}"
+comment = ""
+category = TC_KKAPI
+[[.args]]
+type = xlsxworksheet
+
+[NewSoundEnvironment]
+title = "设置环境音效 [new]"
+description = "设置环境音效为 ${environmentName}"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = SoundEnvironment
+
+[SetSoundParamsFromLabel]
+title = "设置声音标签 [new]"
+description = "设置 ${soundLabel} 的标签：${soundHandle}"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = sound
+[[.args]]
+type = string
+
+[SetSoundChannel]
+title = "设置声音的声道 [new]"
+description = "设置 ${soundHandle} 的声道：${channel}"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = sound
+[[.args]]
+type = SoundChannel
+
+[SetSoundConeAngles]
+title = "设置声音的角度 [new]"
+description = "设置 ${soundHandle} 的内圆锥角度： ${inside}，外圆锥角度：${outside}，外圆锥音量：${outsideVolume}"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = sound
+[[.args]]
+type = real
+[[.args]]
+type = real
+[[.args]]
+type = integer
+
+[SetSoundConeOrientation]
+title = "设置声音的传播方向 [new]"
+description = "设置 ${soundHandle} 的传播方向(${x}, ${y}, ${z})"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = sound
+[[.args]]
+type = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[SetSoundVelocity]
+title = "设置声音的速度 [new]"
+description = "设置 ${soundHandle} 的速度设置为 (${x}, ${y}, ${z})"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = sound
+[[.args]]
+type = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[RegisterStackedSound]
+title = "注册堆叠音效 [new]"
+description = "设置 ${soundHandle} 的堆叠，是否按位置来处理堆叠：${byPosition},堆叠区域的宽度：${rectwidth}, 堆叠区域的高度：${rectheight}"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = sound
+[[.args]]
+type = boolean
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[UnregisterStackedSound]
+title = "取消注册的堆叠音效设置 [new]"
+description = "取消 ${soundHandle} 的堆叠，是否按位置来处理堆叠：${byPosition},堆叠区域的宽度：${rectwidth}, 堆叠区域的高度：${rectheight}"
+comment = ""
+category = TC_SOUND
+[[.args]]
+type = sound
+[[.args]]
+type = boolean
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzFrameSetTexCoord]
+title = "设置界面纹理坐标 [NEW]"
+description = "设置 ${frame} 的纹理坐标为 (${left}, ${top}, ${right}, ${bottom})"
+comment = ""
+category = TC_KKPRE
+[[.args]]
+type = frame
+[[.args]]
+type = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+[[.args]]
+type = real

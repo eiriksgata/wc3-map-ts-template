@@ -1,0 +1,1689 @@
+-- 事件响应
+[X_GetTriggerUnit]
+title = "触发单位"
+description = "触发单位"
+comment = "因切换至魔兽自带的事件系统, 此函数的返回值始终与 事件响应 - 触发单位 相同"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = unit
+
+[X_GetTriggerPlayer]
+title = "触发玩家"
+description = "触发玩家"
+comment = "因切换至魔兽自带的事件系统, 此函数的返回值始终与 事件响应 - 触发玩家 相同"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = player
+
+[X_GetModifyAbilityEventAbility]
+title = "添加/删除技能事件 - 获取技能"
+description = "添加/删除技能事件 - 获取技能"
+comment = "返回的 ability 不兼容 YDWE 的 JAPI (因为那个返回的不是 agent handle)"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = ability
+
+[X_GetModifyAbilityEventAbilityID]
+title = "添加/删除技能事件 - 获取技能ID"
+description = "添加/删除技能事件 - 获取技能ID"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = abilcode
+
+[X_GetAbilityBaseBuildSetDurationEventDuration]
+title = "研究/建造/升级/训练/复活 初始化时长事件 - 获取时长"
+description = "研究/建造/升级/训练/复活 初始化时长事件 - 获取时长"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_GetAbilityBaseBuildSetDurationEventTargetEventType]
+title = "研究/建造/升级/训练/复活 初始化时长事件 - 获取事件具体类型"
+description = "研究/建造/升级/训练/复活 初始化时长事件 - 获取事件具体类型"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = X_AbilityBaseBuildType
+
+[X_AbilityBaseBuildSetDurationEvent_IsEqualTo]
+title = "研究/建造/升级/训练/复活 初始化时长事件 - 判断事件具体类型"
+description = "当前初始化时长事件的具体类型为 ${type}"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = boolean
+[[.args]]
+type = X_AbilityBaseBuildType
+
+[X_GetAbilityBaseBuildSetDurationEventTargetID_GUI_1]
+title = "建造/升级/训练/复活 初始化时长事件 - 获取事件目标类型"
+description = "建造/升级/训练/复活 初始化时长事件 - 获取事件目标类型"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = unitcode
+
+[X_GetAbilityBaseBuildSetDurationEventTargetID_GUI_2]
+title = "研究 初始化时长事件 - 获取事件目标类型"
+description = "研究 初始化时长事件 - 获取事件目标类型"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = techcode
+
+[X_GetAbilityBaseBuildSetDurationEventTargetHero]
+title = "复活 初始化时长事件 - 获取事件目标英雄"
+description = "复活 初始化时长事件 - 获取事件目标英雄"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = unit
+
+[X_IsAttackMissEventTextHidden]
+title = "攻击丢失事件 - 文本可见性"
+description = "攻击丢失事件 - 文本可见性"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = boolean
+
+[X_GetAttackLaunchEventWeaponIndex]
+title = "发动攻击事件 - 攻击索引"
+description = "发动攻击事件 - 攻击索引"
+comment = "攻击1的索引为0, 攻击2的索引为1"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = integer
+
+[X_GetAttackLaunchEventTargetUnit]
+title = "发动攻击事件 - 目标 (单位)"
+description = "发动攻击事件 - 目标 (单位)"
+comment = "类型错误则返回 null"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = unit
+
+[X_GetAttackLaunchEventTargetItem]
+title = "发动攻击事件 - 目标 (物品)"
+description = "发动攻击事件 - 目标 (物品)"
+comment = "类型错误则返回 null"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = item
+
+[X_GetAttackLaunchEventTargetDestructable]
+title = "发动攻击事件 - 目标(可破坏物)"
+description = "发动攻击事件 - 目标 (可破坏物)"
+comment = "类型错误则返回 null"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = destructable
+
+[X_GetAttackLaunchEventSourceX]
+title = "发动攻击事件 - 来源 X"
+description = "发动攻击事件 - 来源坐标 (X)"
+comment = "发动攻击时的触发单位所在的位置"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_GetAttackLaunchEventSourceY]
+title = "发动攻击事件 - 来源 Y"
+description = "发动攻击事件 - 来源坐标 (Y)"
+comment = "发动攻击时的触发单位所在的位置"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_GetAttackLaunchEventTargetX]
+title = "发动攻击事件 - 目标 X"
+description = "发动攻击事件 - 目标坐标 (X)"
+comment = "发动攻击时的目标所在的位置 / 目标点"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_GetAttackLaunchEventTargetY]
+title = "发动攻击事件 - 目标 Y"
+description = "发动攻击事件 - 目标坐标 (Y)"
+comment = "发动攻击时的目标所在的位置 / 目标点"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_IsAttackLaunchEventPointTarget]
+title = "发动攻击事件 - 目标是否为点"
+description = "发动攻击事件 - 目标为点"
+comment = "攻击地面(G)"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = boolean
+
+[X_IsAttackLaunchEventExposeSource]
+title = "发动攻击事件 - 是否暴露攻击单位"
+description = "发动攻击事件 - 暴露攻击单位"
+comment = ""
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = boolean
+
+[X_GetHPBarUpdateEventWidget]
+title = "血条更新事件 - 获取触发 widget"
+description = "血条更新事件 - 获取触发 widget"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = widget
+
+[X_GetHPBarUpdateEventUnit]
+title = "血条更新事件 - 获取触发单位"
+description = "血条更新事件 - 获取触发单位"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = unit
+
+[X_GetHPBarUpdateEventDestructable]
+title = "血条更新事件 - 获取触发可破坏物"
+description = "血条更新事件 - 获取触发可破坏物"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = destructable
+
+[X_GetHPBarUpdateEventX]
+title = "血条更新事件 - 获取 UI 坐标X"
+description = "血条更新事件 - 获取 UI 坐标X"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_GetHPBarUpdateEventY]
+title = "血条更新事件 - 获取 UI 坐标Y"
+description = "血条更新事件 - 获取 UI 坐标Y"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_GetHPBarUpdateEventWidth]
+title = "血条更新事件 - 获取 UI 宽度"
+description = "血条更新事件 - 获取 UI 宽度"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = real
+
+[X_GetHPBarHideEventWidget]
+title = "血条隐藏事件 - 获取触发 widget"
+description = "血条隐藏事件 - 获取触发 widget"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = widget
+
+[X_GetHPBarHideEventUnit]
+title = "血条隐藏事件 - 获取触发单位"
+description = "血条隐藏事件 - 获取触发单位"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = unit
+
+[X_GetHPBarHideEventDestructable]
+title = "血条隐藏事件 - 获取触发可破坏物"
+description = "血条隐藏事件 - 获取触发可破坏物"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = destructable
+
+[X_GetSwapItemSlotEventFromSlotID]
+title = "移动物品栏物品事件 - 获取来源格子ID"
+description = "移动物品栏物品事件 - 获取来源格子ID"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = integer
+
+[X_GetSwapItemSlotEventToSlotID]
+title = "移动物品栏物品事件 - 获取目标格子ID"
+description = "移动物品栏物品事件 - 获取目标格子ID"
+category = TC_X_JAPI_EVENT_FEEDBACK
+returns = integer
+
+-- JAPI
+--[X_GetAgentTypeID]
+--title = "Agent - 获取内部类型ID"
+--description = "获取 ${agent} 内部类型ID"
+--comment = ""
+--category = TC_X_JAPI
+--[[.args]]
+--type = handle
+
+--[X_GetAgentTypeName]
+--title = "Agent - 获取内部类型名称"
+--description = "获取 ${agent} 内部类型名称"
+--comment = ""
+--category = TC_X_JAPI
+--[[.args]]
+--type = handle
+
+--[X_DestroyAgent]
+--title = "Agent - 删除"
+--description = "删除 ${agent}"
+--comment = ""
+--category = TC_X_JAPI
+--[[.args]]
+--type = handle
+
+[X_IsUnitAbilityInCooldown]
+title = "单位技能 - 冷却中"
+description = "单位 ${u} 的技能 ${abil} 正在冷却中"
+comment = ""
+category = TC_X_JAPI
+returns = boolean
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+[X_GetUnitAbilityTargetFlags]
+title = "单位技能 - 获取目标允许"
+description = "获取单位 ${u} 技能 ${abili} 的目标允许"
+comment = "targs"
+category = TC_X_JAPI
+returns = X_TargetFlags
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityCastTime]
+title = "单位技能 - 获取魔法施法时间"
+description = "获取单位 ${u} 技能 ${abili} 的魔法施法时间"
+comment = "Cast"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDuration]
+title = "单位技能 - 获取持续时间"
+description = "获取单位 ${u} 技能 ${abili} 的持续时间"
+comment = "Dur"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityHeroDuration]
+title = "单位技能 - 获取持续时间 (英雄)"
+description = "获取单位 ${u} 技能 ${abili} 的持续时间 (英雄)"
+comment = "HeroDur"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityManaCost]
+title = "单位技能 - 获取魔法消耗"
+description = "获取单位 ${u} 技能 ${abili} 的魔法消耗"
+comment = "Cost"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityCooldown]
+title = "单位技能 - 获取魔法施放间隔"
+description = "获取单位 ${u} 技能 ${abili} 的魔法施放间隔"
+comment = "Cool"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityAreaOfEffect]
+title = "单位技能 - 获取影响区域"
+description = "获取单位 ${u} 技能 ${abili} 的影响区域"
+comment = "Area"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityRange]
+title = "单位技能 - 获取施法距离"
+description = "获取单位 ${u} 技能 ${abili} 的施法距离"
+comment = "Rng"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataA]
+title = "单位技能 - 获取数据A"
+description = "获取单位 ${u} 技能 ${abili} 的数据A"
+comment = "DataA"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataB]
+title = "单位技能 - 获取数据B"
+description = "获取单位 ${u} 技能 ${abili} 的数据B"
+comment = "DataB"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataC]
+title = "单位技能 - 获取数据C"
+description = "获取单位 ${u} 技能 ${abili} 的数据C"
+comment = "DataC"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataD]
+title = "单位技能 - 获取数据D"
+description = "获取单位 ${u} 技能 ${abili} 的数据D"
+comment = "DataD"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataE]
+title = "单位技能 - 获取数据E"
+description = "获取单位 ${u} 技能 ${abili} 的数据E"
+comment = "DataE"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataF]
+title = "单位技能 - 获取数据F"
+description = "获取单位 ${u} 技能 ${abili} 的数据F"
+comment = "DataF"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataG]
+title = "单位技能 - 获取数据G"
+description = "获取单位 ${u} 技能 ${abili} 的数据G"
+comment = "DataG"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataH]
+title = "单位技能 - 获取数据H"
+description = "获取单位 ${u} 技能 ${abili} 的数据H"
+comment = "DataH"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityDataI]
+title = "单位技能 - 获取数据I"
+description = "获取单位 ${u} 技能 ${abili} 的数据I"
+comment = "DataI"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityUnitID]
+title = "单位技能 - 获取单位类型"
+description = "获取单位 ${u} 技能 ${abili} 的单位类型"
+comment = "UnitID"
+category = TC_X_JAPI
+returns = unitcode
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityBuffID]
+title = "单位技能 - 获取魔法效果"
+description = "获取单位 ${u} 技能 ${abili} 的魔法效果"
+comment = "BuffID"
+category = TC_X_JAPI
+returns = buffcode
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityEffectID]
+title = "单位技能 - 获取区域持续效果"
+description = "获取单位 ${u} 技能 ${abili} 的区域持续效果"
+comment = "EfctID"
+category = TC_X_JAPI
+returns = buffcode
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+[X_GetUnitAbilityOverrideArt]
+title = "单位技能 - 获取技能栏覆盖的图标"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的图标"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = imagefile
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+
+[X_GetUnitAbilityOverridePosX]
+title = "单位技能 - 获取技能栏覆盖的按钮X"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的按钮X"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+
+[X_GetUnitAbilityOverridePosY]
+title = "单位技能 - 获取技能栏覆盖的按钮Y"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的按钮Y"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+
+[X_GetUnitAbilityOverrideHotkey]
+title = "单位技能 - 获取技能栏覆盖的快捷键"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的快捷键"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+
+[X_GetUnitAbilityOverrideName]
+title = "单位技能 - 获取技能栏覆盖的名称"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的名称"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = string
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+
+[X_GetUnitAbilityOverrideTip]
+title = "单位技能 - 获取技能栏覆盖的提示"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的提示"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = string
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+
+[X_GetUnitAbilityOverrideUberTip]
+title = "单位技能 - 获取技能栏覆盖的扩展提示"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的扩展提示"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = string
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+
+[X_GetUnitAbilityOverrideCharges]
+title = "单位技能 - 获取技能栏覆盖的数量"
+description = "获取单位 ${u} 技能 ${abilID} 命令ID ${orderID} 覆盖的数量"
+comment = "仅针对技能栏显示"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+[[.args]]
+type = ordercode
+ 
+[X_GetUnitAbilityChannelTime]
+title = "单位技能 - 获取魔法施放时间 (2)"
+description = "获取单位 ${u} 技能 ${abilID} 的魔法施放时间 (2)"
+comment = "Cast, 直接获取数值"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityCastPoint]
+title = "单位技能 - 获取魔法施放点"
+description = "获取单位 ${u} 技能 ${abilID} 的魔法施放点"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitAbilityBackSwing]
+title = "单位技能 - 获取魔法施放回复"
+description = "获取单位 ${u} 技能 ${abilID} 的魔法施放回复"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+ 
+[X_GetUnitBuffLevel]
+title = "单位魔法效果 - 获取等级"
+description = "获取单位 ${u} 身上的魔法效果 ${buffID} 等级"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = buffcode
+ 
+[X_GetDestructableColor]
+title = "可破坏物 - 获取颜色值"
+description = "获取 ${可破坏物} 的颜色值"
+comment = "如果未设置颜色则为物编里的颜色值"
+category = TC_X_JAPI
+returns = X_Color
+[[.args]]
+type = destructable
+
+[X_GetEffectColorRed]
+title = "特效 - 获取颜色值 (红)"
+description = "获取 ${特效} 的颜色值 (红)"
+comment = "已弃用, 可使用Sprite代替"
+category = TC_X_JAPI_DEPRECATED
+returns = integer
+[[.args]]
+type = effect
+
+[X_GetEffectColorGreen]
+title = "特效 - 获取颜色值 (绿)"
+description = "获取 ${特效} 的颜色值 (绿)"
+comment = "已弃用, 可使用Sprite代替"
+category = TC_X_JAPI_DEPRECATED
+returns = integer
+[[.args]]
+type = effect
+
+[X_GetEffectColorBlue]
+title = "特效 - 获取颜色值 (蓝)"
+description = "获取 ${特效} 的颜色值 (蓝)"
+comment = "已弃用, 可使用Sprite代替"
+category = TC_X_JAPI_DEPRECATED
+returns = integer
+[[.args]]
+type = effect
+
+[X_GetEffectColor]
+title = "特效 - 获取颜色值"
+description = "获取 ${特效} 的颜色值"
+comment = "已弃用, 可使用Sprite代替, 不包括透明度"
+category = TC_X_JAPI_DEPRECATED
+returns = X_Color
+[[.args]]
+type = effect
+
+[X_GetEffectColorAlpha]
+title = "特效 - 获取透明度"
+description = "获取 ${特效} 的透明度"
+comment = "已弃用, 可使用Sprite代替"
+category = TC_X_JAPI_DEPRECATED
+returns = integer
+[[.args]]
+type = effect
+
+[X_EffectGroupCreate]
+title = "特效组 - 创建"
+description = "创建特效组"
+comment = ""
+category = TC_X_JAPI
+returns = X_EffectGroup
+
+[X_EffectGroupGetSize]
+title = "特效组 - 获取特效数量"
+description = "获取 ${特效组} 里的特效数量"
+comment = "包括删除了但没移出的特效"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = X_EffectGroup
+
+[X_EffectGroupAt]
+title = "特效组 - 第N个特效"
+description = "获取 ${特效组} 里的第 ${N} 个特效"
+comment = ""
+category = TC_X_JAPI
+returns = effect
+[[.args]]
+type = X_EffectGroup
+[[.args]]
+type = integer
+default = "0"
+
+[X_GetInventoryBarButton]
+title = "界面 - 获取物品栏按钮"
+description = "获取物品栏第 ${i} 个按钮"
+comment = "索引从0开始, 扩展的物品栏需要用这个获取 UI (因为 DzFrameGetItemBarButton 只允许获取前6个)"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = integer
+
+[X_GetCurrentSyncCheckSum]
+title = "游戏 - 获取当前同步检验值"
+description = "获取当前同步检验值"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+
+[X_EnableAutoDumpGameLog]
+title = "游戏 - 启用自动 Dump 游戏日志"
+description = "启用自动 Dump 游戏日志"
+comment = "数据量过多(磁盘写入速度直接影响帧数), 一般没必要使用, 返回文件名称 (相对于魔兽目录)"
+category = TC_X_JAPI_NOT_RECOMMENDED
+returns = string
+
+[X_DumpGameLog]
+title = "游戏 - Dump 游戏日志"
+description = "Dump 游戏日志"
+comment = "返回文件名称 (相对于魔兽目录)"
+category = TC_X_JAPI
+returns = string
+
+[X_EnableSyncLog]
+title = "游戏 - 启用同步日志"
+description = "启用同步日志"
+comment = "返回文件名称 (相对于魔兽目录)"
+category = TC_X_JAPI
+returns = string
+
+[X_GetEnumEffect]
+title = "特效组 - 选取特效"
+description = "选取特效"
+comment = "特效组 - 选取做动作"
+category = TC_X_JAPI
+returns = effect
+
+[X_GroupGetSize]
+title = "单位组 - 获取单位数量"
+description = "获取 ${单位组} 里的单位数量"
+comment = "包括删除了但没移出的单位"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = group
+
+[X_GroupUnitAt]
+title = "单位组 - 第N个单位"
+description = "获取 ${单位组} 里的第 ${N} 个单位"
+comment = "若目标单位已经被删除但还在存在于单位组内则返回null"
+category = TC_X_JAPI
+returns = unit
+[[.args]]
+type = group
+[[.args]]
+type = integer
+default = "0"
+
+[X_LoadHandleId]
+title = "哈希表 - 读取句柄ID"
+description = "获取 ${哈希表} 父Key: ${key} 子Key: ${key} 里的句柄ID"
+comment = "等效于 GetHandleId(LoadXXXXXXHandle(...))"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = hashtable
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[X_GetHeroPrimaryAttributeType]
+title = "英雄 - 获取主属性类型"
+description = "获取英雄 ${hero} 的主属性类型"
+comment = ""
+category = TC_X_JAPI
+returns = X_AttributeType
+[[.args]]
+type = unit
+
+[X_GetHeroPrimaryAttribute]
+title = "英雄 - 获取主属性"
+description = "获取英雄 ${hero} 的主属性 包括加成 ${flag}"
+comment = "加成指的是绿字"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = boolean
+default = "TRUE"
+
+[X_GetHeroAttributePlus]
+title = "英雄 - 获取属性成长"
+description = "获取英雄 ${hero} 的 ${attribute} 属性成长"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = X_AttributeType
+
+[X_GetInventoryMaxSize]
+title = "物品栏 - 获取最大格数"
+description = "获取物品栏最大格数"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+
+[X_GetInventoryDropSlotOrderID]
+title = "物品栏 - 获取 移动物品 的命令ID"
+description = "获取 移动物品到第 ${n} 格的命令ID"
+comment = ""
+category = TC_X_JAPI
+returns = ordercode
+[[.args]]
+type = integer
+
+[X_GetInventoryUseSlotOrderID]
+title = "物品栏 - 获取 使用物品 的命令ID"
+description = "获取 使用第 ${n} 格物品 的命令ID"
+comment = ""
+category = TC_X_JAPI
+returns = ordercode
+[[.args]]
+type = integer
+
+[X_GetItemDataInteger]
+title = "物品类型 - 获取整数数据"
+description = "获取 ${物品类型} 的 ${type}"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = itemcode
+[[.args]]
+type = X_ItemIntegerDataType
+
+[X_GetItemColor]
+title = "物品 - 获取颜色值"
+description = "获取 ${物品} 的颜色值"
+comment = "如果未设置颜色则为物编里的颜色值"
+category = TC_X_JAPI
+returns = X_Color
+[[.args]]
+type = item
+
+[X_GetItemHolder]
+title = "物品 - 获取持有者"
+description = "获取 ${物品} 的持有者"
+comment = ""
+category = TC_X_JAPI
+returns = unit
+[[.args]]
+type = item
+
+[X_IsItemInCooldown]
+title = "物品 - 是否正在冷却"
+description = "物品 ${物品} 是否正在冷却"
+comment = "这个是物品本身的冷却"
+category = TC_X_JAPI
+returns = boolean
+[[.args]]
+type = item
+
+[X_IsItemInUnitCooldown]
+title = "物品 - 是否正在冷却 (单位)"
+description = "物品 ${物品} 对于单位 ${unit} 来说是否正在冷却"
+comment = "这个是 CD间隔组 的冷却"
+category = TC_X_JAPI
+returns = boolean
+[[.args]]
+type = item
+[[.args]]
+type = unit
+
+[X_GetItemOverrideName]
+title = "物品 - 获取覆盖的名称"
+description = "获取物品 ${物品} 覆盖的名称"
+comment = ""
+category = TC_X_JAPI
+returns = string
+[[.args]]
+type = item
+
+[X_GetItemOverrideTip]
+title = "物品 - 获取覆盖的提示"
+description = "获取物品 ${物品} 覆盖的提示"
+comment = ""
+category = TC_X_JAPI
+returns = string
+[[.args]]
+type = item
+
+[X_GetItemOverrideUberTip]
+title = "物品 - 获取覆盖的扩展提示"
+description = "获取物品 ${物品} 覆盖的扩展提示"
+comment = ""
+category = TC_X_JAPI
+returns = string
+[[.args]]
+type = item
+
+[X_GetItemOverrideArt]
+title = "物品 - 获取覆盖的图标"
+description = "获取物品 ${物品} 覆盖的图标"
+comment = ""
+category = TC_X_JAPI
+returns = imagefile
+[[.args]]
+type = item
+
+[X_GetPlayerSelectedMainUnit]
+title = "玩家 - 获取当前选择的主单位"
+description = "获取 ${玩家} 当前选择的主单位"
+comment = "可以传 没有玩家 来获取本地玩家的异步主单位"
+category = TC_X_JAPI
+returns = unit
+[[.args]]
+type = player
+
+[X_GetTerrainZ]
+title = "地形 - 获取Z轴"
+description = "获取位于 (${X}, ${Y}) 地形的Z轴"
+comment = "一样是异步的"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[X_IsUnitInvulnerable]
+title = "单位 - 是否无敌"
+description = "${单位} 处于无敌状态"
+comment = ""
+category = TC_X_JAPI
+returns = boolean
+[[.args]]
+type = unit
+
+[X_ShouldShowHPBar]
+title = "单位 - 是否显示血条 (全局)"
+description = "是否显示血条 (全局)"
+comment = ""
+category = TC_X_JAPI
+returns = boolean
+
+[X_ShouldUnitShowHPBar]
+title = "单位 - 是否显示血条"
+description = "是否显示 ${单位} 的血条"
+comment = ""
+category = TC_X_JAPI
+returns = boolean
+[[.args]]
+type = unit
+
+[X_GetUnitHPBarX]
+title = "单位 - 获取血条 UI 坐标 X"
+description = "获取 ${单位} 的血条 UI 坐标 X"
+comment = "仅建议在血条回调内使用, 单位不可见等情况则返回 -1"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitHPBarY]
+title = "单位 - 获取血条 UI 坐标 Y"
+description = "获取 ${单位} 的血条 UI 坐标 Y"
+comment = "仅建议在血条回调内使用, 单位不可见等情况则返回 -1"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_Handle2Unit]
+title = "单位 - 转换 handle ID 为单位"
+description = "转换 handle ID ${handleID} 为单位"
+comment = ""
+category = TC_X_JAPI_NOT_RECOMMENDED
+returns = unit
+[[.args]]
+type = integer
+
+[X_GetUnitLifeRegen]
+title = "单位 - 获取每秒生命恢复"
+description = "获取 ${单位} 的每秒生命恢复"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitManaRegen]
+title = "单位 - 获取每秒魔法恢复"
+description = "获取 ${单位} 的每秒魔法恢复"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitPojectileLaunchX]
+title = "单位 - 获取投射物发射坐标X"
+description = "获取 ${单位} 的投射物发射坐标X"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitPojectileLaunchY]
+title = "单位 - 获取投射物发射坐标Y"
+description = "获取 ${单位} 的投射物发射坐标Y"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitPojectileLaunchZ]
+title = "单位 - 获取投射物发射坐标Z"
+description = "获取 ${单位} 的投射物发射坐标Z"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitZ]
+title = "单位 - 获取坐标Z"
+description = "获取 ${单位} 的坐标Z"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitCastPoint]
+title = "单位 - 获取魔法施放点"
+description = "获取 ${单位} 的魔法施放点"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitBackSwing]
+title = "单位 - 获取魔法施放回复"
+description = "获取 ${单位} 的魔法施放回复"
+comment = ""
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+
+[X_GetUnitDefense]
+title = "单位 - 获取护甲"
+description = "获取 ${单位} 的护甲 包括加成 ${flag}"
+comment = "加成指的是绿字"
+category = TC_X_JAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = boolean
+default = "TRUE"
+
+[X_BitAnd]
+title = "位操作 - 按位与"
+description = "${a} 按位与 ${b}"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[X_BitOr]
+title = "位操作 - 按位或"
+description = "${a} 按位或 ${b}"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[X_BitXor]
+title = "位操作 - 按位异或"
+description = "${a} 按位异或 ${b}"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[X_IsBitSet]
+title = "位操作 - 检查标识"
+description = "标识 ${a} 拥有位 ${b}"
+comment = ""
+category = TC_X_JAPI
+returns = boolean
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[X_ReplaceColorR]
+title = "实用函数 - 复制颜色并替换红色"
+description = "复制 ${color} 并替换红色为 ${r}"
+comment = ""
+category = TC_X_JAPI
+returns = X_Color
+[[.args]]
+type = X_Color
+[[.args]]
+type = integer
+min = 0
+max = 255
+
+[X_ReplaceColorG]
+title = "实用函数 - 复制颜色并替换绿色"
+description = "复制 ${color} 并替换绿色为 ${r}"
+comment = ""
+category = TC_X_JAPI
+returns = X_Color
+[[.args]]
+type = X_Color
+[[.args]]
+type = integer
+min = 0
+max = 255
+
+[X_ReplaceColorB]
+title = "实用函数 - 复制颜色并替换蓝色"
+description = "复制 ${color} 并替换蓝色为 ${r}"
+comment = ""
+category = TC_X_JAPI
+returns = X_Color
+[[.args]]
+type = X_Color
+[[.args]]
+type = integer
+min = 0
+max = 255
+
+[X_ReplaceColorA]
+title = "实用函数 - 复制颜色并替换透明度"
+description = "复制 ${color} 并替换透明度为 ${r}"
+comment = ""
+category = TC_X_JAPI
+returns = X_Color
+[[.args]]
+type = X_Color
+[[.args]]
+type = integer
+min = 0
+max = 255
+
+[X_GetColorR]
+title = "实用函数 - 获取颜色的红色"
+description = "获取 ${color} 的红色"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = X_Color
+
+[X_GetColorG]
+title = "实用函数 - 获取颜色的绿色"
+description = "获取 ${color} 的绿色"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = X_Color
+
+[X_GetColorB]
+title = "实用函数 - 获取颜色的蓝色"
+description = "获取 ${color} 的蓝色"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = X_Color
+
+[X_GetColorA]
+title = "实用函数 - 获取颜色的透明度"
+description = "获取 ${color} 的透明度"
+comment = ""
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = X_Color
+
+[X_ConvertTargetArgsStringToFlags]
+title = "实用函数 - 转换物编targs字符串为目标允许"
+description = "转换 ${targs} 为 目标允许"
+comment = "物编的技能目标允许"
+category = TC_X_JAPI
+returns = X_TargetFlags
+[[.args]]
+type = string
+
+[X_FourCC]
+title = "实用函数 - 转换字符串ID为整数ID"
+description = "转换 ${fourCC} 为 整数ID"
+comment = "'A001' -> 1093677105"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = string
+
+[X_FourCC2String]
+title = "实用函数 - 转换整数ID为字符串ID"
+description = "转换 ${id} 为 字符串ID"
+comment = "1093677105 -> 'A001'"
+category = TC_X_JAPI
+returns = string
+[[.args]]
+type = integer
+
+[X_timeGetTime]
+title = "实用函数 - 获取系统运行时间"
+description = "获取系统运行时间"
+comment = "https://learn.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime"
+category = TC_X_JAPI_NOT_RECOMMENDED
+returns = integer
+
+[X_VectorCreate_GUI]
+title = "数组 (连续) - 创建"
+description = "创建数组 (连续)"
+comment = ""
+category = TC_X_JAPI
+returns = X_Vector
+
+[X_VectorExist]
+title = "数组 (连续) - 存有数值"
+description = "数组 ${vector} 存有数值 ${value}"
+comment = ""
+category = TC_X_JAPI
+returns = boolean
+[[.args]]
+type = X_Vector
+[[.args]]
+type = integer
+
+[X_VectorGet]
+title = "数组 (连续) - 获取数值"
+description = "数组 ${vector} 获取第 ${index} 个数值 "
+comment = "无效则返回 0"
+category = TC_X_JAPI
+returns = integer
+[[.args]]
+type = X_Vector
+[[.args]]
+type = integer
+
+[X_VectorGetEnumValue]
+title = "数组 (连续) - 选取数值"
+description = "选取数值"
+comment = "数组 (连续) - 选取做动作"
+category = TC_X_JAPI
+returns = integer
+
+-- 底层 JAPI
+[X_SpriteFrameGetSprite]
+title = "Sprite - 获取CSpriteFrame的Sprite"
+description = "获取 ${CSpriteFrame} 第 ${index} 的Sprite"
+comment = "CSpriteFrame / SPRITE"
+category = TC_X_JAPI_LowLevel
+returns = X_Sprite
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+default = "0"
+
+[X_UnitGetSprite]
+title = "Sprite - 获取单位的Sprite"
+description = "获取 ${单位} 的Sprite"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = X_Sprite
+[[.args]]
+type = unit
+
+[X_EffectGetSprite]
+title = "Sprite - 获取特效的Sprite"
+description = "获取 ${特效} 的Sprite"
+comment = "绝大多数函数对于绑定目标的特效都无法使用, 因为其取绑定目标的数据"
+category = TC_X_JAPI_LowLevel
+returns = X_Sprite
+[[.args]]
+type = effect
+
+[X_TrackableGetSprite]
+title = "Sprite - 获取可追踪物的Sprite"
+description = "获取 ${可追踪物} 的Sprite"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = X_Sprite
+[[.args]]
+type = trackable
+
+[X_DestructableGetSprite]
+title = "Sprite - 获取可破坏物的Sprite"
+description = "获取 ${可破坏物} 的Sprite"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = X_Sprite
+[[.args]]
+type = destructable
+
+[X_ItemGetSprite]
+title = "Sprite - 获取物品的Sprite"
+description = "获取 ${物品} 的Sprite"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = X_Sprite
+[[.args]]
+type = item
+
+[X_IsSpriteValid]
+title = "Sprite - 是否有效"
+description = "${sprite} 有效"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = boolean
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteType]
+title = "Sprite - 获取类型"
+description = "获取 ${sprite} 的类型"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = X_SpriteType
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteGeosetCount]
+title = "Sprite - 获取Geoset数量"
+description = "获取 ${sprite} 的Geoset数量"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = integer
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteX]
+title = "Sprite - 获取X坐标"
+description = "获取 ${sprite} 的X坐标"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = real
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteY]
+title = "Sprite - 获取Y坐标"
+description = "获取 ${sprite} 的Y坐标"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = real
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteZ]
+title = "Sprite - 获取Z坐标"
+description = "获取 ${sprite} 的Z坐标"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = real
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteSize]
+title = "Sprite - 获取大小"
+description = "获取 ${sprite} 的大小"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = real
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteTimeScale]
+title = "Sprite - 获取动画速度"
+description = "获取 ${sprite} 的动画速度"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = real
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteColor]
+title = "Sprite - 获取颜色"
+description = "获取 ${sprite} 的颜色"
+comment = "不包括透明度"
+category = TC_X_JAPI_LowLevel
+returns = X_Color
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteAlpha]
+title = "Sprite - 获取透明度"
+description = "获取 ${sprite} 的透明度"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = integer
+[[.args]]
+type = X_Sprite
+
+[X_GetSpriteGeosetColor]
+title = "Sprite - 获取Geoset颜色"
+description = "获取 ${sprite}, Geoset${index}的颜色"
+comment = "不包括透明度"
+category = TC_X_JAPI_LowLevel
+returns = X_Color
+[[.args]]
+type = X_Sprite
+[[.args]]
+type = integer
+default = "0"
+
+[X_GetSpriteGeosetAlpha]
+title = "Sprite - 获取Geoset透明度"
+description = "获取 ${sprite}, Geoset${index}的透明度"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = integer
+[[.args]]
+type = X_Sprite
+[[.args]]
+type = integer
+default = "0"
+
+[X_FrameCreateCamera]
+title = "界面 - 创建镜头"
+description = "为 ${frame} 创建镜头"
+comment = "会替换已有镜头"
+category = TC_X_JAPI_LowLevel
+returns = X_Camera
+[[.args]]
+type = integer
+
+[X_FrameGetCamera]
+title = "界面 - 获取镜头"
+description = "获取 ${frame} 的镜头"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = X_Camera
+[[.args]]
+type = integer
+
+[X_SpriteGetModel]
+title = "Model - 获取 sprite 的模型"
+description = "获取 ${sprite} 的模型"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = X_Model
+[[.args]]
+type = X_Sprite
+
+[X_ModelFrameGetModel]
+title = "Model - 获取 CModelFrame 的模型"
+description = "获取 ${modelframe} 第 ${N} 个模型"
+comment = "CModelFrame / MODEL"
+category = TC_X_JAPI_LowLevel
+returns = X_Model
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+default = "0"
+
+[X_CreateSimpleFontString]
+title = "界面 - 创建 SimpleFontString"
+description = "创建 SimpleFontString 并绑定到 ${simpleframe} 上"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = integer
+[[.args]]
+type = integer
+
+[X_CreateSimpleTexture]
+title = "界面 - 创建 SimpleTexture"
+description = "创建 SimpleTexture 并绑定到 ${simpleframe} 上"
+comment = ""
+category = TC_X_JAPI_LowLevel
+returns = integer
+[[.args]]
+type = integer
+
+[X_CreatePortraitButton]
+title = "界面 - 创建大头像界面"
+description = "创建大头像 父UI为 ${frame}"
+comment = "CPortraitButton"
+category = TC_X_JAPI_LowLevel
+returns = integer
+[[.args]]
+type = integer
+
+[X_LayerGetStyle]
+title = "界面 - 获取 Layer 的 Style"
+description = "创建大头像 父UI为 ${frame}"
+comment = "CPortraitButton"
+category = TC_X_JAPI_LowLevel
+returns = integer
+[[.args]]
+type = integer
+
+-- 转换
+[X_CastI2R]
+title = "实用函数 - 强制转换整数为实数"
+description = "强制转换 ${value} 为实数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = real
+[[.args]]
+type = integer
+
+[X_CastR2I]
+title = "实用函数 - 强制转换实数为整数"
+description = "强制转换 ${value} 为整数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = integer
+[[.args]]
+type = real
+
+[X_ConvertColor]
+title = "实用函数 - 转换(ARGB)为颜色"
+description = "转换 (${a}, ${r}, ${g}, ${b}) 为颜色"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = X_Color
+[[.args]]
+type = integer
+min = 0
+max = 255
+[[.args]]
+type = integer
+min = 0
+max = 255
+[[.args]]
+type = integer
+min = 0
+max = 255
+[[.args]]
+type = integer
+min = 0
+max = 255
+
+-- 简易封装
+[XSimpleTriggerUIBonusStat_Get]
+title = "绿字属性系统 - 获取数值"
+description = "获取 ${unit} 的 ${type} 在绿字属性系统里的数值"
+comment = "获取的是绿字属性系统的数值 不是原生的"
+category = TC_X_JAPI_SimpleTriggerUI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = XSimpleTriggerUIBonusStat_TYPE
+
+-- 触发器专用类型转换
+[X_WEConvertType1]
+title = "转换 - 转换Sprite为整数"
+description = "转换 ${sprite} 为整数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = integer
+[[.args]]
+type = X_Sprite
+
+[X_WEConvertType2]
+title = "转换 - 转换整数为Sprite"
+description = "转换 ${整数} 为Sprite"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = X_Sprite
+[[.args]]
+type = integer
+
+[X_WEConvertType3]
+title = "转换 - 转换颜色为整数"
+description = "转换 ${颜色} 为整数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = integer
+[[.args]]
+type = X_Color
+
+[X_WEConvertType4]
+title = "转换 - 转换整数为颜色"
+description = "转换 ${整数} 为颜色"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = X_Color
+[[.args]]
+type = integer
+
+[X_WEConvertType5]
+title = "转换 - 转换动画选项为整数"
+description = "转换 ${动画选项} 为整数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = integer
+[[.args]]
+type = X_AnimationFlag
+
+[X_WEConvertType6]
+title = "转换 - 转换整数为动画选项"
+description = "转换 ${整数} 为动画选项"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = X_AnimationFlag
+[[.args]]
+type = integer
+
+[X_WEConvertType7]
+title = "转换 - 转换目标允许为整数"
+description = "转换 ${目标允许} 为整数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = integer
+[[.args]]
+type = X_TargetFlags
+
+[X_WEConvertType8]
+title = "转换 - 转换整数为目标允许"
+description = "转换 ${整数} 为目标允许"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = X_TargetFlags
+[[.args]]
+type = integer
+
+[X_WEConvertType9]
+title = "转换 - 转换镜头为整数"
+description = "转换 ${镜头} 为整数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = integer
+[[.args]]
+type = X_Camera
+
+[X_WEConvertType10]
+title = "转换 - 转换整数为镜头"
+description = "转换 ${整数} 为镜头"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = X_Camera
+[[.args]]
+type = integer
+
+[X_WEConvertType11]
+title = "转换 - 转换 Model 为整数"
+description = "转换 ${Model} 为整数"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = integer
+[[.args]]
+type = X_Model
+
+[X_WEConvertType12]
+title = "转换 - 转换 Model 为模型"
+description = "转换 ${整数} 为 Model"
+comment = ""
+category = TC_X_JAPI_CONV
+returns = X_Model
+[[.args]]
+type = integer

@@ -1,0 +1,104 @@
+[TriggerCategories]
+TC_X_JAPI=[X JAPI],ReplaceableTextures\CommandButtons\BTNEngineeringUpgrade.blp
+TC_X_JAPI_BUFF=[X JAPI - BUFF],ReplaceableTextures\CommandButtons\BTNTransmute.blp
+TC_X_JAPI_SimpleTriggerUI=[X JAPI - 简易封装],ReplaceableTextures\CommandButtons\BTNDust.blp
+
+TC_X_JAPI_EVENT=[X JAPI - 事件],ReplaceableTextures\CommandButtons\BTNFeedBack.blp
+TC_X_JAPI_ASYNC_EVENT=[X JAPI - 异步事件],ReplaceableTextures\CommandButtons\BTNFeedBack.blp
+TC_X_JAPI_EVENT_FEEDBACK=[X JAPI - 事件响应],ReplaceableTextures\CommandButtons\BTNControlMagic.blp
+
+TC_X_JAPI_DEPRECATED=[X JAPI - 已弃用],ReplaceableTextures\CommandButtons\BTNCancel.blp
+TC_X_JAPI_LowLevel=[X JAPI - 底层],ReplaceableTextures\CommandButtons\BTNDizzy.blp
+TC_X_JAPI_NOT_RECOMMENDED=[X JAPI - 不推荐使用],ReplaceableTextures\CommandButtons\BTNBattleStations.blp
+
+TC_X_JAPI_CONV=[转换],ReplaceableTextures\CommandButtons\BTNBattleStations.blp
+
+[TriggerTypes]
+X_PlayerUnitEvent=0,0,0,玩家单位事件,integer
+X_MessageLoc=0,0,0,消息位置,integer
+X_SpriteType=0,0,0,Sprite 类型,integer
+X_AnimationFlag=0,0,0,动画选项,integer
+X_Color=0,0,0,颜色,integer
+X_SaveHandleMethod=0,0,0,保存方式,integer
+X_ItemIntegerDataType=0,0,0,物品整数数据类型,integer
+X_TrueFalseInteger=0,0,0,布尔值(整数),integer
+X_TargetFlags=0,0,0,目标允许,integer
+X_EffectGroup=1,1,1,特效组
+X_Vector=1,1,1,数组 (连续)
+X_AttributeType=0,0,0,属性类型
+X_AbilityBaseBuildType=0,0,0,进度条类型
+X_LayerStyle=0,0,0,Layer Style
+XSimpleTriggerUIBonusStat_TYPE=0,0,0,绿字属性系统 - 属性类型
+
+X_Sprite=1,1,1,Sprite,integer
+X_Model=1,1,1,Model (模型),integer
+X_Camera=1,1,1,Camera (镜头),integer
+
+[TriggerParams]
+X_PlayerUnitEvent_Damaged=0,X_PlayerUnitEvent,0x134,"接受伤害"
+X_PlayerUnitEvent_Damaging=0,X_PlayerUnitEvent,0x13B,"接受伤害 (计算护甲前)"
+X_PlayerUnitEvent_AttackMiss=0,X_PlayerUnitEvent,0x1000,"攻击丢失"
+X_PlayerUnitEvent_AttackLaunch=0,X_PlayerUnitEvent,0x1001,"发动攻击"
+X_PlayerUnitEvent_UpdateInventory=0,X_PlayerUnitEvent,0x1002,"更新物品栏"
+X_PlayerUnitEvent_AddAbility=0,X_PlayerUnitEvent,0x1003,"添加技能"
+X_PlayerUnitEvent_RemoveAbility=0,X_PlayerUnitEvent,0x1004,"删除技能"
+X_PlayerUnitEvent_Removing=0,X_PlayerUnitEvent,0x1005,"即将被删除"
+X_PlayerUnitEvent_AbilityBaseBuildSetDuration=0,X_PlayerUnitEvent,0x1006,"研究/建造/升级/训练/复活 初始化时长"
+X_PlayerUnitEvent_ChangeID=0,X_PlayerUnitEvent,0x1007,"更改ID"
+X_PlayerUnitEvent_SwapItemSlot=0,X_PlayerUnitEvent,0x1008,"移动物品栏里的物品"
+
+X_MessageLoc_Unit=0,X_MessageLoc,0x00,"单位提示"
+X_MessageLoc_Game=0,X_MessageLoc,0x01,"游戏消息"
+X_MessageLoc_Chat=0,X_MessageLoc,0x02,"聊天消息"
+X_MessageLoc_Top=0,X_MessageLoc,0x03,"维修消息"
+
+X_SpriteType_Mini=0,X_SpriteType,0x01,"CSpriteMini"
+X_SpriteType_Uber=0,X_SpriteType,0x02,"CSpriteUber"
+
+X_AnimationFlag_Set=0,X_AnimationFlag,0x00,"设置动画"
+X_AnimationFlag_Queue=0,X_AnimationFlag,0x02,"添加到队列"
+X_AnimationFlag_RARITY_FREQUENT=0,X_AnimationFlag,0x10,"普通的动画"
+X_AnimationFlag_RARITY_RARE=0,X_AnimationFlag,0x20,"罕见的动画"
+
+X_Color_All=0,X_Color,0xFFFFFFFF,"默认颜色"
+
+X_SaveHandleMethod_Ref=0,X_SaveHandleMethod,0x1,"修改引用计数"
+X_SaveHandleMethod_NoRef=0,X_SaveHandleMethod,0x2,"不修改引用计数"
+
+X_ItemIntegerDataType_Level=0,X_ItemIntegerDataType,0x1,"等级"
+X_ItemIntegerDataType_Class=0,X_ItemIntegerDataType,0x2,"物品分类"
+X_ItemIntegerDataType_Powerup=0,X_ItemIntegerDataType,0x3,"拾取时自动使用"
+X_ItemIntegerDataType_Sellable=0,X_ItemIntegerDataType,0x4,"可被市场出售"
+X_ItemIntegerDataType_Pawnable=0,X_ItemIntegerDataType,0x5,"可以被抵押"
+X_ItemIntegerDataType_Color=0,X_ItemIntegerDataType,0x6,"颜色"
+
+X_TrueFalseInteger_False=0,X_TrueFalseInteger,0x0,"FALSE"
+X_TrueFalseInteger_True=0,X_TrueFalseInteger,0x1,"TRUE"
+
+X_TargetFlags_NotSelf=0,X_TargetFlags,0x1E000,"别人"
+
+X_AttributeType_Strength=0,X_AttributeType,0x1,"力量"
+X_AttributeType_Agility=0,X_AttributeType,0x3,"敏捷"
+X_AttributeType_Intelligence=0,X_AttributeType,0x2,"智力"
+
+X_AbilityBaseBuildType_Train=0,X_AbilityBaseBuildType,0x1,"训练"
+X_AbilityBaseBuildType_Research=0,X_AbilityBaseBuildType,0x2,"研究"
+X_AbilityBaseBuildType_Revive=0,X_AbilityBaseBuildType,0x3,"复活"
+X_AbilityBaseBuildType_Build=0,X_AbilityBaseBuildType,0x4,"建造"
+X_AbilityBaseBuildType_Upgrade=0,X_AbilityBaseBuildType,0x5,"升级"
+
+X_LayerStyle_SETS_VIEWPORT=0,X_LayerStyle,0x1,"SETS_VIEWPORT / 3D WINDOW"
+X_LayerStyle_IGNORE_TRACK_EVENTS=0,X_LayerStyle,0x2,"IGNORE_TRACK_EVENTS"
+X_LayerStyle_SHADED=0,X_LayerStyle,0x4,"SHADED"
+X_LayerStyle_SCROLL=0,X_LayerStyle,0x8,"SCROLL"
+X_LayerStyle_NO_DEPTH_SET=0,X_LayerStyle,0x10,"NO_DEPTH_SET"
+X_LayerStyle_NO_DEPTH_TEST=0,X_LayerStyle,0x20,"NO_DEPTH_TEST"
+X_LayerStyle_SCROLLCHILD=0,X_LayerStyle,0x40,"SCROLLCHILD"
+
+XSimpleTriggerUIBonusStat_TYPE_ATTACK=0,XSimpleTriggerUIBonusStat_TYPE,0x1,"攻击"
+XSimpleTriggerUIBonusStat_TYPE_ATTACK_SPEED=0,XSimpleTriggerUIBonusStat_TYPE,0x2,"攻速"
+XSimpleTriggerUIBonusStat_TYPE_ARMOR=0,XSimpleTriggerUIBonusStat_TYPE,0x3,"护甲"
+XSimpleTriggerUIBonusStat_TYPE_MOVE_SPEED=0,XSimpleTriggerUIBonusStat_TYPE,0x4,"移速"
+XSimpleTriggerUIBonusStat_TYPE_STR=0,XSimpleTriggerUIBonusStat_TYPE,0x5,"力量"
+XSimpleTriggerUIBonusStat_TYPE_AGI=0,XSimpleTriggerUIBonusStat_TYPE,0x6,"敏捷"
+XSimpleTriggerUIBonusStat_TYPE_INT=0,XSimpleTriggerUIBonusStat_TYPE,0x7,"智力"

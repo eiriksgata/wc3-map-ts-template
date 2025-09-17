@@ -1,0 +1,6 @@
+[Info]
+PluginName = DarkMode
+[Load]
+Enable = 1
+Loader = DarkMode.lua
+Dll    = DarkMode.dll

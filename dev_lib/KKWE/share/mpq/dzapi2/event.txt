@@ -1,0 +1,43 @@
+
+[DzAPI_Map_Global_ChangeMsg]
+title = "全局存档变化事件"
+description = "全局存档发生变化"
+comment = "本局游戏或其他游戏保存的全局存档都会触发这个事件，请使用'同步'分类下的获取同步数据来获得发生变化的全局存档KEY值"
+category = TC_DZAPI
+
+[DzTriggerRegisterMallItemSyncData]
+title = "玩家获得地图商城道具事件（实时）"
+description = "注册玩家获得地图商城道具事件（实时）"
+comment = "玩家背包中新获得了当前地图商城道具的回调事件，用于地图实现玩家在游戏内商城购买成功后在游戏内立即生效。'触发的商城道具事件的玩家'、'触发的商城道具'和'商城道具最后变动的数量'使用。"
+category = TC_DZAPI
+
+[DzTriggerRegisterMallItemConsumeEvent]
+title = "玩家消耗地图商城道具事件（实时）"
+description = "注册玩家消耗地图商城道具事件（实时）"
+comment = "玩家背包中消耗或使用商城道具的回调事件。可在事件内配合'触发的商城道具事件的玩家'、'触发的商城道具'和'商城道具最后变动的数量'使用。"
+category = TC_DZAPI
+
+[DzTriggerRegisterMallItemRemoveEvent]
+title = "玩家删除地图商城道具事件（实时）"
+description = "注册玩家删除地图商城道具事件（实时）"
+comment = "玩家背包中删除地图商城道具的回调事件。可在事件内配合'触发的商城道具事件的玩家'和'商城道具最后变动的数量'使用。（该事件一般不太可能用到，一般为商城商品被删除才会触发）"
+category = TC_DZAPI
+
+[KKApiTriggerRegisterBackendLogicUpdata]
+title = "注册随机存档更新事件"
+description = "注册随机存档更新事件"
+comment = "当玩家随机存档更新的时候触发该事件。用'当前变动的随机存档'来获取变动的随机存档key。"
+category = TC_DZAPI
+
+[KKApiTriggerRegisterBackendLogicDelete]
+title = "注册随机存档删除事件"
+description = "注册随机存档删除事件"
+comment = "当玩家随机存档删除的时候触发该事件。用'当前变动的随机存档”来获取变动的随机存档key"
+category = TC_DZAPI
+
+[KKApiTriggerRegisterLadderSurrender]
+title = "注册天梯投降事件"
+description = "注册天梯投降事件"
+comment = "当玩家在天梯投降时候触发该事件。用'获取投降的队伍id'来获取。"
+category = TC_DZAPI
+

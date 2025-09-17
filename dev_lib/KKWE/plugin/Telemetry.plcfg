@@ -1,0 +1,6 @@
+[Info]
+PluginName = Telemetry
+[Load]
+Enable = 1
+Loader = DefaultPluginLoader.lua
+Dll    = Telemetry.dll

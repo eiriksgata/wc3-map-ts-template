@@ -1,0 +1,20 @@
+Date: 2024-04-09 10:07:31
+Version: 2.7.2
+Commit: 654f1a6ac5fff792be4c1760a8e11e8529107e9e
+Stack:
+----------------------------------------
+E:\github\src\h-lua-sdk\depend\w3x2lni\bin\w3x2lni-lua.exe: .\core\slk/frontend_lni.lua:26: 
+misc:31: '=' expected near '.'
+stack traceback:
+	[C]: in function 'lni'
+	.\core\slk/frontend_lni.lua:26: in method 'frontend_lni'
+	.\core\slk/frontend.lua:60: in upvalue 'load_lni'
+	.\core\slk/frontend.lua:199: in method 'frontend'
+	.\backend\convert.lua:136: in function 'backend.convert'
+	.\backend\cli\obj.lua:4: in function 'backend.cli.obj'
+	.\backend\init.lua:12: in main chunk
+	[C]: in function 'require'
+	E:\github\src\h-lua-sdk\depend\w3x2lni\script\main.lua:2: in main chunk
+	[C]: in ?
+
+----------------------------------------

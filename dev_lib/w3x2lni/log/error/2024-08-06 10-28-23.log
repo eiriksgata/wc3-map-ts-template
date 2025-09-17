@@ -1,0 +1,19 @@
+Date: 2024-08-06 10:28:23
+Version: 2.7.2
+Commit: 654f1a6ac5fff792be4c1760a8e11e8529107e9e
+Stack:
+----------------------------------------
+E:\github\src\zhensan-fix-ide-w3x\dev_lib\w3x2lni\bin\w3x2lni-lua.exe: .\core\slk/backend_w3i.lua:30: attempt to index a nil value (field '?')
+stack traceback:
+	.\core\slk/backend_w3i.lua:30: in method 'get'
+	.\core\slk/backend_w3i.lua:169: in method 'read_force'
+	.\core\slk/backend_w3i.lua:418: in method 'backend_w3i'
+	.\core\slk/backend.lua:345: in method 'backend'
+	.\backend\convert.lua:141: in function 'backend.convert'
+	.\backend\cli\obj.lua:4: in function 'backend.cli.obj'
+	.\backend\init.lua:12: in main chunk
+	[C]: in function 'require'
+	...\src\zhensan-fix-ide-w3x\dev_lib\w3x2lni\script\main.lua:2: in main chunk
+	[C]: in ?
+
+----------------------------------------

@@ -1,0 +1,56 @@
+"&Crypt map script": 加密地图-测试功能(&C)
+"&Export WE file": 导出WE文件(&E)
+"&Feedback": 意见反馈(&Q)
+"&Lua Test": 执行Lua代码(&L)
+"&Notice": 查看公告(&N)
+"&Platform": 开发者平台(&P)
+"&YDWE": 配置(&C)
+Cancel: 取消
+Cannot delete YDDllFixer.dll in war3 directory.: War3目录有有YDDllFixer.dll并且无法删除，这会导致KKWE无法启动。
+Cannot delete YDDllFixer.dll in ydwe directory.: WE目录有有YDDllFixer.dll并且无法删除，这会导致KKWE无法启动。
+Cannot find main executable file of world editor in YDWE/bin directory.: KKWE/bin文件夹下找不到KKWE的主程序，请确认KKWE文件的完整性。
+Cannot start preprocessor process.: 无法启动预处理进程
+"Cre&dits": 致谢(&D)
+Error: 错误
+"Error occured when executing code: ": '执行代码时发生错误:'
+Error YDWE directory.: KKWE路径含有非法的字符，这可能是由于你的操作系统区域并非简体中文而WE路径里却包含了简体中文导致的。如果你不明白上述原因，请将WE放到英文路径下，再次尝试。
+Export file: 导出文件
+Failed to launch world editor.: 启动KKWE失败。
+"Launch &Warcraft3": 启动魔兽(&W)
+"Launch Author's &Home": 打开开发者平台(&H)
+"Launch Platform &official website": 打开官网(&O)
+Lua Test: 执行Lua代码
+New Object Id: 新物体的ID
+No announcement: 暂无公告
+OK: 确定
+Please choose your Warcraft 3 installation directory: 请选择你的《魔兽争霸III》目录
+Please enter the file path to export. Currently you can export only one file each time: 请输需要导出的文件路径。当前仅支持每次导出一个文件。
+Please enter the lua script to execute: 请输入需要执行的Lua脚本代码
+"Please input new object ID, or cancel to use the default one.": 请输入新物体的ID值（4个字母数字）。或者选择取消使用默认值。
+"Preprocessor failed with message:\nstdout:%s\nstderr: %s": "预处理出现错误，信息:\nstdout:%s\nstderr: %s"
+Save file: 保存文件
+"Show c&Jass version": 显示cJass的版本(&J)
+"Show J&assHelper version": 显示JassHelper的版本(&A)
+"Show las&t compile result": 显示上一次编译的结果(&T)
+"Test function! Encrypted jass script, please choose a map file": 选择一张非C盘地图，对其jass脚本进行加密，该功能目前正在测试，请先使用其他加密工具，删除该地图WE专用文件。
+The file you have entered does not exist.: 你输入的文件不存在
+There are syntax errors in your code.: 你输入的代码中有语法错误。
+Unknown: 未知
+Unknown error: 未知错误
+"Unknown UI detected, KKWE can try to recognize it, continue or not? (KKWE needs to be restarted)": 经检测地图使用了未知触发器，KKWE会帮你识别未知的触发器，确定打开该地图？（会重启KKWE）
+"Whether to remove the read-only attribute from \"%s\"?": 地图 "%s" 带有只读属性，是否去掉地图中的只读属性?
+YDWE: KKWE
+"YDWE &Config": 配置(&C)
+"YDWE has detected that there is a directory named \"%s\" located in Warcraft 3 installation directory. It may prevent YDWE from working. Do you want to delete it?": WE检测到魔兽的安装路径下存在一个名为"%s"的文件夹。它可能影响WE运行，是否删除?
+"YDWE has detected that your game.dll and war3patch.mpq mismatch. It may be caused by the so called \"Warcraft Version Converter\". This situation will cause a failure on saving and testing maps. It is strongly recommended to use the offical patched provided by Blizzard.": 检测到您的魔兽Game.dll和War3Patch.mpq的版本不一致，这可能是由版本转换器造成的，这会导致您无法保存和测试地图，强烈建议您使用正确的魔兽补丁还原您的魔兽。
+You have entered an invalid ID. The ID must contain just 4 letters or digits. It cannot contain chars other than those in ASCII.: 你输入的ID值不合法。ID必须包含恰好4个字符，不能是除了ASCII码以外的其他字符，特别是汉字。
+You have entered an invalid ID. This ID already exists.: 你输入的ID已经存在。
+Execute Wave: 预编译宏
+Save Finished: 完成
+Generate Template: 模板生成
+Ineject code: 注入代码
+KKWE SaveMap: KKWE地图保存
+Making Native: 注入Native
+Packing: 打包中
+Run CJass: 执行cjass
+Run JassHelper: 语法检查

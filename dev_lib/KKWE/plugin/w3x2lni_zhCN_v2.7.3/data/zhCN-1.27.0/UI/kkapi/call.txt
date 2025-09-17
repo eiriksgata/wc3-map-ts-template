@@ -1,0 +1,341 @@
+﻿
+
+[DzGetSelectedLeaderUnit]
+title = "当前选择的单位(异步) [NEW]"
+description = "获取主控单位"
+comment = "获取的单位是异步的，请谨慎操作"
+category = TC_KKAPI
+returns = unit
+
+[DzIsChatBoxOpen]
+title = "聊天框是否打开 [NEW]"
+description = "获取聊天框是否打开"
+comment = ""
+category = TC_KKAPI
+returns = boolean
+
+[DzFrameGetChildrenCount]
+title = "获取子控件数量 [NEW]"
+description = "获取 ${界面} 的子控件数量"
+comment = ""
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = frame
+
+[DzFrameGetChild]
+title = "获取子控件 [NEW]"
+description = "获取 ${界面} 的第 ${编号} 个子控件"
+comment = ""
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = frame
+[[.args]]
+type = integer
+
+[DzFrameGetInfoPanelSelectButton]
+title = "获取框选控件 [NEW]"
+description = "获取第 ${编号} 个框选控件"
+comment = "鼠标框选单位后，控制面板的队列单位头像控件"
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = integer
+min = 0
+max = 11
+
+[DzFrameGetInfoPanelBuffButton]
+title = "获取BUFF控件 [NEW]"
+description = "获取第 ${编号} 个BUFF控件"
+comment = "控制面板的单位属性下面的魔法效果buff控件"
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = integer
+min = 0
+max = 11
+
+[DzFrameGetPeonBar]
+title = "获取农民控件 [NEW]"
+description = "获取农民控件"
+comment = ""
+category = TC_KKAPI
+returns = frame
+
+[DzFrameGetCommandBarButtonNumberText]
+title = "获取技能右下角数字文本控件 [NEW]"
+description = "获取 ${技能控件} 右下角数字文本控件"
+comment = ""
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = frame
+
+[DzFrameGetCommandBarButtonNumberOverlay]
+title = "获取技能右下角数字文本框体 [NEW]"
+description = "获取 ${技能控件} 右下角数字文本框体"
+comment = ""
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = frame
+
+[DzFrameGetCommandBarButtonCooldownIndicator]
+title = "获取技能冷却指示器 [NEW]"
+description = "获取 ${技能控件} 冷却指示器"
+comment = "控件类型为sprite frame"
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = frame
+
+
+[DzFrameGetCommandBarButtonAutoCastIndicator]
+title = "获取技能自动施法指示器 [NEW]"
+description = "获取 ${技能控件} 自动施法指示器"
+comment = "控件类型为sprite frame"
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = frame
+
+[DzFrameWorldToMinimapPosX]
+title = "转换地图坐标为小地图x坐标 [NEW]"
+description = "转换地图坐标(${x},${y})为小地图x坐标"
+comment = "小地图左下角为（0,0）"
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzFrameWorldToMinimapPosY]
+title = "转换地图坐标为小地图y坐标 [NEW]"
+description = "转换地图坐标(${x},${y})为小地图y坐标"
+comment = "小地图左下角为（0,0）"
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+[DzFrameGetWorldFrameMessage]
+title = "游戏提示信息界面 [NEW]"
+description = "游戏提示信息界面 [NEW]"
+comment = "如建筑升级完成提示"
+category = TC_KKAPI
+returns = frame
+
+[DzConvertWorldPositionX]
+title = "转换世界坐标为屏幕x坐标[同步] [NEW]"
+description = "转换地图坐标（ ${x}，${Y}，${z}）为屏幕x坐标"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzConvertWorldPositionY]
+title = "转换世界坐标为屏幕y坐标[同步] [NEW]"
+description = "转换地图坐标（ ${x}，${Y}，${z}）为屏幕y坐标"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzConvertWorldPositionDepth]
+title = "转换世界坐标为屏幕深度[同步] [NEW]"
+description = "转换地图坐标（ ${x}，${Y}，${z}）为屏幕深度"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzConvertScreenPositionX]
+title = "转换屏幕坐标到世界x坐标 [NEW]"
+description = "转换屏幕坐标（ ${x}，${Y}）为世界x坐标"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzConvertScreenPositionY]
+title = "转换屏幕坐标到世界y坐标 [NEW]"
+description = "转换屏幕坐标（ ${x}，${Y}）为世界y坐标"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = real
+default = 0
+[[.args]]
+type = real
+default = 0
+
+[DzGetEffectVertexColor]
+title = "获取特效颜色 [NEW]"
+description = "获取 ${特效} 的颜色"
+comment = ""
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = effect
+
+[DzGetEffectVertexAlpha]
+title = "获取特效透明度 [NEW]"
+description = "获取 ${特效} 的透明度"
+comment = ""
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = effect
+
+[DzGetItemAbility]
+title = "获取物品技能 [NEW]"
+description = "获取 ${物品} 的第 ${编号} 个技能"
+comment = ""
+category = TC_KKAPI
+returns = ability
+[[.args]]
+type = item
+[[.args]]
+type = integer
+
+[DzGetActivePatron]
+title = "获取商店目标 [NEW]"
+description = "获取 ${商店} 选中的 ${玩家} 单位"
+comment = ""
+category = TC_KKAPI
+returns = unit
+[[.args]]
+type = unit
+[[.args]]
+type = player
+
+[DzGetLocalSelectUnitCount]
+title = "获取玩家选中的单位数量 [NEW]"
+description = "获取玩家选中的单位数量"
+comment = "返回值是异步的，谨慎使用"
+category = TC_KKAPI
+returns = integer
+
+[DzGetLocalSelectUnit]
+title = "获取玩家选中的单位 [NEW]"
+description = "获取玩家选中的第 ${编号} 个单位"
+comment = "返回值是异步的，谨慎使用"
+category = TC_KKAPI
+returns = unit
+[[.args]]
+type = integer
+
+[DzGetJassStringTableCount]
+title = "获取字符串数量 [NEW]"
+description = "获取字符串数量"
+comment = ""
+category = TC_KKAPI
+returns = integer
+
+[DzGetFPS]
+title = "获取 FPS 帧数 [NEW]"
+description = "获取 FPS 帧数"
+comment = ""
+category = TC_KKAPI
+returns = integer
+
+[DzGetOnBuildOrderId]
+title = "获取建造的命令id [NEW]"
+description = "获取建造的命令id"
+comment = "用于监听建筑选位置后"
+category = TC_KKAPI
+returns = integer
+
+[DzGetOnBuildOrderType]
+title = "获取建造的命令类型 [NEW]"
+description = "获取建造的命令类型"
+comment = "用于监听建筑选位置后"
+category = TC_KKAPI
+returns = integer
+
+[DzGetOnBuildAgent]
+title = "获取预建造对象 [NEW]"
+description = "获取预建造对象"
+comment = "用于监听建筑选位置后"
+category = TC_KKAPI
+returns = unit
+
+[DzGetOnTargetAbilId]
+title = "获取监听到的技能 [NEW]"
+description = "获取监听到的技能"
+comment = "用于监听技能预选后"
+category = TC_KKAPI
+returns = abilcode
+
+[DzGetOnTargetOrderId]
+title = "获取监听到技能预选命令 [NEW]"
+description = "获取监听到技能预选命令"
+comment = "用于监听技能预选后"
+category = TC_KKAPI
+returns = integer
+
+[DzGetOnTargetOrderType]
+title = "获取监听到技能预选命令类型 [NEW]"
+description = "获取监听到技能预选命令类型"
+comment = "用于监听技能预选后"
+category = TC_KKAPI
+returns = integer
+
+[DzGetOnTargetAgent]
+title = "获取监听到技能预选目标 [NEW]"
+description = "获取监听到技能预选目标"
+comment = "用于监听技能预选后"
+category = TC_KKAPI
+returns = unit
+
+[DzGetOnTargetInstantTarget]
+title = "获取监听到技能预选目标 [NEW]"
+description = "获取监听到技能预选目标"
+comment = "用于监听技能预选后"
+category = TC_KKAPI
+returns = unit
+
+
+
+
+
+
+
+
+
+
+

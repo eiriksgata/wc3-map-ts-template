@@ -1,0 +1,924 @@
+[DzAPI_Map_Global_GetStoreString]
+title = "读取全局存档"
+description = "读取全局存档 名称 ${key}"
+comment = "只读的公共存档请使用另一个API读取"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = string
+
+[DzAPI_Map_ServerArchive]
+title = "读取服务器存档（区分大小写）"
+description = "获取服务器存储的数据（区分大小写） 玩家 ${player} 名称 ${key}"
+comment = "从服务器上读取变量数据，存档变量Key区分大小写，保存时会受到开发者平台所配置的防刷分规则限制。"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetStoredIntegerEX]
+title = "获取服务器存储的整数（区分大小写）"
+description = "获取服务器存储的整数（区分大小写） 玩家 ${player} 名称 ${key}"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”I”，用于开发者平台设置的防刷分存档，与普通存档共用KEY"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetStoredStringEX]
+title = "获取服务器存储的字符串（区分大小写）"
+description = "获取服务器存储的字符串（区分大小写） 玩家 ${player} 名称 ${key}"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”S”，用于开发者平台设置的防刷分存档，与普通存档共用KEY"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_IsPlatformVIP]
+title = "玩家是否平台尊享会员"
+description = "玩家 ${player} 是平台尊享会员"
+comment = "判断玩家是否平台的尊享会员。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+default = GetTriggerPlayer
+
+[DzAPI_Map_IsRPGQuickMatch]
+title = "本局游戏是否快速匹配"
+description = "判断玩家是否是通过匹配模式进入游戏"
+comment = "本局游戏是否通过RPG快速匹配启动，如果地图配置了多个匹配模式，可通过[获取本局游戏的地图模式]接口获取具体选定的是哪一个匹配模式。"
+category = TC_DZAPI
+returns = boolean
+
+[DzAPI_Map_GetMallItemCount]
+title = "玩家地图商城道具剩余数量"
+description = "获取 玩家 ${player} 地图商城道具 ${key} 的剩余库存次数"
+comment = "获取玩家地图商城道具剩余数量。仅对次数消耗型商品有效"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_CommentTotalCount1]
+title = "玩家在地图自定义排行榜上的排名"
+description = "获取玩家 ${whichPlayer} 自定义排行榜KEY(开发者平台填写)： ${key} 的排名，【请注意100名以外的玩家获取的值为0！】"
+comment = "【100名以外的玩家排名为0】该功能适用于开发者平台-服务器存档-自定义排行榜 "
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_GetMatchType]
+title = "本局游戏的地图模式"
+description = "本局游戏的地图模式"
+comment = "获取本局游戏所选择地图模式，地图模式均由作者在开发者平台进行配置（包括天梯排位赛模式、快速匹配模式、建房间时房主所选定的地图模式）。"
+category = TC_DZAPI
+returns = integer
+
+[DzAPI_Map_GetLadderLevel]
+title = "玩家天梯等级"
+description = "获取 ${player} 天梯等级"
+comment = "获取玩家在当前游戏局所采用的天梯模式下的天梯等级，仅天梯模式下的游戏局有效。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_GetLadderRank]
+title = "玩家天梯排名"
+description = "获取 ${player} 天梯排名"
+comment = "排名>1000的获取值为0，获取玩家在当前游戏局所采用的天梯模式下的天梯排名，仅天梯模式下的游戏局有效。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_GetGameStartTime]
+title = "本局游戏的开始时间"
+description = "本局游戏的开始时间"
+comment = "获取本局游戏开始时的服务器时间。"
+category = TC_DZAPI
+returns = integer
+
+[DzAPI_Map_GetMapLevel]
+title = "玩家地图等级"
+description = "获取 ${player} 的地图等级"
+comment = "玩家地图等级【RPG大厅限定】"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+scriptname = DzAPI_Map_GetMapLevel
+[DzAPI_Map_GetMapLevelRank]
+title = "玩家在地图等级排行榜上的排名"
+description = "获取 ${player} 在地图等级排行榜上的排名"
+comment = "排名>100的获取值为0"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_CustomRankCount]
+title = "自定义排行榜上榜人数"
+description = "获取自定义排行榜 ${key} 的上榜人数"
+comment = "key为开发者平台所配置的自定义排行榜key值,值为1~9"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = integer
+
+[DzAPI_Map_CustomRankValue]
+title = "自定义排行榜上的玩家数值"
+description = "获取自定义排行榜 ${key} 排名第 ${ranking} 的数值"
+comment = "key为开发者平台所配置的自定义排行榜key值,值为1~9"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[DzAPI_Map_GetStoredInteger]
+title = "读取服务器上的整数变量"
+description = "获取 ${whichPlayer} 数据名称: ${key} 里存储的整数."
+comment = "这是经过封装的接口，实际Key会在原Key前面加”I”"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetStoredUnitType]
+title = "读取服务器存储的单位类型"
+description = "获取 ${whichPlayer} 数据名称: ${key} 里存储的单位类型"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”I”"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+scriptname = DzAPI_Map_GetStoredInteger
+[DzAPI_Map_GetStoredAbilityId]
+title = "读取服务器存储的技能类型"
+description = "获取 ${whichPlayer} 数据名称: ${key} 里存储的技能类型"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”I”"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+scriptname = DzAPI_Map_GetStoredInteger
+[DzAPI_Map_GetGuildRole]
+title = "玩家在公会的职责【废弃】"
+description = "获取 ${whichPlayer} 公会职责"
+comment = "获取玩家公会职责 Member=10 Admin=20 Leader=30"
+category = TC_DEPRECATED
+returns = integer
+[[.args]]
+type = player
+
+[KKApiGetGuildLevel]
+title = "玩家在公会的等级"
+description = "获取 ${whichPlayer} 公会等级"
+comment = "获取玩家公会等级"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_GetServerArchiveEquip]
+title = "BOSS击杀后的掉落数量"
+description = "读取 ${whichPlayer} BOSS击杀后的 ${itemkey} 掉落的数量"
+comment = "游戏内调用[触发BOSS击杀]后，获取本次掉落数量。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_PlayedGames]
+title = "玩家累计游戏局数"
+description = "获取 ${whichPlayer} 游戏局数"
+comment = "获取玩家中游戏局数"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_CommentCount]
+title = "评论次数【废弃】"
+description = "获取 ${whichPlayer} 评论次数"
+comment = "获取玩家的评论次数，该功能已失效，始终返回1"
+category = TC_DEPRECATED
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_FriendCount]
+title = "玩家好友数量【废弃】"
+description = "获取 ${whichPlayer} 好友数量"
+comment = "该功能废弃"
+category = TC_DEPRECATED
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_CommentTotalCount]
+title = "地图评论次数"
+description = "该图总评论次数"
+comment = "获取该图总评论次数"
+category = TC_DZAPI
+returns = integer
+
+[DzAPI_Map_ContinuousCount]
+title = "玩家签到天数"
+description = " ${whichPlayer}  ${label} "
+comment = "获取玩家在指定地图的地图签到数据。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = ContinuousCountType
+
+[DzAPI_Map_MapsTotalPlayed]
+title = "玩家累计游戏时长"
+description = " ${whichPlayer} 累计游戏时长"
+comment = "获取玩家在当前地图的累计游戏时长"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_MapsLevel]
+title = "玩家在指定地图的地图等级"
+description = " ${whichPlayer} 在地图: ${mapId} 的地图等级"
+comment = "获取玩家在指定地图的地图等级。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_MapsConsumeGold]
+title = "玩家在指定地图累计消耗平台金币【已废弃】"
+description = " ${whichPlayer} 在地图： ${mapId} 的平台金币消耗"
+comment = "获取玩家在指定地图的累计消耗平台金币数量。"
+category = TC_DEPRECATED
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_MapsConsumeLumber]
+title = "玩家在指定地图的平台木材消耗【已废弃】"
+description = " ${whichPlayer} 地图： ${mapId} 的平台木材消耗"
+comment = ""
+category = TC_DEPRECATED
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_GetForumData]
+title = "玩家在地图社区上的互动数据"
+description = " ${whichPlayer}  ${whichData} "
+comment = "“获取玩家在当前地图的社区内的行为统计数据及身份数据。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = ForumData
+
+[DzAPI_Map_GetLotteryUsedCountEx]
+title = "玩家抽取指定地图宝箱次数"
+description = "获取 ${whichPlayer} 第 ${n} 个地图宝箱的累计抽取次数"
+comment = "第二个参数为0代表第一个宝箱也为默认宝箱，为1代表第二个宝箱"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_GetLotteryUsedCount]
+title = "玩家抽取地图宝箱总次数"
+description = " ${whichPlayer} 玩家抽取地图宝箱总次数"
+comment = ""
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_GetSinceLastPlayedSeconds]
+title = "玩家本局游戏距上一局游戏的时间差"
+description = " ${whichPlayer} 本局游戏距上一局游戏的时间差"
+comment = "返查询该玩家上次玩游戏时间至本次玩游戏时间的差值，可以利用此接口实现离线收益之类的功能。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_GetLastRecommendTime]
+title = "玩家最近一次上安利墙时间"
+description = " ${whichPlayer} 最后上安利墙时间"
+comment = "获取玩家最近一次在当前地图的优质评论被推荐上安利墙的时间。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[DzAPI_Map_IsRedVIP]
+title = "玩家是否平台认证的职业选手"
+description = "判断 ${player} 是否是职业选手"
+comment = "判断玩家是否平台认证的职业选手（红V）。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+
+[DzAPI_Map_IsBlueVIP]
+title = "玩家是否平台认证的主播"
+description = "判断 ${player} 平台认证的主播（蓝V）"
+comment = "判断指定玩家是否平台认证的主播（蓝V）。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+
+[DzAPI_Map_IsRPGLobby]
+title = "本局游戏是否处于RPG游戏大厅"
+description = "本局游戏是否处于RPG游戏大厅"
+comment = "获取当前游戏局是否通过RPG游戏大厅启动。"
+category = TC_DZAPI
+returns = boolean
+
+[DzAPI_Map_IsRPGLadder]
+title = "本局游戏是否天梯排位赛"
+description = "判断地图是否在RPG天梯"
+comment = "本局游戏是否通过RPG天梯启动，如果地图配置了多个天梯模式，可通过获取本局游戏的地图模式接口获取具体选定的是哪一个天梯模式。"
+category = TC_DZAPI
+returns = boolean
+
+[DzAPI_Map_HasMallItem]
+title = "玩家是否拥有地图商城道具"
+description = "获取 ${whichPlayer} 是否拥有: ${key} 对应的地图商城道具."
+comment = "检测玩家背包中是否拥该道具且处于有效状态。已过期的时效性道具、剩余数量为0的数量型道具均视为无效；"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[GetPlayerServerValueSuccess]
+title = "玩家服务器存档是否读取成功"
+description = " ${whichPlayer} 服务器存档是否读取成功."
+comment = "如果返回false代表读取失败,反之成功,之后游戏里平台不会再发送“服务器保存失败”的信息，所以希望地图作者在游戏开始给玩家发下信息服务器存档是否正确读取。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+
+[DzAPI_Map_PlayerLoadedItems]
+title = "玩家地图商城道具是否读取成功"
+description = " ${whichPlayer} 地图商城道具是否读取成功"
+comment = "判断本局游戏中玩家的商城道具是否正确加载。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+
+[DzAPI_Map_GetStoredBoolean]
+title = "读取服务器上的布尔变量"
+description = "获取 ${whichPlayer} 数据名称: ${key} 里存储的布尔值"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”B”"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_IsConnoisseur]
+title = "玩家是否平台认证的鉴赏家[废弃]"
+description = " ${whichPlayer} 是鉴赏家"
+comment = "评论里的鉴赏家"
+category = TC_DEPRECATED
+returns = boolean
+[[.args]]
+type = player
+
+[DzAPI_Map_IsAuthor]
+title = "玩家是否当前地图作者"
+description = " ${whichPlayer} 是本图作者"
+comment = "判断指定玩家是否为本地图的作者。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+
+[DzAPI_Map_Returns]
+title = "是否回流/收藏过地图的用户"
+description = " ${whichPlayer}  ${label} "
+comment = "超过7天未玩地图的用户再次登录被称为地图回流用户，地图回流BUFF会存在7天，7天后消失。平台回流用户的BUFF存在15天，15天后消失。建议设置奖励，鼓励玩家回来玩地图！"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = ReturnUser
+
+[DzAPI_Map_MapsConsumeLv1]
+title = "玩家在指定地图累计消费金额区间（1~199）"
+description = " ${whichPlayer} 在地图 ${地图id} 消费在（1~199）区间"
+comment = "检测消费是否在（1~199）区间"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_MapsConsumeLv2]
+title = "玩家在指定地图累计消费金额区间（200~499）"
+description = " ${whichPlayer} 在地图 ${地图id} 消费在（200~499）区间"
+comment = "检测消费是否在（200~499）区间"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_MapsConsumeLv3]
+title = "玩家在指定地图累计消费金额区间（500~999）"
+description = " ${whichPlayer} 在地图 ${地图id} 消费在（500~999）区间"
+comment = "检测消费是否在（500~999）区间"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_MapsConsumeLv4]
+title = "玩家在指定地图累计消费金额区间（1000+）"
+description = " ${whichPlayer} 在地图 ${地图id} 消费在（1000+）区间"
+comment = "检测消费是否在（1000+）区间"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[DzAPI_Map_PlayerFlags]
+title = "玩家标记"
+description = " ${whichPlayer} 是 ${label} "
+comment = "获取玩家在当前地图上的身份标记（当前是否回流用户、是否收藏地图）。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = ReturnUser
+
+[DzAPI_Map_IsPlayerUsingSkin]
+title = "玩家是否装备指定平台装饰"
+description = " ${whichPlayer} 装备了 ${skinType} 的 ${id} 道具"
+comment = "检查玩家是否装备着指定平台装饰（仅限平台和地图的合作装饰）。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = SKINTYPE
+[[.args]]
+type = integer
+
+[DzAPI_Map_IsMapTest]
+title = "本局游戏是否处于平台自测服"
+description = "本局游戏是否处于平台自测服"
+comment = "获取当前游戏局所处的平台环境。"
+category = TC_DZAPI
+returns = boolean
+
+[DzAPI_Map_IsPlayer]
+title = "玩家是否为真实玩家"
+description = " ${whichPlayer} 是否为真实玩家"
+comment = "当作者开启匹配模式的虚拟电脑玩家(AI)补位功能后，可通过此接口判定是否真实玩家。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+
+[DzAPI_Map_CustomRankPlayerName]
+title = "自定义排行榜上的玩家昵称"
+description = "获取自定义排行榜 ${key} 的排名第 ${ranking} 的玩家昵称"
+comment = "key为开发者平台所配置的自定义排行榜key值,值为1~9"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[DzAPI_Map_GetMapConfig]
+title = "地图配置参数"
+description = "获取: ${key} 地图配置参数"
+comment = "获取作者在开发者平台配置的地图参数（原只读类型的地图全局存档），作者可以通过此接口实现节日活动开关、口令等功能。"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = string
+
+[DzAPI_Map_GetServerValue]
+title = "读取服务器存储的数据"
+description = "获取 ${whichPlayer}  ${key} 里的数据"
+comment = ""
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetStoredString]
+title = "读取服务器上的字符串变量"
+description = "获取 ${whichPlayer} 数据名称: ${key} 里存储的字符串"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”S”"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetGuildName]
+title = "玩家所属公会[废弃]"
+description = "获取 ${whichPlayer} 公会名称"
+comment = "获取玩家所属公会名称。"
+category = TC_DEPRECATED
+returns = string
+[[.args]]
+type = player
+
+[DzAPI_Map_GetServerArchiveDrop]
+title = "BOSS击杀后的掉落内容"
+description = "获取 ${whichPlayer} 击杀boss ${bosskey} 掉落的装备"
+comment = "游戏内调用触发BOSS击杀后，获取本次掉落内容。"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzAPI_Map_GetPublicArchive]
+title = "读取服务器存档组"
+description = "在服务器存档组读取 ${whichPlayer} ,名称: ${key} 里的数据"
+comment = "读取当前作者账号下的服务器存档组变量数据。。"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzGetTriggerMallItem]
+title = "事件响应 - 触发的商城道具（实时）"
+description = "触发的商城道具"
+comment = "可以用于【玩家获取商城道具事件】、【玩家消耗使用商城道具事件】和【玩家删除商城道具事件】后。"
+category = TC_DZAPI
+returns = string
+
+[DzAPI_Map_GetPlayerUserName]
+title = "玩家在KK对战平台的完整昵称"
+description = " ${whichPlayer} 在KK对战平台的完整昵称"
+comment = "获取玩家的KK平台完整昵称“基础昵称#编号”"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+
+[DzAPI_Map_GetStoredReal]
+title = "读取服务器上的实数变量"
+description = "获取 ${whichPlayer} 数据名称: ${key} 里存储的实数"
+comment = "这是经过封装的接口，实际Key会在原Key前面加”R”"
+category = TC_DZAPI
+returns = real
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[DzGetTriggerMallItemPlayer]
+title = "事件响应 - 触发的商城道具事件的玩家"
+description = "触发的商城道具事件的玩家"
+comment = "可以用于【玩家获取商城道具事件】、【玩家消耗使用商城道具事件】和【玩家删除商城道具事件】后。"
+category = TC_DZAPI
+returns = player
+
+[KKApiRequestBackendLogic]
+title = "【随机只读存档】生成随机数"
+description = "设置 ${whichPlayer} 对随机只读存档 ${key} 的组 ${groupkey} 生成随机数"
+comment = "生成一个服务器随机数并关联组ID，可以在开发者平台对组ID进行防刷分管理，同组ID下各个Key共享CD和次数。"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = string
+[[.args]]
+type = string
+
+[KKApiCheckBackendLogicExists]
+title = "【随机只读存档】判断随机数是否存在"
+description = " ${whichPlayer} 随机只读存档 ${key} 是否存在"
+comment = "判断指定KEY生成的随机数是否存在，存在返回true"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiRemoveBackendLogicResult]
+title = "【随机只读存档】删除随机数"
+description = "删除 ${whichPlayer} 随机只读存档 ${key} 的随机数"
+comment = "删除指定KEY生成的服务器生成的随机数"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiRandomSaveGameCount]
+title = "【随机只读存档】剩余次数"
+description = " ${whichPlayer} 随机只读存档的组 ${groupkey} 今日的剩余次数"
+comment = ""
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiGetBackendLogicStrResult]
+title = "【随机只读存档】读取随机数的值"
+description = "获取 ${whichPlayer} 随机只读存档 ${key} 的值"
+comment = "读取指定KEY生成的服务器随机数的值"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiGetBackendLogicGroup]
+title = "【随机只读存档】读取随机数的组ID"
+description = "获取 ${whichPlayer} 随机只读存档 ${key} 的组ID"
+comment = "读取指定KEY生成的服务器随机数生成的组ID，返回整数"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiGetBackendLogicUpdateTime]
+title = "【随机只读存档】读取随机数的生成时间"
+description = "获取 ${whichPlayer} 随机只读存档 ${key} 的生成时间"
+comment = "读取指定KEY生成的服务器随机数生成的时间戳，返回整数。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiGetBackendLogicIntResult]
+title = "【随机只读存档】读取随机数的值"
+description = "获取 ${whichPlayer} 随机只读存档 ${key} 的值"
+comment = "读取指定KEY生成的服务器随机数的值，返回整数。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiGetServerValueLimitLeft]
+title = "获取服务器存档限制余额"
+description = "获取 ${whichPlayer} 存档 ${key} 上限余额"
+comment = "获取服务器存档当天上限余额，需要在开发者平台对指定KEY设置每天上限，获取的值为余额。如存档A上限为100，当天使用了80，返回20"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiGetSyncBackendLogic]
+title = "获取变动的随机存档"
+description = "获取变动的随机存档"
+comment = "用在注册随机存档更新和删除事件之后"
+category = TC_DZAPI
+returns = string
+
+[KKApiIsGameMode]
+title = "是否在平台正常游戏中"
+description = "是否在平台正常游戏中"
+comment = "主要试用于平台运行中区分正常游戏和观战模式，返回true代表是正常游戏模式，反之为观战模式"
+category = TC_DZAPI
+returns = boolean
+
+[KKApiPlayerIdentityType]
+title = "获取玩家身份类型"
+description = " ${whichPlayer} 的身份是 ${key} "
+comment = ""
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = IdentityType
+
+[KKApiPlayerGUID]
+title = "获取玩家的平台ID"
+description = " ${whichPlayer} 平台ID"
+comment = "返回的是一个32位的字符串"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+
+[KKApiIsTaskInProgress]
+title = "玩家地图任务状态"
+description = " ${whichPlayer} 地图任务： ${setIndex} 在 ${taskstat} 状态"
+comment = ""
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = integer
+[[.args]]
+type = TaskInProgress
+
+[KKApiQueryTaskCurrentProgress]
+title = "玩家地图任务当前进度"
+description = " ${whichPlayer} 地图任务： ${setIndex} 的当前进度"
+comment = ""
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[KKApiQueryTaskTotalProgress]
+title = "玩家地图任务总进度"
+description = " ${whichPlayer} 地图任务： ${setIndex} 总进度"
+comment = ""
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+
+[KKApiIsAchievementCompleted]
+title = "玩家平台该地图成就是否完成"
+description = " ${whichPlayer} 平台该地图成就： ${key} 已经完成"
+comment = "完成返回true"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiAchievementPoints]
+title = "玩家平台该地图成就点数"
+description = " ${whichPlayer} 平台该地图成就点数"
+comment = ""
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[KKApiPlayedTime]
+title = "判定测试大厅游戏时长区间"
+description = " ${whichPlayer} 在测试大厅的游戏时长是否在区间（ ${minHours} 到 ${maxHours} ）小时"
+comment = "判断测试大厅游戏时长是否满足该区间 ，0表示不限制，单位为小时"
+category = TC_DZAPI
+returns = boolean
+[[.args]]
+type = player
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[KKApiGetLadderSurrenderTeamId]
+title = "获取天梯投降的队伍ID"
+description = "获取天梯投降的队伍ID"
+comment = "用于天梯投降事件动作里"
+category = TC_DZAPI
+returns = integer
+
+[KKApiMapExplorationNum]
+title = "宠物探险次数"
+description = " ${whichPlayer} 宠物探险次数"
+comment = "获取平台宠物探险次数"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[KKApiMapExplorationTime]
+title = "宠物探险时间"
+description = " ${whichPlayer} 宠物探险时间"
+comment = "获取平台宠物探险时间"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[KKApiMapOrderNum]
+title = "测试大厅预约人数"
+description = "测试大厅预约人数"
+comment = ""
+category = TC_DZAPI
+returns = integer
+
+[KKApiGetMallItemUpdateCount]
+title = "事件响应 - 商城道具最后变动的数量"
+description = " ${whichPlayer} 商城道具： ${key} 最后更新的数量"
+comment = "获取的是当次玩家商城背包新增或消耗的数量，如果是时效型道具获取的是剩余时间，可以用于【玩家获取商城道具事件】、【玩家消耗使用商城道具事件】和【玩家删除商城道具事件】后。"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = string
+
+[KKApiGetMapVersion]
+title = "获取地图版本号[new]"
+description = "获取地图版本号"
+comment = ""
+category = TC_DZAPI
+returns = string
+
+[KKApiGetCompetitionGameMode]
+title = "获取赛事模式[new]"
+description = "获取赛事模式"
+comment = ""
+category = TC_DZAPI
+returns = string
+
+[KKApiDayRounds]
+title = "获取玩家当天总游戏局数[new]"
+description = "获取 ${whichPlayer} 当天总游戏局数"
+comment = "为当天玩家玩该地图的有效局数，10分钟算一局，每天05:00刷新"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[KKApiConsumeLevel]
+title = "获取玩家在指定地图会员等级[new]"
+description = "获取 ${whichPlayer} 在地图 ${mapId} 的会员等级"
+comment = "该功能需要在作者之家后台申请开启权限，否则返回值都是0"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+[[.args]]
+type = integer
+

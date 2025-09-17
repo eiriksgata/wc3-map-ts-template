@@ -1,0 +1,10 @@
+{
+  "w2l": {
+    "path": "dev_lib/w3x2lni"
+  },
+  "kkwe": {
+    "path": "dev_lib/kkwe"
+  },
+  "outputFolder": "./dist/bin",
+  "minifyScript": true
+}

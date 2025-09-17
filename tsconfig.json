@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": [
+      "esnext"
+    ],
+    "moduleResolution": "bundler",
+    "types": [
+      "lua-types/5.3"
+    ],
+    "strict": true
+  },
+  "tstl": {
+    "luaTarget": "5.3",
+    "noImplicitSelf": true,
+    "noHeader": true,
+    "noResolvePaths": [
+      "jass.common",
+      "jass.ai",
+      "jass.globals",
+      "jass.japi",
+      "jass.hook",
+      "jass.runtime",
+      "jass.slk",
+      "jass.console",
+      "jass.debug",
+      "jass.log",
+      "jass.runtime",
+      "jass.message",
+      "jass.bignum"
+    ],
+    "luaBundle": "maps/map/main.lua",
+    "luaBundleEntry": "src/index.ts"
+  },
+  "include": [
+    "src/**/*",
+    "types/**/*"
+  ]
+}

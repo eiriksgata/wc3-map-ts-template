@@ -1,0 +1,26 @@
+{
+  "name": "wc3-map-ts-template",
+  "version": "1.0.0",
+  "description": "- ts作图环境搭建",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tstl --watch",
+    "dev": "ts-node --project tsconfig.node.json scripts/build.ts dev",
+    "build": "ts-node --project tsconfig.node.json scripts/build.ts build",
+    "test": "ts-node --project tsconfig.node.json scripts/build.ts && ts-node --project tsconfig.node.json scripts/test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.5.1",
+    "lua-types": "^2.13.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "typescript-to-lua": "^1.32.0"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.2",
+    "luamin": "^1.0.4"
+  }
+}

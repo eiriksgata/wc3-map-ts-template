@@ -1,9 +1,33 @@
-// runtime必须首先加载
-import { env } from "./runtime";
-// 加载地图代码
-import { mapInit } from "./map/start";
+import { Application } from './core';
+import { EventService } from './services/EventService';
+import { UnitService } from './services/UnitService';
+import { mapInit } from './map/start';
 
-env()
+/**
+ * 应用程序主入口
+ * 负责引导整个应用程序的启动
+ */
+async function main(): Promise<void> {
+  try {
+    // 获取应用实例
+    const app = Application.getInstance();
 
-// 调用mapInit,
-mapInit()
+    // 注册核心服务
+    app.registerService(new EventService());
+    app.registerService(new UnitService());
+
+    // 初始化应用程序
+    await app.initialize();
+
+    // 启动地图逻辑
+    print('>>> Starting map logic...');
+    mapInit(app);
+    print('>>> Map logic initialized');
+
+  } catch (error) {
+    print(`>>> Failed to start application: ${error}`);
+  }
+}
+
+// 启动应用程序
+main();

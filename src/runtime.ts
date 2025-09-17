@@ -1,4 +1,4 @@
-import { ydcommon, ydconsole, ydjapi, ydruntime } from "./ydlua"
+import { ydcommon, ydconsole, ydjapi, ydruntime } from "./lib/ydlua"
 
 export function initConsole(isDebug = true){
     // 控制台初始化
@@ -27,7 +27,7 @@ export function env(isDebug = true) {
         // @ts-ignore
         _G[v] = ydcommon[v]
     })
-
+    
     Object.keys(ydjapi).forEach(v => {
         // @ts-ignore
         _G[v] = ydjapi[v]

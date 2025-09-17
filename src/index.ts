@@ -5,7 +5,5 @@ import { mapInit } from "./map/start";
 
 env()
 
-print("init ok")
-
 // 调用mapInit,
 mapInit()

@@ -1,1 +1,2797 @@
-local a={}local b={}local c=require;local function require(d,...)if b[d]then return b[d].value end;if a[d]then local e=a[d]local f=nil;if select("#",...)>0 then f=e(...)else f=e(d)end;b[d]={value=f}return f else if c then return c(d)else error("module '"..d.."' not found")end end end;a={["lualib_bundle"]=function(...)local function g(self,h)local i=h<0 and#self+h or h;if i>=0 and i<#self then return self[i+1]end;return nil end;local function j(f)return type(f)=="table"and(f[1]~=nil or next(f)==nil)end;local function k(self,...)local l={...}local m={}local n=0;for o=1,#self do n=n+1;m[n]=self[o]end;for o=1,#l do local p=l[o]if j(p)then for q=1,#p do n=n+1;m[n]=p[q]end else n=n+1;m[n]=p end end;return m end;local r,s;do local t={__tostring=function(self)return("Symbol("..(self.description or""))..")"end}function r(u)return setmetatable({description=u},t)end;s={asyncDispose=r("Symbol.asyncDispose"),dispose=r("Symbol.dispose"),iterator=r("Symbol.iterator"),hasInstance=r("Symbol.hasInstance"),species=r("Symbol.species"),toStringTag=r("Symbol.toStringTag")}end;local function v(w)local x=0;return{[s.iterator]=function(self)return self end,next=function(self)local m={done=w[x+1]==nil,value={x,w[x+1]}}x=x+1;return m end}end;local function y(self,z,A)for o=1,#self do if not z(A,self[o],o-1,self)then return false end end;return true end;local function B(self,f,C,D)local E=C or 0;local F=D or#self;if E<0 then E=E+#self end;if F<0 then F=F+#self end;do local o=E;while o<F do self[o+1]=f;o=o+1 end end;return self end;local function G(self,z,A)local m={}local n=0;for o=1,#self do if z(A,self[o],o-1,self)then n=n+1;m[n]=self[o]end end;return m end;local function H(self,I,A)for o=1,#self do I(A,self[o],o-1,self)end end;local function J(self,K,A)for o=1,#self do local L=self[o]if K(A,L,o-1,self)then return L end end;return nil end;local function M(self,I,A)for o=1,#self do if I(A,self[o],o-1,self)then return o-1 end end;return-1 end;local N;do local function O(self)local P=self.____coroutine;local Q,f=coroutine.resume(P)if not Q then error(f,0)end;if coroutine.status(P)=="dead"then return end;return true,f end;local function R(self)local m=self:next()if m.done then return end;return true,m.value end;local function S(self,T)T=T+1;if T>#self then return end;return T,string.sub(self,T,T)end;function N(U)if type(U)=="string"then return S,U,0 elseif U.____coroutine~=nil then return O,U elseif U[s.iterator]then local V=U[s.iterator](U)return R,V else return ipairs(U)end end end;local W;do local function X(self,T)T=T+1;if T>self.length then return end;return T,self[T]end;local function Y(Z)if type(Z.length)=="number"then return X,Z,0 end;return N(Z)end;function W(_,a0,A)local m={}if a0==nil then for a1,a2 in Y(_)do m[#m+1]=a2 end else local o=0;for a1,a2 in Y(_)do local a3=a0;local a4=A;local a5=a2;local a6=o;o=a6+1;m[#m+1]=a3(a4,a5,a6)end end;return m end end;local function a7(self,a8,a9)if a9==nil then a9=0 end;local n=#self;local aa=a9;if a9<0 then aa=n+a9 end;if aa<0 then aa=0 end;for o=aa+1,n do if self[o]==a8 then return true end end;return false end;local function ab(self,a8,a9)if a9==nil then a9=0 end;local n=#self;if n==0 then return-1 end;if a9>=n then return-1 end;if a9<0 then a9=n+a9;if a9<0 then a9=0 end end;for o=a9+1,n do if self[o]==a8 then return o-1 end end;return-1 end;local function ac(self,ad)if ad==nil then ad=","end;local ae={}for o=1,#self do ae[o]=tostring(self[o])end;return table.concat(ae,ad)end;local function af(self,z,A)local m={}for o=1,#self do m[o]=z(A,self[o],o-1,self)end;return m end;local function ag(self,...)local l={...}local n=#self;for o=1,#l do n=n+1;self[n]=l[o]end;return n end;local function ah(self,l)local n=#self;for o=1,#l do n=n+1;self[n]=l[o]end;return n end;local function ai(...)return select("#",...)end;local function aj(self,I,...)local n=#self;local aa=0;local ak=nil;if ai(...)~=0 then ak=...elseif n>0 then ak=self[1]aa=1 else error("Reduce of empty array with no initial value",0)end;for o=aa+1,n do ak=I(nil,ak,self[o],o-1,self)end;return ak end;local function al(self,I,...)local n=#self;local aa=n-1;local ak=nil;if ai(...)~=0 then ak=...elseif n>0 then ak=self[aa+1]aa=aa-1 else error("Reduce of empty array with no initial value",0)end;for o=aa+1,1,-1 do ak=I(nil,ak,self[o],o-1,self)end;return ak end;local function am(self)local o=1;local q=#self;while o<q do local an=self[q]self[q]=self[o]self[o]=an;o=o+1;q=q-1 end;return self end;local function ao(self,...)local l={...}local ap=#l;if ap==0 then return#self end;for o=#self,1,-1 do self[o+ap]=self[o]end;for o=1,ap do self[o]=l[o]end;return#self end;local function aq(self,ar)if ar~=nil then table.sort(self,function(as,at)return ar(nil,as,at)<0 end)else table.sort(self)end;return self end;local function au(self,av,aw)local n=#self;av=av or 0;if av<0 then av=n+av;if av<0 then av=0 end else if av>n then av=n end end;aw=aw or n;if aw<0 then aw=n+aw;if aw<0 then aw=0 end else if aw>n then aw=n end end;local ax={}av=av+1;aw=aw+1;local ay=1;while av<aw do ax[ay]=self[av]av=av+1;ay=ay+1 end;return ax end;local function az(self,z,A)for o=1,#self do if z(A,self[o],o-1,self)then return true end end;return false end;local function aA(self,...)local aB={...}local n=#self;local aC=ai(...)local C=aB[1]local aD=aB[2]if C<0 then C=n+C;if C<0 then C=0 end elseif C>n then C=n end;local aE=aC-2;if aE<0 then aE=0 end;local aF;if aC==0 then aF=0 elseif aC==1 then aF=n-C else aF=aD or 0;if aF<0 then aF=0 end;if aF>n-C then aF=n-C end end;local ax={}for aa=1,aF do local aG=C+aa;if self[aG]~=nil then ax[aa]=self[aG]end end;if aE<aF then for aa=C+1,n-aF do local aG=aa+aF;local aH=aa+aE;if self[aG]then self[aH]=self[aG]else self[aH]=nil end end;for aa=n-aF+aE+1,n do self[aa]=nil end elseif aE>aF then for aa=n-aF,C+1,-1 do local aG=aa+aF;local aH=aa+aE;if self[aG]then self[aH]=self[aG]else self[aH]=nil end end end;local q=C+1;for o=3,aC do self[q]=aB[o]q=q+1 end;for aa=#self,n-aF+aE+1,-1 do self[aa]=nil end;return ax end;local function aI(self)local aJ={}for o=1,#self do aJ[o-1]=self[o]end;return aJ end;local function aK(self,aL)if aL==nil then aL=1 end;local m={}local n=0;for o=1,#self do local f=self[o]if aL>0 and j(f)then local aM;if aL==1 then aM=f else aM=aK(f,aL-1)end;for q=1,#aM do local aN=aM[q]n=n+1;m[n]=aN end else n=n+1;m[n]=f end end;return m end;local function aO(self,aP,A)local m={}local n=0;for o=1,#self do local f=aP(A,self[o],o-1,self)if j(f)then for q=1,#f do n=n+1;m[n]=f[q]end else n=n+1;m[n]=f end end;return m end;local function aQ(self,aR)if aR<0 or aR~=aR or aR==math.huge or math.floor(aR)~=aR then error("invalid array length: "..tostring(aR),0)end;for o=aR+1,#self do self[o]=nil end;return aR end;local aS=table.unpack or unpack;local function aT(self)local aU={aS(self)}am(aU)return aU end;local function aV(self,ar)local aU={aS(self)}aq(aU,ar)return aU end;local function aW(self,C,aD,...)local aU={aS(self)}aA(aU,C,aD,...)return aU end;local function aX(self,T,f)local aU={aS(self)}aU[T+1]=f;return aU end;local function aY(aZ,...)local a_=setmetatable({},aZ.prototype)a_:____constructor(...)return a_ end;local function b0(b1,b2)if type(b2)~="table"then error("Right-hand side of 'instanceof' is not an object",0)end;if b2[s.hasInstance]~=nil then return not not b2[s.hasInstance](b2,b1)end;if type(b1)=="table"then local b3=b1.constructor;while b3~=nil do if b3==b2 then return true end;b3=b3.____super end end;return false end;local function b4(self)local b5={prototype={}}b5.prototype.__index=b5.prototype;b5.prototype.constructor=b5;return b5 end;local b6;do local function b7()local b8;local b9;local function ba(a1,bb,bc)b8=bb;b9=bc end;return function()local bd=aY(b6,ba)return bd,b8,b9 end end;local be=b7()local function bf(f)return b0(f,b6)end;local function bg(self)end;local bh=_G.pcall;b6=b4()b6.name="__TS__Promise"function b6.prototype.____constructor(self,ba)self.state=0;self.fulfilledCallbacks={}self.rejectedCallbacks={}self.finallyCallbacks={}local bi,bj=bh(ba,nil,function(a1,a2)return self:resolve(a2)end,function(a1,bk)return self:reject(bk)end)if not bi then self:reject(bj)end end;function b6.resolve(f)if b0(f,b6)then return f end;local bd=aY(b6,bg)bd.state=1;bd.value=f;return bd end;function b6.reject(bl)local bd=aY(b6,bg)bd.state=2;bd.rejectionReason=bl;return bd end;b6.prototype["then"]=function(self,bm,bn)local bd,b8,b9=be()self:addCallbacks(bm and self:createPromiseResolvingCallback(bm,b8,b9)or b8,bn and self:createPromiseResolvingCallback(bn,b8,b9)or b9)return bd end;function b6.prototype.addCallbacks(self,bo,bp)if self.state==1 then return bo(nil,self.value)end;if self.state==2 then return bp(nil,self.rejectionReason)end;local bq=self.fulfilledCallbacks;bq[#bq+1]=bo;local br=self.rejectedCallbacks;br[#br+1]=bp end;function b6.prototype.catch(self,bn)return self["then"](self,nil,bn)end;function b6.prototype.finally(self,bs)if bs then local bt=self.finallyCallbacks;bt[#bt+1]=bs;if self.state~=0 then bs(nil)end end;return self end;function b6.prototype.resolve(self,f)if bf(f)then return f:addCallbacks(function(a1,a2)return self:resolve(a2)end,function(a1,bk)return self:reject(bk)end)end;if self.state==0 then self.state=1;self.value=f;return self:invokeCallbacks(self.fulfilledCallbacks,f)end end;function b6.prototype.reject(self,bl)if self.state==0 then self.state=2;self.rejectionReason=bl;return self:invokeCallbacks(self.rejectedCallbacks,bl)end end;function b6.prototype.invokeCallbacks(self,bu,f)local bv=#bu;local bw=self.finallyCallbacks;local bx=#bw;if bv~=0 then for o=1,bv-1 do bu[o](bu,f)end;if bx==0 then return bu[bv](bu,f)end;bu[bv](bu,f)end;if bx~=0 then for o=1,bx-1 do bw[o](bw)end;return bw[bx](bw)end end;function b6.prototype.createPromiseResolvingCallback(self,by,b8,b9)return function(a1,f)local bi,bz=bh(by,nil,f)if not bi then return b9(nil,bz)end;return self:handleCallbackValue(bz,b8,b9)end end;function b6.prototype.handleCallbackValue(self,f,b8,b9)if bf(f)then local bA=f;if bA.state==1 then return b8(nil,bA.value)elseif bA.state==2 then return b9(nil,bA.rejectionReason)else return bA:addCallbacks(b8,b9)end else return b8(nil,f)end end end;local bB,bC;do local bD=_G.coroutine or{}local bE=bD.create;local bF=bD.resume;local bG=bD.status;local bH=bD.yield;function bB(bI)return aY(b6,function(a1,b8,b9)local bJ,bK,bL,bM;function bJ(self,f)local bi,bz=bF(bM,f)if bi then return bK(bz)end;return b9(nil,bz)end;function bK(m)if bL then return end;if bG(bM)=="dead"then return b8(nil,m)end;return b6.resolve(m):addCallbacks(bJ,b9)end;bL=false;bM=bE(bI)local bi,bz=bF(bM,function(a1,a2)bL=true;return b6.resolve(a2):addCallbacks(b8,b9)end)if bi then return bK(bz)else return b9(nil,bz)end end)end;function bC(bN)return bH(bN)end end;local function bO(aZ,bP)aZ.____super=bP;local bQ=setmetatable({__index=bP},bP)setmetatable(aZ,bQ)local bR=getmetatable(bP)if bR then if type(bR.__index)=="function"then bQ.__index=bR.__index end;if type(bR.__newindex)=="function"then bQ.__newindex=bR.__newindex end end;setmetatable(aZ.prototype,bP.prototype)if type(bP.prototype.__index)=="function"then aZ.prototype.__index=bP.prototype.__index end;if type(bP.prototype.__newindex)=="function"then aZ.prototype.__newindex=bP.prototype.__newindex end;if type(bP.prototype.__tostring)=="function"then aZ.prototype.__tostring=bP.prototype.__tostring end end;local function bS(bT)local f;local bU;local bV;local bW;local bX;local bY;bY=bT.enumerable;bX=bT.configurable;bW=bT.get;bV=bT.set;bU=bT.writable;f=bT.value;local bZ={enumerable=bY==true,configurable=bX==true}local b_=bW~=nil or bV~=nil;local c0=bU~=nil or f~=nil;if b_ and c0 then error("Invalid property descriptor. Cannot both specify accessors and a value or writable attribute.",0)end;if bW or bV then bZ.get=bW;bZ.set=bV else bZ.value=f;bZ.writable=bU==true end;return bZ end;local function c1(self,c2,c3,c4)local m=c2;do local o=#c3;while o>=0 do local c5=c3[o+1]if c5~=nil then local c6=c5(self,m,c4)if c6==nil then c6=m end;m=c6 end;o=o-1 end end;return m end;local function c7(aZ,...)local c8={...}for o=1,#c8 do local c9=c8[o]for x in pairs(c9)do aZ[x]=c9[x]end end;return aZ end;local function ca(aJ,x)local cb=getmetatable(aJ)if not cb then return end;if not rawget(cb,"_descriptors")then return end;return rawget(cb,"_descriptors")[x]end;local cc;do local getmetatable=_G.getmetatable;local cd=_G.rawget;function cc(self,cb,x)while cb do local ce=cd(cb,x)if ce~=nil then return ce end;local cf=cd(cb,"_descriptors")if cf then local bZ=cf[x]if bZ~=nil then if bZ.get then return bZ.get(self)end;return bZ.value end end;cb=getmetatable(cb)end end end;local cg;do local getmetatable=_G.getmetatable;local cd=_G.rawget;local rawset=_G.rawset;function cg(self,cb,x,f)while cb do local cf=cd(cb,"_descriptors")if cf then local bZ=cf[x]if bZ~=nil then if bZ.set then bZ.set(self,f)else if bZ.writable==false then error(((("Cannot assign to read only property '"..x).."' of object '")..tostring(self)).."'",0)end;bZ.value=f end;return end end;cb=getmetatable(cb)end;rawset(self,x,f)end end;local ch;do local getmetatable=_G.getmetatable;local function ci(self,x)return cc(self,getmetatable(self),x)end;local function cj(self,x,f)return cg(self,getmetatable(self),x,f)end;function ch(aZ,x,ck,cl)if cl==nil then cl=false end;local cm;if cl then cm=aZ else cm=getmetatable(aZ)end;local cb=cm;if not cb then cb={}setmetatable(aZ,cb)end;local f=rawget(aZ,x)if f~=nil then rawset(aZ,x,nil)end;if not rawget(cb,"_descriptors")then cb._descriptors={}end;cb._descriptors[x]=bS(ck)cb.__index=ci;cb.__newindex=cj end end;local function cn(c3,aZ,x,ck)local m=aZ;do local o=#c3;while o>=0 do local c5=c3[o+1]if c5~=nil then local co=m;if x==nil then m=c5(nil,m)elseif ck==true then local f=rawget(aZ,x)local bZ=ca(aZ,x)or{configurable=true,writable=true,value=f}local ck=c5(nil,aZ,x,bZ)or bZ;local cp=ck.configurable==true and ck.writable==true and not ck.get and not ck.set;if cp then rawset(aZ,x,ck.value)else ch(aZ,x,c7({},bZ,ck))end elseif ck==false then m=c5(nil,aZ,x,ck)else m=c5(nil,aZ,x)end;m=m or co end;o=o-1 end end;return m end;local function cq(cr,c5)return function(a1,aZ,x)return c5(nil,aZ,x,cr)end end;local function cs(self,ct,cu)if not cu then cu=1 else cu=cu+1 end;local T=string.find(self,ct,cu,true)return T~=nil end;local cv,cw,cx,cy,cz,cA;do local function cB(self,cC)if debug==nil then return nil end;local cD=1;while true do local cE=debug.getinfo(cD,"f")cD=cD+1;if not cE then cD=1;break elseif cE.func==cC then break end end;if cs(_VERSION,"Lua 5.0")then return debug.traceback(("[Level "..tostring(cD)).."]")elseif _VERSION=="Lua 5.1"then return string.sub(debug.traceback("",cD),2)else return debug.traceback(nil,cD)end end;local function cF(self,cG)return function(self)local u=cG(self)local cH=debug.getinfo(3,"f")local cI=cs(_VERSION,"Lua 5.0")if cI or cH and cH.func~=error then return u else return(u.."\n")..tostring(self.stack)end end end;local function cJ(self,cK,cL)cK.name=cL;return setmetatable(cK,{__call=function(a1,cM,cN)return aY(cK,cN)end})end;local cO=cJ;local cP=b4()cP.name=""function cP.prototype.____constructor(self,cN)if cN==nil then cN=""end;self.message=cN;self.name="Error"self.stack=cB(nil,aY)local cb=getmetatable(self)if cb and not cb.__errorToStringPatched then cb.__errorToStringPatched=true;cb.__tostring=cF(nil,cb.__tostring)end end;function cP.prototype.__tostring(self)return self.message~=""and(self.name..": ")..self.message or self.name end;cv=cO(nil,cP,"Error")local function cQ(self,cL)local cR=cJ;local cS=b4()cS.name=cS.name;bO(cS,cv)function cS.prototype.____constructor(self,...)cS.____super.prototype.____constructor(self,...)self.name=cL end;return cR(nil,cS,cL)end;cw=cQ(nil,"RangeError")cx=cQ(nil,"ReferenceError")cy=cQ(nil,"SyntaxError")cz=cQ(nil,"TypeError")cA=cQ(nil,"URIError")end;local function cT(aJ)local cb=getmetatable(aJ)if not cb then return{}end;return rawget(cb,"_descriptors")or{}end;local function cU(aZ,x)local cf=cT(aZ)local bZ=cf[x]if bZ then if not bZ.configurable then error(aY(cz,((("Cannot delete property "..tostring(x)).." of ")..tostring(aZ)).."."),0)end;cf[x]=nil;return true end;aZ[x]=nil;return true end;local function cV(self,T)if T>=0 and T<#self then return string.sub(self,T+1,T+1)end end;local function cW(U)if type(U)=="string"then for T=0,#U-1 do coroutine.yield(cV(U,T))end elseif U.____coroutine~=nil then local P=U.____coroutine;while true do local Q,f=coroutine.resume(P)if not Q then error(f,0)end;if coroutine.status(P)=="dead"then return f else coroutine.yield(f)end end elseif U[s.iterator]then local V=U[s.iterator](U)while true do local m=V:next()if m.done then return m.value else coroutine.yield(m.value)end end else for a1,f in ipairs(U)do coroutine.yield(f)end end end;local function cX(cY,...)local cZ={...}return function(a1,...)local aB={...}ao(aB,aS(cZ))return cY(aS(aB))end end;local c_;do local function d0(self)return self end;local function d1(self,...)local P=self.____coroutine;if coroutine.status(P)=="dead"then return{done=true}end;local Q,f=coroutine.resume(P,...)if not Q then error(f,0)end;return{value=f,done=coroutine.status(P)=="dead"}end;function c_(cY)return function(...)local aB={...}local d2=ai(...)return{____coroutine=coroutine.create(function()return cY(aS(aB,1,d2))end),[s.iterator]=d0,next=d1}end end end;local function d3(f)local d4=type(f)return d4=="table"or d4=="function"end;local function d5(self,d6,d7)local d8={}local x,f=self(d6,d7)while x do d8[#d8+1]={x,f}x,f=self(d6,x)end;return aS(d8)end;local d9;do d9=b4()d9.name="Map"function d9.prototype.____constructor(self,da)self[s.toStringTag]="Map"self.items={}self.size=0;self.nextKey={}self.previousKey={}if da==nil then return end;local U=da;if U[s.iterator]then local V=U[s.iterator](U)while true do local m=V:next()if m.done then break end;local f=m.value;self:set(f[1],f[2])end else local w=da;for a1,db in ipairs(w)do self:set(db[1],db[2])end end end;function d9.prototype.clear(self)self.items={}self.nextKey={}self.previousKey={}self.firstKey=nil;self.lastKey=nil;self.size=0 end;function d9.prototype.delete(self,x)local dc=self:has(x)if dc then self.size=self.size-1;local next=self.nextKey[x]local dd=self.previousKey[x]if next~=nil and dd~=nil then self.nextKey[dd]=next;self.previousKey[next]=dd elseif next~=nil then self.firstKey=next;self.previousKey[next]=nil elseif dd~=nil then self.lastKey=dd;self.nextKey[dd]=nil else self.firstKey=nil;self.lastKey=nil end;self.nextKey[x]=nil;self.previousKey[x]=nil end;self.items[x]=nil;return dc end;function d9.prototype.forEach(self,aP)for a1,x in N(self:keys())do aP(nil,self.items[x],x,self)end end;function d9.prototype.get(self,x)return self.items[x]end;function d9.prototype.has(self,x)return self.nextKey[x]~=nil or self.lastKey==x end;function d9.prototype.set(self,x,f)local de=not self:has(x)if de then self.size=self.size+1 end;self.items[x]=f;if self.firstKey==nil then self.firstKey=x;self.lastKey=x elseif de then self.nextKey[self.lastKey]=x;self.previousKey[x]=self.lastKey;self.lastKey=x end;return self end;d9.prototype[s.iterator]=function(self)return self:entries()end;function d9.prototype.entries(self)local l=self.items;local df=self.nextKey;local x=self.firstKey;return{[s.iterator]=function(self)return self end,next=function(self)local m={done=not x,value={x,l[x]}}x=df[x]return m end}end;function d9.prototype.keys(self)local df=self.nextKey;local x=self.firstKey;return{[s.iterator]=function(self)return self end,next=function(self)local m={done=not x,value=x}x=df[x]return m end}end;function d9.prototype.values(self)local l=self.items;local df=self.nextKey;local x=self.firstKey;return{[s.iterator]=function(self)return self end,next=function(self)local m={done=not x,value=l[x]}x=df[x]return m end}end;d9[s.species]=d9 end;local function dg(l,dh)local m=aY(d9)local o=0;for a1,p in N(l)do local x=dh(nil,p,o)if m:has(x)then local di=m:get(x)di[#di+1]=p else m:set(x,{p})end;o=o+1 end;return m end;local dj=string.match;local dk=math.atan2 or math.atan;local dl=math.modf;local function dm(f)return f~=f end;local function dn(aN)if dm(aN)or aN==0 then return aN end;if aN<0 then return-1 end;return 1 end;local function dp(f)return type(f)=="number"and f==f and f~=math.huge and f~=-math.huge end;local function dq(aN)if not dp(aN)or aN==0 then return aN end;return aN>0 and math.floor(aN)or math.ceil(aN)end;local function dr(f)local d4=type(f)if d4=="number"then return f elseif d4=="string"then local ds=tonumber(f)if ds then return ds end;if f=="Infinity"then return math.huge end;if f=="-Infinity"then return-math.huge end;local dt=string.gsub(f,"%s","")if dt==""then return 0 end;return 0/0 elseif d4=="boolean"then return f and 1 or 0 else return 0/0 end end;local function du(f)return dp(f)and math.floor(f)==f end;local function dv(self,C,D)if D~=D then D=0 end;if D~=nil and C>D then C,D=D,C end;if C>=0 then C=C+1 else C=1 end;if D~=nil and D<0 then D=0 end;return string.sub(self,C,D)end;local dw;do local dx="0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTvVwWxXyYzZ"function dw(dy,bP)if bP==nil then bP=10;local dz=dj(dy,"^%s*-?0[xX]")if dz~=nil then bP=16;dy=dj(dz,"-")and"-"..dv(dy,#dz)or dv(dy,#dz)end end;if bP<2 or bP>36 then return 0/0 end;local dA=bP<=10 and dv(dx,0,bP)or dv(dx,0,10+2*(bP-10))local dB=("^%s*(-?["..dA).."]*)"local dC=tonumber(dj(dy,dB),bP)if dC==nil then return 0/0 end;if dC>=0 then return math.floor(dC)else return math.ceil(dC)end end end;local function dD(dy)local dE=dj(dy,"^%s*(-?Infinity)")if dE~=nil then return cV(dE,0)=="-"and-math.huge or math.huge end;local dC=tonumber(dj(dy,"^%s*(-?%d+%.?%d*)"))return dC or 0/0 end;local dF;do local dG="0123456789abcdefghijklmnopqrstuvwxyz"function dF(self,dH)if dH==nil or dH==10 or self==math.huge or self==-math.huge or self~=self then return tostring(self)end;dH=math.floor(dH)if dH<2 or dH>36 then error("toString() radix argument must be between 2 and 36",0)end;local dI,dJ=dl(math.abs(self))local m=""if dH==8 then m=string.format("%o",dI)elseif dH==16 then m=string.format("%x",dI)else repeat do m=cV(dG,dI%dH)..m;dI=math.floor(dI/dH)end until not(dI~=0)end;if dJ~=0 then m=m.."."local dK=1e-16;repeat do dJ=dJ*dH;dK=dK*dH;local dL=math.floor(dJ)m=m..cV(dG,dL)dJ=dJ-dL end until not(dJ>=dK)end;if self<0 then m="-"..m end;return m end end;local function dM(self,dN)if math.abs(self)>=1e+21 or self~=self then return tostring(self)end;local by=math.floor(dN or 0)if by<0 or by>99 then error("toFixed() digits argument must be between 0 and 99",0)end;return string.format(("%."..tostring(by)).."f",self)end;local function dO(aZ,x,ck)local dP=type(x)=="number"and x+1 or x;local f=rawget(aZ,dP)local b_=ck.get~=nil or ck.set~=nil;local bZ;if b_ then if f~=nil then error("Cannot redefine property: "..tostring(x),0)end;bZ=ck else local dQ=f~=nil;local dR=ck.set;local dS=ck.get;local dT=ck.configurable;if dT==nil then dT=dQ end;local dU=ck.enumerable;if dU==nil then dU=dQ end;local dV=ck.writable;if dV==nil then dV=dQ end;local dW;if ck.value~=nil then dW=ck.value else dW=f end;bZ={set=dR,get=dS,configurable=dT,enumerable=dU,writable=dV,value=dW}end;ch(aZ,dP,bZ)return aZ end;local function dX(b1)local m={}local n=0;for x in pairs(b1)do n=n+1;m[n]={x,b1[x]}end;return m end;local function dY(da)local b1={}local U=da;if U[s.iterator]then local V=U[s.iterator](U)while true do local m=V:next()if m.done then break end;local f=m.value;b1[f[1]]=f[2]end else for a1,dZ in ipairs(da)do b1[dZ[1]]=dZ[2]end end;return b1 end;local function d_(l,dh)local m={}local o=0;for a1,p in N(l)do local x=dh(nil,p,o)if m[x]~=nil then local e0=m[x]e0[#e0+1]=p else m[x]={p}end;o=o+1 end;return m end;local function e1(b1)local m={}local n=0;for x in pairs(b1)do n=n+1;m[n]=x end;return m end;local function e2(aZ,e3)local m={}for e4 in pairs(aZ)do if not e3[e4]then m[e4]=aZ[e4]end end;return m end;local function e5(b1)local m={}local n=0;for x in pairs(b1)do n=n+1;m[n]=b1[x]end;return m end;local function e6(U)local d8={}local e7={}local e8=0;local o=0;for a1,p in N(U)do if b0(p,b6)then if p.state==1 then d8[o+1]=p.value elseif p.state==2 then return b6.reject(p.rejectionReason)else e8=e8+1;e7[o]=p end else d8[o+1]=p end;o=o+1 end;if e8==0 then return b6.resolve(d8)end;return aY(b6,function(a1,b8,b9)for T,bd in pairs(e7)do bd["then"](bd,function(a1,e9)d8[T+1]=e9;e8=e8-1;if e8==0 then b8(nil,d8)end end,function(a1,bl)b9(nil,bl)end)end end)end;local function ea(U)local d8={}local e7={}local e8=0;local o=0;for a1,p in N(U)do if b0(p,b6)then if p.state==1 then d8[o+1]={status="fulfilled",value=p.value}elseif p.state==2 then d8[o+1]={status="rejected",reason=p.rejectionReason}else e8=e8+1;e7[o]=p end else d8[o+1]={status="fulfilled",value=p}end;o=o+1 end;if e8==0 then return b6.resolve(d8)end;return aY(b6,function(a1,b8)for T,bd in pairs(e7)do bd["then"](bd,function(a1,e9)d8[T+1]={status="fulfilled",value=e9}e8=e8-1;if e8==0 then b8(nil,d8)end end,function(a1,bl)d8[T+1]={status="rejected",reason=bl}e8=e8-1;if e8==0 then b8(nil,d8)end end)end end)end;local function eb(U)local ec={}local ed={}for a1,p in N(U)do if b0(p,b6)then if p.state==1 then return b6.resolve(p.value)elseif p.state==2 then ec[#ec+1]=p.rejectionReason else ed[#ed+1]=p end else return b6.resolve(p)end end;if#ed==0 then return b6.reject("No promises to resolve with .any()")end;local ee=0;return aY(b6,function(a1,b8,b9)for a1,bd in ipairs(ed)do bd["then"](bd,function(a1,e9)b8(nil,e9)end,function(a1,bl)ec[#ec+1]=bl;ee=ee+1;if ee==#ed then b9(nil,{name="AggregateError",message="All Promises rejected",errors=ec})end end)end end)end;local function ef(U)local ed={}for a1,p in N(U)do if b0(p,b6)then if p.state==1 then return b6.resolve(p.value)elseif p.state==2 then return b6.reject(p.rejectionReason)else ed[#ed+1]=p end else return b6.resolve(p)end end;return aY(b6,function(a1,b8,b9)for a1,bd in ipairs(ed)do bd["then"](bd,function(a1,f)return b8(nil,f)end,function(a1,bl)return b9(nil,bl)end)end end)end;local eg;do eg=b4()eg.name="Set"function eg.prototype.____constructor(self,eh)self[s.toStringTag]="Set"self.size=0;self.nextKey={}self.previousKey={}if eh==nil then return end;local U=eh;if U[s.iterator]then local V=U[s.iterator](U)while true do local m=V:next()if m.done then break end;self:add(m.value)end else local w=eh;for a1,f in ipairs(w)do self:add(f)end end end;function eg.prototype.add(self,f)local de=not self:has(f)if de then self.size=self.size+1 end;if self.firstKey==nil then self.firstKey=f;self.lastKey=f elseif de then self.nextKey[self.lastKey]=f;self.previousKey[f]=self.lastKey;self.lastKey=f end;return self end;function eg.prototype.clear(self)self.nextKey={}self.previousKey={}self.firstKey=nil;self.lastKey=nil;self.size=0 end;function eg.prototype.delete(self,f)local dc=self:has(f)if dc then self.size=self.size-1;local next=self.nextKey[f]local dd=self.previousKey[f]if next~=nil and dd~=nil then self.nextKey[dd]=next;self.previousKey[next]=dd elseif next~=nil then self.firstKey=next;self.previousKey[next]=nil elseif dd~=nil then self.lastKey=dd;self.nextKey[dd]=nil else self.firstKey=nil;self.lastKey=nil end;self.nextKey[f]=nil;self.previousKey[f]=nil end;return dc end;function eg.prototype.forEach(self,aP)for a1,x in N(self:keys())do aP(nil,x,x,self)end end;function eg.prototype.has(self,f)return self.nextKey[f]~=nil or self.lastKey==f end;eg.prototype[s.iterator]=function(self)return self:values()end;function eg.prototype.entries(self)local df=self.nextKey;local x=self.firstKey;return{[s.iterator]=function(self)return self end,next=function(self)local m={done=not x,value={x,x}}x=df[x]return m end}end;function eg.prototype.keys(self)local df=self.nextKey;local x=self.firstKey;return{[s.iterator]=function(self)return self end,next=function(self)local m={done=not x,value=x}x=df[x]return m end}end;function eg.prototype.values(self)local df=self.nextKey;local x=self.firstKey;return{[s.iterator]=function(self)return self end,next=function(self)local m={done=not x,value=x}x=df[x]return m end}end;function eg.prototype.union(self,ei)local m=aY(eg,self)for a1,p in N(ei)do m:add(p)end;return m end;function eg.prototype.intersection(self,ei)local m=aY(eg)for a1,p in N(self)do if ei:has(p)then m:add(p)end end;return m end;function eg.prototype.difference(self,ei)local m=aY(eg,self)for a1,p in N(ei)do m:delete(p)end;return m end;function eg.prototype.symmetricDifference(self,ei)local m=aY(eg,self)for a1,p in N(ei)do if self:has(p)then m:delete(p)else m:add(p)end end;return m end;function eg.prototype.isSubsetOf(self,ei)for a1,p in N(self)do if not ei:has(p)then return false end end;return true end;function eg.prototype.isSupersetOf(self,ei)for a1,p in N(ei)do if not self:has(p)then return false end end;return true end;function eg.prototype.isDisjointFrom(self,ei)for a1,p in N(self)do if ei:has(p)then return false end end;return true end;eg[s.species]=eg end;local function ej(...)local ek={...}ek.sparseLength=ai(...)return ek end;local function el(ek,...)local aB={...}local em=ai(...)local en=ek.sparseLength;for o=1,em do ek[en+o]=aB[o]end;ek.sparseLength=en+em end;local function eo(ek)local ep=unpack or table.unpack;return ep(ek,1,ek.sparseLength)end;local eq;do eq=b4()eq.name="WeakMap"function eq.prototype.____constructor(self,da)self[s.toStringTag]="WeakMap"self.items={}setmetatable(self.items,{__mode="k"})if da==nil then return end;local U=da;if U[s.iterator]then local V=U[s.iterator](U)while true do local m=V:next()if m.done then break end;local f=m.value;self.items[f[1]]=f[2]end else for a1,db in ipairs(da)do self.items[db[1]]=db[2]end end end;function eq.prototype.delete(self,x)local dc=self:has(x)self.items[x]=nil;return dc end;function eq.prototype.get(self,x)return self.items[x]end;function eq.prototype.has(self,x)return self.items[x]~=nil end;function eq.prototype.set(self,x,f)self.items[x]=f;return self end;eq[s.species]=eq end;local er;do er=b4()er.name="WeakSet"function er.prototype.____constructor(self,eh)self[s.toStringTag]="WeakSet"self.items={}setmetatable(self.items,{__mode="k"})if eh==nil then return end;local U=eh;if U[s.iterator]then local V=U[s.iterator](U)while true do local m=V:next()if m.done then break end;self.items[m.value]=true end else for a1,f in ipairs(eh)do self.items[f]=true end end end;function er.prototype.add(self,f)self.items[f]=true;return self end;function er.prototype.delete(self,f)local dc=self:has(f)self.items[f]=nil;return dc end;function er.prototype.has(self,f)return self.items[f]==true end;er[s.species]=er end;local function es(et,eu)_G.__TS__sourcemap=_G.__TS__sourcemap or{}_G.__TS__sourcemap[et]=eu;if _G.__TS__originalTraceback==nil then local ev=debug.traceback;_G.__TS__originalTraceback=ev;debug.traceback=function(ew,cN,cD)local ex;if ew==nil and cN==nil and cD==nil then ex=ev()elseif cs(_VERSION,"Lua 5.0")then ex=ev((("[Level "..tostring(cD)).."] ")..tostring(cN))else ex=ev(ew,cN,cD)end;if type(ex)~="string"then return ex end;local function ey(a1,d,ez,eA)local eB=_G.__TS__sourcemap[d]if eB~=nil and eB[eA]~=nil then local e9=eB[eA]if type(e9)=="number"then return(ez..":")..tostring(e9)end;return(e9.file..":")..tostring(e9.line)end;return(d..":")..eA end;local m=string.gsub(ex,"(%S+)%.lua:(%d+)",function(d,eA)return ey(nil,d..".lua",d..".ts",eA)end)local function eC(a1,d,eA)local eB=_G.__TS__sourcemap[d]if eB~=nil and eB[eA]~=nil then local eD=dj(d,"%[string \"([^\"]+)\"%]")local eE=string.gsub(eD,".lua$",".ts")local e9=eB[eA]if type(e9)=="number"then return(eE..":")..tostring(e9)end;return(e9.file..":")..tostring(e9.line)end;return(d..":")..eA end;m=string.gsub(m,"(%[string \"[^\"]+\"%]):(%d+)",function(d,eA)return eC(nil,d,eA)end)return m end end end;local function eF(U)local Z={}if type(U)=="string"then for o=0,#U-1 do Z[o+1]=cV(U,o)end else local n=0;for a1,p in N(U)do n=n+1;Z[n]=p end end;return aS(Z)end;local function eG(self,eH)if eH~=eH then eH=0 end;if eH<0 then return""end;return string.sub(self,eH+1,eH+1)end;local function eI(self,T)if T~=T then T=0 end;if T<0 then return 0/0 end;return string.byte(self,T+1)or 0/0 end;local function eJ(self,ct,eK)if eK==nil or eK>#self then eK=#self end;return string.sub(self,eK-#ct+1,eK)==ct end;local function eL(self,eM,eN)if eN==nil then eN=" "end;if eM~=eM then eM=0 end;if eM==-math.huge or eM==math.huge then error("Invalid string length",0)end;if#self>=eM or#eN==0 then return self end;eM=eM-#self;if eM>#eN then eN=eN..string.rep(eN,math.floor(eM/#eN))end;return self..string.sub(eN,1,math.floor(eM))end;local function eO(self,eM,eN)if eN==nil then eN=" "end;if eM~=eM then eM=0 end;if eM==-math.huge or eM==math.huge then error("Invalid string length",0)end;if#self>=eM or#eN==0 then return self end;eM=eM-#self;if eM>#eN then eN=eN..string.rep(eN,math.floor(eM/#eN))end;return string.sub(eN,1,math.floor(eM))..self end;local eP;do local eQ=string.sub;function eP(c9,eR,eS)local eT,eU=string.find(c9,eR,nil,true)if not eT then return c9 end;local eV=eQ(c9,1,eT-1)local eW=type(eS)=="string"and eS or eS(nil,eR,eT-1,c9)local eX=eQ(c9,eU+1)return(eV..eW)..eX end end;local eY;do local eQ=string.sub;local eZ=string.find;function eY(c9,ad,e_)if e_==nil then e_=4294967295 end;if e_==0 then return{}end;local m={}local f0=1;if ad==nil or ad==""then for o=1,#c9 do m[f0]=eQ(c9,o,o)f0=f0+1 end else local f1=1;while f0<=e_ do local eT,eU=eZ(c9,ad,f1,true)if not eT then break end;m[f0]=eQ(c9,f1,eT-1)f0=f0+1;f1=eU+1 end;if f0<=e_ then m[f0]=eQ(c9,f1)end end;return m end end;local f2;do local eQ=string.sub;local eZ=string.find;function f2(c9,eR,eS)if type(eS)=="string"then local f3=table.concat(eY(c9,eR),eS)if#eR==0 then return(eS..f3)..eS end;return f3 end;local ae={}local f4=1;if#eR==0 then ae[1]=eS(nil,"",0,c9)f4=2;for o=1,#c9 do ae[f4]=eQ(c9,o,o)ae[f4+1]=eS(nil,"",o,c9)f4=f4+2 end else local f1=1;while true do local eT,eU=eZ(c9,eR,f1,true)if not eT then break end;ae[f4]=eQ(c9,f1,eT-1)ae[f4+1]=eS(nil,eR,eT-1,c9)f4=f4+2;f1=eU+1 end;ae[f4]=eQ(c9,f1)end;return table.concat(ae)end end;local function f5(self,C,D)if C==nil or C~=C then C=0 end;if D~=D then D=0 end;if C>=0 then C=C+1 end;if D~=nil and D<0 then D=D-1 end;return string.sub(self,C,D)end;local function f6(self,ct,cu)if cu==nil or cu<0 then cu=0 end;return string.sub(self,cu+1,#ct+cu)==ct end;local function f7(self,aG,aR)if aG~=aG then aG=0 end;if aR~=nil then if aR~=aR or aR<=0 then return""end;aR=aR+aG end;if aG>=0 then aG=aG+1 end;return string.sub(self,aG,aR)end;local function f8(self)local m=string.gsub(self,"^[%s ﻿]*(.-)[%s ﻿]*$","%1")return m end;local function f9(self)local m=string.gsub(self,"[%s ﻿]*$","")return m end;local function fa(self)local m=string.gsub(self,"^[%s ﻿]*","")return m end;local fb,fc;do local fd={}function fb(x)if not fd[x]then fd[x]=r(x)end;return fd[x]end;function fc(fe)for x in pairs(fd)do if fd[x]==fe then return x end end;return nil end end;local function ff(f)local fg=type(f)if fg=="table"then return"object"elseif fg=="nil"then return"undefined"else return fg end end;local function fh(self,fi,...)local aB={...}local fj;local fk,m=xpcall(function()return fi(aS(aB))end,function(bk)fj=bk;return fj end)local fl={aS(aB)}do local o=#fl-1;while o>=0 do local fm=fl[o+1]fm[s.dispose](fm)o=o-1 end end;if not fk then error(fj,0)end;return m end;local function fn(self,fi,...)local aB={...}return bB(function(fo)local fj;local fk,m=xpcall(function()return fi(nil,aS(aB))end,function(bk)fj=bk;return fj end)local fl={aS(aB)}do local o=#fl-1;while o>=0 do if fl[o+1][s.dispose]~=nil then local fm=fl[o+1]fm[s.dispose](fm)end;if fl[o+1][s.asyncDispose]~=nil then local fp=fl[o+1]bC(fp[s.asyncDispose](fp))end;o=o-1 end end;if not fk then error(fj,0)end;return fo(nil,m)end)end;return{__TS__ArrayAt=g,__TS__ArrayConcat=k,__TS__ArrayEntries=v,__TS__ArrayEvery=y,__TS__ArrayFill=B,__TS__ArrayFilter=G,__TS__ArrayForEach=H,__TS__ArrayFind=J,__TS__ArrayFindIndex=M,__TS__ArrayFrom=W,__TS__ArrayIncludes=a7,__TS__ArrayIndexOf=ab,__TS__ArrayIsArray=j,__TS__ArrayJoin=ac,__TS__ArrayMap=af,__TS__ArrayPush=ag,__TS__ArrayPushArray=ah,__TS__ArrayReduce=aj,__TS__ArrayReduceRight=al,__TS__ArrayReverse=am,__TS__ArrayUnshift=ao,__TS__ArraySort=aq,__TS__ArraySlice=au,__TS__ArraySome=az,__TS__ArraySplice=aA,__TS__ArrayToObject=aI,__TS__ArrayFlat=aK,__TS__ArrayFlatMap=aO,__TS__ArraySetLength=aQ,__TS__ArrayToReversed=aT,__TS__ArrayToSorted=aV,__TS__ArrayToSpliced=aW,__TS__ArrayWith=aX,__TS__AsyncAwaiter=bB,__TS__Await=bC,__TS__Class=b4,__TS__ClassExtends=bO,__TS__CloneDescriptor=bS,__TS__CountVarargs=ai,__TS__Decorate=c1,__TS__DecorateLegacy=cn,__TS__DecorateParam=cq,__TS__Delete=cU,__TS__DelegatedYield=cW,__TS__DescriptorGet=cc,__TS__DescriptorSet=cg,Error=cv,RangeError=cw,ReferenceError=cx,SyntaxError=cy,TypeError=cz,URIError=cA,__TS__FunctionBind=cX,__TS__Generator=c_,__TS__InstanceOf=b0,__TS__InstanceOfObject=d3,__TS__Iterator=N,__TS__LuaIteratorSpread=d5,Map=d9,__TS__MapGroupBy=dg,__TS__Match=dj,__TS__MathAtan2=dk,__TS__MathModf=dl,__TS__MathSign=dn,__TS__MathTrunc=dq,__TS__New=aY,__TS__Number=dr,__TS__NumberIsFinite=dp,__TS__NumberIsInteger=du,__TS__NumberIsNaN=dm,__TS__ParseInt=dw,__TS__ParseFloat=dD,__TS__NumberToString=dF,__TS__NumberToFixed=dM,__TS__ObjectAssign=c7,__TS__ObjectDefineProperty=dO,__TS__ObjectEntries=dX,__TS__ObjectFromEntries=dY,__TS__ObjectGetOwnPropertyDescriptor=ca,__TS__ObjectGetOwnPropertyDescriptors=cT,__TS__ObjectGroupBy=d_,__TS__ObjectKeys=e1,__TS__ObjectRest=e2,__TS__ObjectValues=e5,__TS__ParseFloat=dD,__TS__ParseInt=dw,__TS__Promise=b6,__TS__PromiseAll=e6,__TS__PromiseAllSettled=ea,__TS__PromiseAny=eb,__TS__PromiseRace=ef,Set=eg,__TS__SetDescriptor=ch,__TS__SparseArrayNew=ej,__TS__SparseArrayPush=el,__TS__SparseArraySpread=eo,WeakMap=eq,WeakSet=er,__TS__SourceMapTraceBack=es,__TS__Spread=eF,__TS__StringAccess=cV,__TS__StringCharAt=eG,__TS__StringCharCodeAt=eI,__TS__StringEndsWith=eJ,__TS__StringIncludes=cs,__TS__StringPadEnd=eL,__TS__StringPadStart=eO,__TS__StringReplace=eP,__TS__StringReplaceAll=f2,__TS__StringSlice=f5,__TS__StringSplit=eY,__TS__StringStartsWith=f6,__TS__StringSubstr=f7,__TS__StringSubstring=dv,__TS__StringTrim=f8,__TS__StringTrimEnd=f9,__TS__StringTrimStart=fa,__TS__Symbol=r,Symbol=s,__TS__SymbolRegistryFor=fb,__TS__SymbolRegistryKeyFor=fc,__TS__TypeOf=ff,__TS__Unpack=aS,__TS__Using=fh,__TS__UsingAsync=fn}end,["src.types.index"]=function(...)local fq={}return fq end,["src.config.index"]=function(...)local fr=require("lualib_bundle")local b4=fr.__TS__Class;local c7=fr.__TS__ObjectAssign;local aY=fr.__TS__New;local fq={}local fs={debug=true,console=true,runtime={debuggerPort=4279,sleep=false,catchCrash=true},map={name="WC3 TypeScript Map",version="1.0.0",description="A Warcraft III map built with TypeScript"}}fq.ConfigManager=b4()local ft=fq.ConfigManager;ft.name="ConfigManager"function ft.prototype.____constructor(self)self.config=c7({},fs)end;function ft.getInstance(self)if not fq.ConfigManager.instance then fq.ConfigManager.instance=aY(fq.ConfigManager)end;return fq.ConfigManager.instance end;function ft.prototype.getConfig(self)return c7({},self.config)end;function ft.prototype.isDebugMode(self)return self.config.debug end;function ft.prototype.isConsoleEnabled(self)return self.config.console end;function ft.prototype.getRuntimeConfig(self)return c7({},self.config.runtime)end;function ft.prototype.getMapConfig(self)return c7({},self.config.map)end;function ft.prototype.updateConfig(self,fu)self.config=c7({},self.config,fu)end;function ft.prototype.resetToDefault(self)self.config=c7({},fs)end;return fq end,["src.lib.ydlua"]=function(...)local fq={}fq.ydcommon=require("jass.common")fq.ydai=require("jass.ai")fq.ydglobals=require("jass.globals")fq.ydjapi=require("jass.japi")fq.ydhook=require("jass.hook")fq.ydruntime=require("jass.runtime")fq.ydslk=require("jass.slk")fq.ydconsole=require("jass.console")fq.yddebug=require("jass.debug")fq.ydlog=require("jass.log")fq.ydmessage=require("jass.message")fq.ydbignum=require("jass.bignum")return fq end,["src.core.runtime"]=function(...)local fr=require("lualib_bundle")local b4=fr.__TS__Class;local aY=fr.__TS__New;local e1=fr.__TS__ObjectKeys;local H=fr.__TS__ArrayForEach;local fq={}local fv=require("src.config.index")local ft=fv.ConfigManager;local fw=require("src.lib.ydlua")local fx=fw.ydcommon;local fy=fw.ydconsole;local fz=fw.ydjapi;local fA=fw.ydruntime;fq.RuntimeManager=b4()local fB=fq.RuntimeManager;fB.name="RuntimeManager"function fB.prototype.____constructor(self)self.initialized=false;self.configManager=ft:getInstance()end;function fB.getInstance(self)if not fq.RuntimeManager.instance then fq.RuntimeManager.instance=aY(fq.RuntimeManager)end;return fq.RuntimeManager.instance end;function fB.prototype.initialize(self)if self.initialized then print("Runtime already initialized")return end;print(">>> Initializing runtime environment...")self:initializeConsole()self:initializeRuntime()self:registerGlobals()self.initialized=true;print(">>> Runtime environment initialized")end;function fB.prototype.initializeConsole(self)local fC=self.configManager:isConsoleEnabled()fy.enable=fC;if fC then _G.print=fy.write;print(">>> Console enabled")end end;function fB.prototype.initializeRuntime(self)local fD=self.configManager:getConfig()local fE=fD.runtime;fA.console=fD.console;fA.sleep=fE.sleep;fA.debugger=fE.debuggerPort;fA.catch_crash=fE.catchCrash;fA.error_hanlde=function(self,fF)print("========lua-err========")print(tostring(fF))print("=========================")end;print(((">>> Runtime configured: debugger="..tostring(fE.debuggerPort))..", crash_catch=")..tostring(fE.catchCrash))end;function fB.prototype.registerGlobals(self)H(e1(fx),function(a1,x)_G[x]=fx[x]end)H(e1(fz),function(a1,x)_G[x]=fz[x]end)print(">>> Global APIs registered")end;function fB.prototype.isInitialized(self)return self.initialized end;function fB.prototype.reset(self)self.initialized=false;print(">>> Runtime reset")end;return fq end,["src.services.index"]=function(...)local fr=require("lualib_bundle")local b4=fr.__TS__Class;local d9=fr.Map;local aY=fr.__TS__New;local N=fr.__TS__Iterator;local W=fr.__TS__ArrayFrom;local fq={}fq.ServiceManager=b4()local fG=fq.ServiceManager;fG.name="ServiceManager"function fG.prototype.____constructor(self)self.services=aY(d9)self.initialized=false end;function fG.getInstance(self)if not fq.ServiceManager.instance then fq.ServiceManager.instance=aY(fq.ServiceManager)end;return fq.ServiceManager.instance end;function fG.prototype.registerService(self,fH)if self.services:has(fH.name)then print(("Service "..fH.name).." is already registered")return end;self.services:set(fH.name,fH)print((">>> Service "..fH.name).." registered")if self.initialized then fH:initialize()end end;function fG.prototype.getService(self,fI)return self.services:get(fI)end;function fG.prototype.unregisterService(self,fI)local fH=self.services:get(fI)if fH then fH:destroy()self.services:delete(fI)print((">>> Service "..fI).." unregistered")end end;function fG.prototype.initializeServices(self)if self.initialized then print("Services already initialized")return end;print(">>> Initializing all services...")for a1,fJ in N(self.services:entries())do local cL=fJ[1]local fH=fJ[2]do local function fK(bj)print(((">>> Error initializing service "..cL)..": ")..tostring(bj))end;local fL,fM=pcall(function()fH:initialize()print((">>> Service "..cL).." initialized successfully")end)if not fL then fK(fM)end end end;self.initialized=true;print(">>> All services initialized")end;function fG.prototype.destroyServices(self)print(">>> Destroying all services...")for a1,fJ in N(self.services:entries())do local cL=fJ[1]local fH=fJ[2]do local function fK(bj)print(((">>> Error destroying service "..cL)..": ")..tostring(bj))end;local fL,fM=pcall(function()fH:destroy()print((">>> Service "..cL).." destroyed")end)if not fL then fK(fM)end end end;self.services:clear()self.initialized=false;print(">>> All services destroyed")end;function fG.prototype.getRegisteredServices(self)return W(self.services:keys())end;function fG.prototype.hasService(self,fI)return self.services:has(fI)end;function fG.prototype.getServiceCount(self)return self.services.size end;function fG.prototype.isInitialized(self)return self.initialized end;return fq end,["src.core.Application"]=function(...)local fr=require("lualib_bundle")local b4=fr.__TS__Class;local aY=fr.__TS__New;local bB=fr.__TS__AsyncAwaiter;local bC=fr.__TS__Await;local fq={}local fv=require("src.config.index")local ft=fv.ConfigManager;local fN=require("src.core.runtime")local fB=fN.RuntimeManager;local fO=require("src.services.index")local fG=fO.ServiceManager;fq.Application=b4()local fP=fq.Application;fP.name="Application"function fP.prototype.____constructor(self)self.initialized=false;self.configManager=ft:getInstance()self.runtimeManager=fB:getInstance()self.serviceManager=fG:getInstance()end;function fP.getInstance(self)if not fq.Application.instance then fq.Application.instance=aY(fq.Application)end;return fq.Application.instance end;function fP.prototype.initialize(self)return bB(function(fo)if self.initialized then print("Application already initialized")return fo(nil)end;print(">>> Starting application initialization...")local fL=bB(function()self.runtimeManager:initialize()self.serviceManager:initializeServices()self.initialized=true;print(">>> Application initialized successfully")self:printApplicationInfo()end)bC(fL.catch(fL,function(a1,bj)print(">>> Application initialization failed: "..tostring(bj))error(bj,0)end))end)end;function fP.prototype.registerService(self,fH)self.serviceManager:registerService(fH)end;function fP.prototype.getService(self,fI)return self.serviceManager:getService(fI)end;function fP.prototype.getConfigManager(self)return self.configManager end;function fP.prototype.getRuntimeManager(self)return self.runtimeManager end;function fP.prototype.getServiceManager(self)return self.serviceManager end;function fP.prototype.destroy(self)if not self.initialized then return end;print(">>> Shutting down application...")do local function fK(bj)print(">>> Error during application shutdown: "..tostring(bj))end;local fL,fM=pcall(function()self.serviceManager:destroyServices()self.runtimeManager:reset()self.initialized=false;print(">>> Application shutdown complete")end)if not fL then fK(fM)end end end;function fP.prototype.isInitialized(self)return self.initialized end;function fP.prototype.printApplicationInfo(self)local fD=self.configManager:getConfig()local fQ=fD.map;print(">>> ============================")print(((">>> "..fQ.name).." v")..fQ.version)print(">>> "..fQ.description)print(">>> Debug Mode: "..(fD.debug and"ON"or"OFF"))print(">>> Console: "..(fD.console and"ON"or"OFF"))print(">>> Services: "..tostring(self.serviceManager:getServiceCount()))print(">>> ============================")end;return fq end,["src.core.index"]=function(...)local fq={}do local fR=require("src.core.Application")fq.Application=fR.Application end;do local fN=require("src.core.runtime")fq.RuntimeManager=fN.RuntimeManager end;return fq end,["src.services.EventService"]=function(...)local fr=require("lualib_bundle")local b4=fr.__TS__Class;local d9=fr.Map;local aY=fr.__TS__New;local ab=fr.__TS__ArrayIndexOf;local aA=fr.__TS__ArraySplice;local H=fr.__TS__ArrayForEach;local fq={}fq.EventService=b4()local fS=fq.EventService;fS.name="EventService"function fS.prototype.____constructor(self)self.name="EventService"self.listeners=aY(d9)self.initialized=false end;function fS.prototype.initialize(self)if self.initialized then return end;print(">>> Initializing Event Service...")self:setupGameEvents()self.initialized=true;print(">>> Event Service initialized")end;function fS.prototype.destroy(self)self.listeners:clear()self.initialized=false;print(">>> Event Service destroyed")end;function fS.prototype.on(self,fT,fU)if not self.listeners:has(fT)then self.listeners:set(fT,{})end;local di=self.listeners:get(fT)di[#di+1]=fU end;function fS.prototype.off(self,fT,fU)local fV=self.listeners:get(fT)if fV then local T=ab(fV,fU)if T>-1 then aA(fV,T,1)end end end;function fS.prototype.emit(self,fT,e9)local fV=self.listeners:get(fT)if fV then H(fV,function(a1,fU)do local function fK(bj)print((("Error in event listener for "..fT)..": ")..tostring(bj))end;local fL,fM=pcall(function()fU(e9)end)if not fL then fK(fM)end end end)end end;function fS.prototype.setupGameEvents(self)print(">>> Setting up game event triggers...")end;return fq end,["src.lib.helper"]=function(...)local fq={}function fq.c2i(fW)return string.unpack(">I4",fW)end;function fq.i2c(fX)return string.pack("I4",fX)end;return fq end,["src.lib.define"]=function(...)local fq={}fq.MAP_SPEED_NORMAL=function()return ConvertGameSpeed(2)end;fq.bj_PI=3.141592653589793;fq.bj_E=2.718281828459045;fq.bj_CELLWIDTH=128;fq.bj_CLIFFHEIGHT=128;fq.bj_UNIT_FACING=270;fq.bj_RADTODEG=180/fq.bj_PI;fq.bj_DEGTORAD=fq.bj_PI/180;fq.bj_TEXT_DELAY_QUEST=20;fq.bj_TEXT_DELAY_QUESTUPDATE=20;fq.bj_TEXT_DELAY_QUESTDONE=20;fq.bj_TEXT_DELAY_QUESTFAILED=20;fq.bj_TEXT_DELAY_QUESTREQUIREMENT=20;fq.bj_TEXT_DELAY_MISSIONFAILED=20;fq.bj_TEXT_DELAY_ALWAYSHINT=12;fq.bj_TEXT_DELAY_HINT=12;fq.bj_TEXT_DELAY_SECRET=10;fq.bj_TEXT_DELAY_UNITACQUIRED=15;fq.bj_TEXT_DELAY_UNITAVAILABLE=10;fq.bj_TEXT_DELAY_ITEMACQUIRED=10;fq.bj_TEXT_DELAY_WARNING=12;fq.bj_QUEUE_DELAY_QUEST=5;fq.bj_QUEUE_DELAY_HINT=5;fq.bj_QUEUE_DELAY_SECRET=3;fq.bj_HANDICAP_EASY=60;fq.bj_GAME_STARTED_THRESHOLD=0.01;fq.bj_WAIT_FOR_COND_MIN_INTERVAL=0.1;fq.bj_POLLED_WAIT_INTERVAL=0.1;fq.bj_POLLED_WAIT_SKIP_THRESHOLD=2;fq.bj_MAX_INVENTORY=6;fq.bj_MAX_PLAYERS=12;fq.bj_PLAYER_NEUTRAL_VICTIM=13;fq.bj_PLAYER_NEUTRAL_EXTRA=14;fq.bj_MAX_PLAYER_SLOTS=16;fq.bj_MAX_SKELETONS=25;fq.bj_MAX_STOCK_ITEM_SLOTS=11;fq.bj_MAX_STOCK_UNIT_SLOTS=11;fq.bj_MAX_ITEM_LEVEL=10;fq.bj_TOD_DAWN=6;fq.bj_TOD_DUSK=18;fq.bj_MELEE_STARTING_TOD=8;fq.bj_MELEE_STARTING_GOLD_V0=750;fq.bj_MELEE_STARTING_GOLD_V1=500;fq.bj_MELEE_STARTING_LUMBER_V0=200;fq.bj_MELEE_STARTING_LUMBER_V1=150;fq.bj_MELEE_STARTING_HERO_TOKENS=1;fq.bj_MELEE_HERO_LIMIT=3;fq.bj_MELEE_HERO_TYPE_LIMIT=1;fq.bj_MELEE_MINE_SEARCH_RADIUS=2000;fq.bj_MELEE_CLEAR_UNITS_RADIUS=1500;fq.bj_MELEE_CRIPPLE_TIMEOUT=120;fq.bj_MELEE_CRIPPLE_MSG_DURATION=20;fq.bj_MELEE_MAX_TWINKED_HEROES_V0=3;fq.bj_MELEE_MAX_TWINKED_HEROES_V1=1;fq.bj_CREEP_ITEM_DELAY=0.5;fq.bj_STOCK_RESTOCK_INITIAL_DELAY=120;fq.bj_STOCK_RESTOCK_INTERVAL=30;fq.bj_STOCK_MAX_ITERATIONS=20;fq.bj_MAX_DEST_IN_REGION_EVENTS=64;fq.bj_CAMERA_MIN_FARZ=100;fq.bj_CAMERA_DEFAULT_DISTANCE=1650;fq.bj_CAMERA_DEFAULT_FARZ=5000;fq.bj_CAMERA_DEFAULT_AOA=304;fq.bj_CAMERA_DEFAULT_FOV=70;fq.bj_CAMERA_DEFAULT_ROLL=0;fq.bj_CAMERA_DEFAULT_ROTATION=90;fq.bj_RESCUE_PING_TIME=2;fq.bj_NOTHING_SOUND_DURATION=5;fq.bj_TRANSMISSION_PING_TIME=1;fq.bj_TRANSMISSION_IND_RED=255;fq.bj_TRANSMISSION_IND_BLUE=255;fq.bj_TRANSMISSION_IND_GREEN=255;fq.bj_TRANSMISSION_IND_ALPHA=255;fq.bj_TRANSMISSION_PORT_HANGTIME=1.5;fq.bj_CINEMODE_INTERFACEFADE=0.5;fq.bj_CINEMODE_GAMESPEED=fq.MAP_SPEED_NORMAL;fq.bj_CINEMODE_VOLUME_UNITMOVEMENT=0.4;fq.bj_CINEMODE_VOLUME_UNITSOUNDS=0;fq.bj_CINEMODE_VOLUME_COMBAT=0.4;fq.bj_CINEMODE_VOLUME_SPELLS=0.4;fq.bj_CINEMODE_VOLUME_UI=0;fq.bj_CINEMODE_VOLUME_MUSIC=0.55;fq.bj_CINEMODE_VOLUME_AMBIENTSOUNDS=1;fq.bj_CINEMODE_VOLUME_FIRE=0.6;fq.bj_SPEECH_VOLUME_UNITMOVEMENT=0.25;fq.bj_SPEECH_VOLUME_UNITSOUNDS=0;fq.bj_SPEECH_VOLUME_COMBAT=0.25;fq.bj_SPEECH_VOLUME_SPELLS=0.25;fq.bj_SPEECH_VOLUME_UI=0;fq.bj_SPEECH_VOLUME_MUSIC=0.55;fq.bj_SPEECH_VOLUME_AMBIENTSOUNDS=1;fq.bj_SPEECH_VOLUME_FIRE=0.6;fq.bj_SMARTPAN_TRESHOLD_PAN=500;fq.bj_SMARTPAN_TRESHOLD_SNAP=3500;fq.bj_MAX_QUEUED_TRIGGERS=100;fq.bj_QUEUED_TRIGGER_TIMEOUT=180;fq.bj_CAMPAIGN_INDEX_T=0;fq.bj_CAMPAIGN_INDEX_H=1;fq.bj_CAMPAIGN_INDEX_U=2;fq.bj_CAMPAIGN_INDEX_O=3;fq.bj_CAMPAIGN_INDEX_N=4;fq.bj_CAMPAIGN_INDEX_XN=5;fq.bj_CAMPAIGN_INDEX_XH=6;fq.bj_CAMPAIGN_INDEX_XU=7;fq.bj_CAMPAIGN_INDEX_XO=8;fq.bj_CAMPAIGN_OFFSET_T=0;fq.bj_CAMPAIGN_OFFSET_H=1;fq.bj_CAMPAIGN_OFFSET_U=2;fq.bj_CAMPAIGN_OFFSET_O=3;fq.bj_CAMPAIGN_OFFSET_N=4;fq.bj_CAMPAIGN_OFFSET_XN=0;fq.bj_CAMPAIGN_OFFSET_XH=1;fq.bj_CAMPAIGN_OFFSET_XU=2;fq.bj_CAMPAIGN_OFFSET_XO=3;fq.bj_MISSION_INDEX_T00=fq.bj_CAMPAIGN_OFFSET_T*1000+0;fq.bj_MISSION_INDEX_T01=fq.bj_CAMPAIGN_OFFSET_T*1000+1;fq.bj_MISSION_INDEX_H00=fq.bj_CAMPAIGN_OFFSET_H*1000+0;fq.bj_MISSION_INDEX_H01=fq.bj_CAMPAIGN_OFFSET_H*1000+1;fq.bj_MISSION_INDEX_H02=fq.bj_CAMPAIGN_OFFSET_H*1000+2;fq.bj_MISSION_INDEX_H03=fq.bj_CAMPAIGN_OFFSET_H*1000+3;fq.bj_MISSION_INDEX_H04=fq.bj_CAMPAIGN_OFFSET_H*1000+4;fq.bj_MISSION_INDEX_H05=fq.bj_CAMPAIGN_OFFSET_H*1000+5;fq.bj_MISSION_INDEX_H06=fq.bj_CAMPAIGN_OFFSET_H*1000+6;fq.bj_MISSION_INDEX_H07=fq.bj_CAMPAIGN_OFFSET_H*1000+7;fq.bj_MISSION_INDEX_H08=fq.bj_CAMPAIGN_OFFSET_H*1000+8;fq.bj_MISSION_INDEX_H09=fq.bj_CAMPAIGN_OFFSET_H*1000+9;fq.bj_MISSION_INDEX_H10=fq.bj_CAMPAIGN_OFFSET_H*1000+10;fq.bj_MISSION_INDEX_H11=fq.bj_CAMPAIGN_OFFSET_H*1000+11;fq.bj_MISSION_INDEX_U00=fq.bj_CAMPAIGN_OFFSET_U*1000+0;fq.bj_MISSION_INDEX_U01=fq.bj_CAMPAIGN_OFFSET_U*1000+1;fq.bj_MISSION_INDEX_U02=fq.bj_CAMPAIGN_OFFSET_U*1000+2;fq.bj_MISSION_INDEX_U03=fq.bj_CAMPAIGN_OFFSET_U*1000+3;fq.bj_MISSION_INDEX_U05=fq.bj_CAMPAIGN_OFFSET_U*1000+4;fq.bj_MISSION_INDEX_U07=fq.bj_CAMPAIGN_OFFSET_U*1000+5;fq.bj_MISSION_INDEX_U08=fq.bj_CAMPAIGN_OFFSET_U*1000+6;fq.bj_MISSION_INDEX_U09=fq.bj_CAMPAIGN_OFFSET_U*1000+7;fq.bj_MISSION_INDEX_U10=fq.bj_CAMPAIGN_OFFSET_U*1000+8;fq.bj_MISSION_INDEX_U11=fq.bj_CAMPAIGN_OFFSET_U*1000+9;fq.bj_MISSION_INDEX_O00=fq.bj_CAMPAIGN_OFFSET_O*1000+0;fq.bj_MISSION_INDEX_O01=fq.bj_CAMPAIGN_OFFSET_O*1000+1;fq.bj_MISSION_INDEX_O02=fq.bj_CAMPAIGN_OFFSET_O*1000+2;fq.bj_MISSION_INDEX_O03=fq.bj_CAMPAIGN_OFFSET_O*1000+3;fq.bj_MISSION_INDEX_O04=fq.bj_CAMPAIGN_OFFSET_O*1000+4;fq.bj_MISSION_INDEX_O05=fq.bj_CAMPAIGN_OFFSET_O*1000+5;fq.bj_MISSION_INDEX_O06=fq.bj_CAMPAIGN_OFFSET_O*1000+6;fq.bj_MISSION_INDEX_O07=fq.bj_CAMPAIGN_OFFSET_O*1000+7;fq.bj_MISSION_INDEX_O08=fq.bj_CAMPAIGN_OFFSET_O*1000+8;fq.bj_MISSION_INDEX_O09=fq.bj_CAMPAIGN_OFFSET_O*1000+9;fq.bj_MISSION_INDEX_O10=fq.bj_CAMPAIGN_OFFSET_O*1000+10;fq.bj_MISSION_INDEX_N00=fq.bj_CAMPAIGN_OFFSET_N*1000+0;fq.bj_MISSION_INDEX_N01=fq.bj_CAMPAIGN_OFFSET_N*1000+1;fq.bj_MISSION_INDEX_N02=fq.bj_CAMPAIGN_OFFSET_N*1000+2;fq.bj_MISSION_INDEX_N03=fq.bj_CAMPAIGN_OFFSET_N*1000+3;fq.bj_MISSION_INDEX_N04=fq.bj_CAMPAIGN_OFFSET_N*1000+4;fq.bj_MISSION_INDEX_N05=fq.bj_CAMPAIGN_OFFSET_N*1000+5;fq.bj_MISSION_INDEX_N06=fq.bj_CAMPAIGN_OFFSET_N*1000+6;fq.bj_MISSION_INDEX_N07=fq.bj_CAMPAIGN_OFFSET_N*1000+7;fq.bj_MISSION_INDEX_N08=fq.bj_CAMPAIGN_OFFSET_N*1000+8;fq.bj_MISSION_INDEX_N09=fq.bj_CAMPAIGN_OFFSET_N*1000+9;fq.bj_MISSION_INDEX_XN00=fq.bj_CAMPAIGN_OFFSET_XN*1000+0;fq.bj_MISSION_INDEX_XN01=fq.bj_CAMPAIGN_OFFSET_XN*1000+1;fq.bj_MISSION_INDEX_XN02=fq.bj_CAMPAIGN_OFFSET_XN*1000+2;fq.bj_MISSION_INDEX_XN03=fq.bj_CAMPAIGN_OFFSET_XN*1000+3;fq.bj_MISSION_INDEX_XN04=fq.bj_CAMPAIGN_OFFSET_XN*1000+4;fq.bj_MISSION_INDEX_XN05=fq.bj_CAMPAIGN_OFFSET_XN*1000+5;fq.bj_MISSION_INDEX_XN06=fq.bj_CAMPAIGN_OFFSET_XN*1000+6;fq.bj_MISSION_INDEX_XN07=fq.bj_CAMPAIGN_OFFSET_XN*1000+7;fq.bj_MISSION_INDEX_XN08=fq.bj_CAMPAIGN_OFFSET_XN*1000+8;fq.bj_MISSION_INDEX_XN09=fq.bj_CAMPAIGN_OFFSET_XN*1000+9;fq.bj_MISSION_INDEX_XN10=fq.bj_CAMPAIGN_OFFSET_XN*1000+10;fq.bj_MISSION_INDEX_XH00=fq.bj_CAMPAIGN_OFFSET_XH*1000+0;fq.bj_MISSION_INDEX_XH01=fq.bj_CAMPAIGN_OFFSET_XH*1000+1;fq.bj_MISSION_INDEX_XH02=fq.bj_CAMPAIGN_OFFSET_XH*1000+2;fq.bj_MISSION_INDEX_XH03=fq.bj_CAMPAIGN_OFFSET_XH*1000+3;fq.bj_MISSION_INDEX_XH04=fq.bj_CAMPAIGN_OFFSET_XH*1000+4;fq.bj_MISSION_INDEX_XH05=fq.bj_CAMPAIGN_OFFSET_XH*1000+5;fq.bj_MISSION_INDEX_XH06=fq.bj_CAMPAIGN_OFFSET_XH*1000+6;fq.bj_MISSION_INDEX_XH07=fq.bj_CAMPAIGN_OFFSET_XH*1000+7;fq.bj_MISSION_INDEX_XH08=fq.bj_CAMPAIGN_OFFSET_XH*1000+8;fq.bj_MISSION_INDEX_XH09=fq.bj_CAMPAIGN_OFFSET_XH*1000+9;fq.bj_MISSION_INDEX_XU00=fq.bj_CAMPAIGN_OFFSET_XU*1000+0;fq.bj_MISSION_INDEX_XU01=fq.bj_CAMPAIGN_OFFSET_XU*1000+1;fq.bj_MISSION_INDEX_XU02=fq.bj_CAMPAIGN_OFFSET_XU*1000+2;fq.bj_MISSION_INDEX_XU03=fq.bj_CAMPAIGN_OFFSET_XU*1000+3;fq.bj_MISSION_INDEX_XU04=fq.bj_CAMPAIGN_OFFSET_XU*1000+4;fq.bj_MISSION_INDEX_XU05=fq.bj_CAMPAIGN_OFFSET_XU*1000+5;fq.bj_MISSION_INDEX_XU06=fq.bj_CAMPAIGN_OFFSET_XU*1000+6;fq.bj_MISSION_INDEX_XU07=fq.bj_CAMPAIGN_OFFSET_XU*1000+7;fq.bj_MISSION_INDEX_XU08=fq.bj_CAMPAIGN_OFFSET_XU*1000+8;fq.bj_MISSION_INDEX_XU09=fq.bj_CAMPAIGN_OFFSET_XU*1000+9;fq.bj_MISSION_INDEX_XU10=fq.bj_CAMPAIGN_OFFSET_XU*1000+10;fq.bj_MISSION_INDEX_XU11=fq.bj_CAMPAIGN_OFFSET_XU*1000+11;fq.bj_MISSION_INDEX_XU12=fq.bj_CAMPAIGN_OFFSET_XU*1000+12;fq.bj_MISSION_INDEX_XU13=fq.bj_CAMPAIGN_OFFSET_XU*1000+13;fq.bj_MISSION_INDEX_XO00=fq.bj_CAMPAIGN_OFFSET_XO*1000+0;fq.bj_CINEMATICINDEX_TOP=0;fq.bj_CINEMATICINDEX_HOP=1;fq.bj_CINEMATICINDEX_HED=2;fq.bj_CINEMATICINDEX_OOP=3;fq.bj_CINEMATICINDEX_OED=4;fq.bj_CINEMATICINDEX_UOP=5;fq.bj_CINEMATICINDEX_UED=6;fq.bj_CINEMATICINDEX_NOP=7;fq.bj_CINEMATICINDEX_NED=8;fq.bj_CINEMATICINDEX_XOP=9;fq.bj_CINEMATICINDEX_XED=10;fq.bj_ALLIANCE_UNALLIED=0;fq.bj_ALLIANCE_UNALLIED_VISION=1;fq.bj_ALLIANCE_ALLIED=2;fq.bj_ALLIANCE_ALLIED_VISION=3;fq.bj_ALLIANCE_ALLIED_UNITS=4;fq.bj_ALLIANCE_ALLIED_ADVUNITS=5;fq.bj_ALLIANCE_NEUTRAL=6;fq.bj_ALLIANCE_NEUTRAL_VISION=7;fq.bj_KEYEVENTTYPE_DEPRESS=0;fq.bj_KEYEVENTTYPE_RELEASE=1;fq.bj_KEYEVENTKEY_LEFT=0;fq.bj_KEYEVENTKEY_RIGHT=1;fq.bj_KEYEVENTKEY_DOWN=2;fq.bj_KEYEVENTKEY_UP=3;fq.bj_TIMETYPE_ADD=0;fq.bj_TIMETYPE_SET=1;fq.bj_TIMETYPE_SUB=2;fq.bj_CAMERABOUNDS_ADJUST_ADD=0;fq.bj_CAMERABOUNDS_ADJUST_SUB=1;fq.bj_QUESTTYPE_REQ_DISCOVERED=0;fq.bj_QUESTTYPE_REQ_UNDISCOVERED=1;fq.bj_QUESTTYPE_OPT_DISCOVERED=2;fq.bj_QUESTTYPE_OPT_UNDISCOVERED=3;fq.bj_QUESTMESSAGE_DISCOVERED=0;fq.bj_QUESTMESSAGE_UPDATED=1;fq.bj_QUESTMESSAGE_COMPLETED=2;fq.bj_QUESTMESSAGE_FAILED=3;fq.bj_QUESTMESSAGE_REQUIREMENT=4;fq.bj_QUESTMESSAGE_MISSIONFAILED=5;fq.bj_QUESTMESSAGE_ALWAYSHINT=6;fq.bj_QUESTMESSAGE_HINT=7;fq.bj_QUESTMESSAGE_SECRET=8;fq.bj_QUESTMESSAGE_UNITACQUIRED=9;fq.bj_QUESTMESSAGE_UNITAVAILABLE=10;fq.bj_QUESTMESSAGE_ITEMACQUIRED=11;fq.bj_QUESTMESSAGE_WARNING=12;fq.bj_SORTTYPE_SORTBYVALUE=0;fq.bj_SORTTYPE_SORTBYPLAYER=1;fq.bj_SORTTYPE_SORTBYLABEL=2;fq.bj_CINEFADETYPE_FADEIN=0;fq.bj_CINEFADETYPE_FADEOUT=1;fq.bj_CINEFADETYPE_FADEOUTIN=2;fq.bj_REMOVEBUFFS_POSITIVE=0;fq.bj_REMOVEBUFFS_NEGATIVE=1;fq.bj_REMOVEBUFFS_ALL=2;fq.bj_REMOVEBUFFS_NONTLIFE=3;fq.bj_BUFF_POLARITY_POSITIVE=0;fq.bj_BUFF_POLARITY_NEGATIVE=1;fq.bj_BUFF_POLARITY_EITHER=2;fq.bj_BUFF_RESIST_MAGIC=0;fq.bj_BUFF_RESIST_PHYSICAL=1;fq.bj_BUFF_RESIST_EITHER=2;fq.bj_BUFF_RESIST_BOTH=3;fq.bj_HEROSTAT_STR=0;fq.bj_HEROSTAT_AGI=1;fq.bj_HEROSTAT_INT=2;fq.bj_MODIFYMETHOD_ADD=0;fq.bj_MODIFYMETHOD_SUB=1;fq.bj_MODIFYMETHOD_SET=2;fq.bj_UNIT_STATE_METHOD_ABSOLUTE=0;fq.bj_UNIT_STATE_METHOD_RELATIVE=1;fq.bj_UNIT_STATE_METHOD_DEFAULTS=2;fq.bj_UNIT_STATE_METHOD_MAXIMUM=3;fq.bj_GATEOPERATION_CLOSE=0;fq.bj_GATEOPERATION_OPEN=1;fq.bj_GATEOPERATION_DESTROY=2;fq.bj_GAMECACHE_BOOLEAN=0;fq.bj_GAMECACHE_INTEGER=1;fq.bj_GAMECACHE_REAL=2;fq.bj_GAMECACHE_UNIT=3;fq.bj_GAMECACHE_STRING=4;fq.bj_ITEM_STATUS_HIDDEN=0;fq.bj_ITEM_STATUS_OWNED=1;fq.bj_ITEM_STATUS_INVULNERABLE=2;fq.bj_ITEM_STATUS_POWERUP=3;fq.bj_ITEM_STATUS_SELLABLE=4;fq.bj_ITEM_STATUS_PAWNABLE=5;fq.bj_ITEMCODE_STATUS_POWERUP=0;fq.bj_ITEMCODE_STATUS_SELLABLE=1;fq.bj_ITEMCODE_STATUS_PAWNABLE=2;fq.bj_MINIMAPPINGSTYLE_SIMPLE=0;fq.bj_MINIMAPPINGSTYLE_FLASHY=1;fq.bj_MINIMAPPINGSTYLE_ATTACK=2;fq.bj_CORPSE_MAX_DEATH_TIME=8;fq.bj_CORPSETYPE_FLESH=0;fq.bj_CORPSETYPE_BONE=1;fq.bj_ELEVATOR_BLOCKER_CODE="DTep"fq.bj_ELEVATOR_CODE01="DTrf"fq.bj_ELEVATOR_CODE02="DTrx"fq.bj_ELEVATOR_WALL_TYPE_ALL=0;fq.bj_ELEVATOR_WALL_TYPE_EAST=1;fq.bj_ELEVATOR_WALL_TYPE_NORTH=2;fq.bj_ELEVATOR_WALL_TYPE_SOUTH=3;fq.bj_ELEVATOR_WALL_TYPE_WEST=4;fq.bj_MELEE_MAX_TWINKED_HEROES=0;fq.bj_mapInitialPlayableArea=nil;fq.bj_mapInitialCameraBounds=nil;fq.bj_forLoopAIndex=0;fq.bj_forLoopBIndex=0;fq.bj_forLoopAIndexEnd=0;fq.bj_forLoopBIndexEnd=0;fq.bj_slotControlReady=false;fq.bj_gameStartedTimer=nil;fq.bj_gameStarted=false;fq.bj_isSinglePlayer=false;fq.bj_dncSoundsDay=nil;fq.bj_dncSoundsNight=nil;fq.bj_dayAmbientSound=nil;fq.bj_nightAmbientSound=nil;fq.bj_dncSoundsDawn=nil;fq.bj_dncSoundsDusk=nil;fq.bj_dawnSound=nil;fq.bj_duskSound=nil;fq.bj_useDawnDuskSounds=true;fq.bj_dncIsDaytime=false;fq.bj_rescueSound=nil;fq.bj_questDiscoveredSound=nil;fq.bj_questUpdatedSound=nil;fq.bj_questCompletedSound=nil;fq.bj_questFailedSound=nil;fq.bj_questHintSound=nil;fq.bj_questSecretSound=nil;fq.bj_questItemAcquiredSound=nil;fq.bj_questWarningSound=nil;fq.bj_victoryDialogSound=nil;fq.bj_defeatDialogSound=nil;fq.bj_rescueUnitBehavior=nil;fq.bj_rescueChangeColorUnit=true;fq.bj_rescueChangeColorBldg=true;fq.bj_cineSceneEndingTimer=nil;fq.bj_cineSceneLastSound=nil;fq.bj_cineSceneBeingSkipped=nil;fq.bj_cineModePriorSpeed=fq.MAP_SPEED_NORMAL;fq.bj_cineModePriorFogSetting=false;fq.bj_cineModePriorMaskSetting=false;fq.bj_cineModeAlreadyIn=false;fq.bj_cineModePriorDawnDusk=false;fq.bj_cineModeSavedSeed=0;fq.bj_cineFadeFinishTimer=nil;fq.bj_cineFadeContinueTimer=nil;fq.bj_cineFadeContinueRed=0;fq.bj_cineFadeContinueGreen=0;fq.bj_cineFadeContinueBlue=0;fq.bj_cineFadeContinueTrans=0;fq.bj_cineFadeContinueDuration=0;fq.bj_cineFadeContinueTex=""fq.JASS_MAX_ARRAY_SIZE=8192;fq.PLAYER_NEUTRAL_PASSIVE=15;fq.PLAYER_NEUTRAL_AGGRESSIVE=12;fq.PLAYER_COLOR_RED=function()return ConvertPlayerColor(0)end;fq.PLAYER_COLOR_BLUE=function()return ConvertPlayerColor(1)end;fq.PLAYER_COLOR_CYAN=function()return ConvertPlayerColor(2)end;fq.PLAYER_COLOR_PURPLE=function()return ConvertPlayerColor(3)end;fq.PLAYER_COLOR_YELLOW=function()return ConvertPlayerColor(4)end;fq.PLAYER_COLOR_ORANGE=function()return ConvertPlayerColor(5)end;fq.PLAYER_COLOR_GREEN=function()return ConvertPlayerColor(6)end;fq.PLAYER_COLOR_PINK=function()return ConvertPlayerColor(7)end;fq.PLAYER_COLOR_LIGHT_GRAY=function()return ConvertPlayerColor(8)end;fq.PLAYER_COLOR_LIGHT_BLUE=function()return ConvertPlayerColor(9)end;fq.PLAYER_COLOR_AQUA=function()return ConvertPlayerColor(10)end;fq.PLAYER_COLOR_BROWN=function()return ConvertPlayerColor(11)end;fq.PLAYER_COLOR_BLACK=function()return ConvertPlayerColor(12)end;fq.RACE_HUMAN=function()return ConvertRace(1)end;fq.RACE_ORC=function()return ConvertRace(2)end;fq.RACE_UNDEAD=function()return ConvertRace(3)end;fq.RACE_NIGHTELF=function()return ConvertRace(4)end;fq.RACE_DEMON=function()return ConvertRace(5)end;fq.RACE_OTHER=function()return ConvertRace(7)end;fq.PLAYER_GAME_RESULT_VICTORY=function()return ConvertPlayerGameResult(0)end;fq.PLAYER_GAME_RESULT_DEFEAT=function()return ConvertPlayerGameResult(1)end;fq.PLAYER_GAME_RESULT_TIE=function()return ConvertPlayerGameResult(2)end;fq.PLAYER_GAME_RESULT_NEUTRAL=function()return ConvertPlayerGameResult(3)end;fq.ALLIANCE_PASSIVE=function()return ConvertAllianceType(0)end;fq.ALLIANCE_HELP_REQUEST=function()return ConvertAllianceType(1)end;fq.ALLIANCE_HELP_RESPONSE=function()return ConvertAllianceType(2)end;fq.ALLIANCE_SHARED_XP=function()return ConvertAllianceType(3)end;fq.ALLIANCE_SHARED_SPELLS=function()return ConvertAllianceType(4)end;fq.ALLIANCE_SHARED_VISION=function()return ConvertAllianceType(5)end;fq.ALLIANCE_SHARED_CONTROL=function()return ConvertAllianceType(6)end;fq.ALLIANCE_SHARED_ADVANCED_CONTROL=function()return ConvertAllianceType(7)end;fq.ALLIANCE_RESCUABLE=function()return ConvertAllianceType(8)end;fq.ALLIANCE_SHARED_VISION_FORCED=function()return ConvertAllianceType(9)end;fq.VERSION_REIGN_OF_CHAOS=function()return ConvertVersion(0)end;fq.VERSION_FROZEN_THRONE=function()return ConvertVersion(1)end;fq.ATTACK_TYPE_NORMAL=function()return ConvertAttackType(0)end;fq.ATTACK_TYPE_MELEE=function()return ConvertAttackType(1)end;fq.ATTACK_TYPE_PIERCE=function()return ConvertAttackType(2)end;fq.ATTACK_TYPE_SIEGE=function()return ConvertAttackType(3)end;fq.ATTACK_TYPE_MAGIC=function()return ConvertAttackType(4)end;fq.ATTACK_TYPE_CHAOS=function()return ConvertAttackType(5)end;fq.ATTACK_TYPE_HERO=function()return ConvertAttackType(6)end;fq.DAMAGE_TYPE_UNKNOWN=function()return ConvertDamageType(0)end;fq.DAMAGE_TYPE_NORMAL=function()return ConvertDamageType(4)end;fq.DAMAGE_TYPE_ENHANCED=function()return ConvertDamageType(5)end;fq.DAMAGE_TYPE_FIRE=function()return ConvertDamageType(8)end;fq.DAMAGE_TYPE_COLD=function()return ConvertDamageType(9)end;fq.DAMAGE_TYPE_LIGHTNING=function()return ConvertDamageType(10)end;fq.DAMAGE_TYPE_POISON=function()return ConvertDamageType(11)end;fq.DAMAGE_TYPE_DISEASE=function()return ConvertDamageType(12)end;fq.DAMAGE_TYPE_DIVINE=function()return ConvertDamageType(13)end;fq.DAMAGE_TYPE_MAGIC=function()return ConvertDamageType(14)end;fq.DAMAGE_TYPE_SONIC=function()return ConvertDamageType(15)end;fq.DAMAGE_TYPE_ACID=function()return ConvertDamageType(16)end;fq.DAMAGE_TYPE_FORCE=function()return ConvertDamageType(17)end;fq.DAMAGE_TYPE_DEATH=function()return ConvertDamageType(18)end;fq.DAMAGE_TYPE_MIND=function()return ConvertDamageType(19)end;fq.DAMAGE_TYPE_PLANT=function()return ConvertDamageType(20)end;fq.DAMAGE_TYPE_DEFENSIVE=function()return ConvertDamageType(21)end;fq.DAMAGE_TYPE_DEMOLITION=function()return ConvertDamageType(22)end;fq.DAMAGE_TYPE_SLOW_POISON=function()return ConvertDamageType(23)end;fq.DAMAGE_TYPE_SPIRIT_LINK=function()return ConvertDamageType(24)end;fq.DAMAGE_TYPE_SHADOW_STRIKE=function()return ConvertDamageType(25)end;fq.DAMAGE_TYPE_UNIVERSAL=function()return ConvertDamageType(26)end;fq.WEAPON_TYPE_WHOKNOWS=function()return ConvertWeaponType(0)end;fq.WEAPON_TYPE_METAL_LIGHT_CHOP=function()return ConvertWeaponType(1)end;fq.WEAPON_TYPE_METAL_MEDIUM_CHOP=function()return ConvertWeaponType(2)end;fq.WEAPON_TYPE_METAL_HEAVY_CHOP=function()return ConvertWeaponType(3)end;fq.WEAPON_TYPE_METAL_LIGHT_SLICE=function()return ConvertWeaponType(4)end;fq.WEAPON_TYPE_METAL_MEDIUM_SLICE=function()return ConvertWeaponType(5)end;fq.WEAPON_TYPE_METAL_HEAVY_SLICE=function()return ConvertWeaponType(6)end;fq.WEAPON_TYPE_METAL_MEDIUM_BASH=function()return ConvertWeaponType(7)end;fq.WEAPON_TYPE_METAL_HEAVY_BASH=function()return ConvertWeaponType(8)end;fq.WEAPON_TYPE_METAL_MEDIUM_STAB=function()return ConvertWeaponType(9)end;fq.WEAPON_TYPE_METAL_HEAVY_STAB=function()return ConvertWeaponType(10)end;fq.WEAPON_TYPE_WOOD_LIGHT_SLICE=function()return ConvertWeaponType(11)end;fq.WEAPON_TYPE_WOOD_MEDIUM_SLICE=function()return ConvertWeaponType(12)end;fq.WEAPON_TYPE_WOOD_HEAVY_SLICE=function()return ConvertWeaponType(13)end;fq.WEAPON_TYPE_WOOD_LIGHT_BASH=function()return ConvertWeaponType(14)end;fq.WEAPON_TYPE_WOOD_MEDIUM_BASH=function()return ConvertWeaponType(15)end;fq.WEAPON_TYPE_WOOD_HEAVY_BASH=function()return ConvertWeaponType(16)end;fq.WEAPON_TYPE_WOOD_LIGHT_STAB=function()return ConvertWeaponType(17)end;fq.WEAPON_TYPE_WOOD_MEDIUM_STAB=function()return ConvertWeaponType(18)end;fq.WEAPON_TYPE_CLAW_LIGHT_SLICE=function()return ConvertWeaponType(19)end;fq.WEAPON_TYPE_CLAW_MEDIUM_SLICE=function()return ConvertWeaponType(20)end;fq.WEAPON_TYPE_CLAW_HEAVY_SLICE=function()return ConvertWeaponType(21)end;fq.WEAPON_TYPE_AXE_MEDIUM_CHOP=function()return ConvertWeaponType(22)end;fq.WEAPON_TYPE_ROCK_HEAVY_BASH=function()return ConvertWeaponType(23)end;fq.PATHING_TYPE_ANY=function()return ConvertPathingType(0)end;fq.PATHING_TYPE_WALKABILITY=function()return ConvertPathingType(1)end;fq.PATHING_TYPE_FLYABILITY=function()return ConvertPathingType(2)end;fq.PATHING_TYPE_BUILDABILITY=function()return ConvertPathingType(3)end;fq.PATHING_TYPE_PEONHARVESTPATHING=function()return ConvertPathingType(4)end;fq.PATHING_TYPE_BLIGHTPATHING=function()return ConvertPathingType(5)end;fq.PATHING_TYPE_FLOATABILITY=function()return ConvertPathingType(6)end;fq.PATHING_TYPE_AMPHIBIOUSPATHING=function()return ConvertPathingType(7)end;fq.RACE_PREF_HUMAN=function()return ConvertRacePref(1)end;fq.RACE_PREF_ORC=function()return ConvertRacePref(2)end;fq.RACE_PREF_NIGHTELF=function()return ConvertRacePref(4)end;fq.RACE_PREF_UNDEAD=function()return ConvertRacePref(8)end;fq.RACE_PREF_DEMON=function()return ConvertRacePref(16)end;fq.RACE_PREF_RANDOM=function()return ConvertRacePref(32)end;fq.RACE_PREF_USER_SELECTABLE=function()return ConvertRacePref(64)end;fq.MAP_CONTROL_USER=function()return ConvertMapControl(0)end;fq.MAP_CONTROL_COMPUTER=function()return ConvertMapControl(1)end;fq.MAP_CONTROL_RESCUABLE=function()return ConvertMapControl(2)end;fq.MAP_CONTROL_NEUTRAL=function()return ConvertMapControl(3)end;fq.MAP_CONTROL_CREEP=function()return ConvertMapControl(4)end;fq.MAP_CONTROL_NONE=function()return ConvertMapControl(5)end;fq.GAME_TYPE_MELEE=function()return ConvertGameType(1)end;fq.GAME_TYPE_FFA=function()return ConvertGameType(2)end;fq.GAME_TYPE_USE_MAP_SETTINGS=function()return ConvertGameType(4)end;fq.GAME_TYPE_BLIZ=function()return ConvertGameType(8)end;fq.GAME_TYPE_ONE_ON_ONE=function()return ConvertGameType(16)end;fq.GAME_TYPE_TWO_TEAM_PLAY=function()return ConvertGameType(32)end;fq.GAME_TYPE_THREE_TEAM_PLAY=function()return ConvertGameType(64)end;fq.GAME_TYPE_FOUR_TEAM_PLAY=function()return ConvertGameType(128)end;fq.MAP_FOG_HIDE_TERRAIN=function()return ConvertMapFlag(1)end;fq.MAP_FOG_MAP_EXPLORED=function()return ConvertMapFlag(2)end;fq.MAP_FOG_ALWAYS_VISIBLE=function()return ConvertMapFlag(4)end;fq.MAP_USE_HANDICAPS=function()return ConvertMapFlag(8)end;fq.MAP_OBSERVERS=function()return ConvertMapFlag(16)end;fq.MAP_OBSERVERS_ON_DEATH=function()return ConvertMapFlag(32)end;fq.MAP_FIXED_COLORS=function()return ConvertMapFlag(128)end;fq.MAP_LOCK_RESOURCE_TRADING=function()return ConvertMapFlag(256)end;fq.MAP_RESOURCE_TRADING_ALLIES_ONLY=function()return ConvertMapFlag(512)end;fq.MAP_LOCK_ALLIANCE_CHANGES=function()return ConvertMapFlag(1024)end;fq.MAP_ALLIANCE_CHANGES_HIDDEN=function()return ConvertMapFlag(2048)end;fq.MAP_CHEATS=function()return ConvertMapFlag(4096)end;fq.MAP_CHEATS_HIDDEN=function()return ConvertMapFlag(8192)end;fq.MAP_LOCK_SPEED=function()return ConvertMapFlag(8192*2)end;fq.MAP_LOCK_RANDOM_SEED=function()return ConvertMapFlag(8192*4)end;fq.MAP_SHARED_ADVANCED_CONTROL=function()return ConvertMapFlag(8192*8)end;fq.MAP_RANDOM_HERO=function()return ConvertMapFlag(8192*16)end;fq.MAP_RANDOM_RACES=function()return ConvertMapFlag(8192*32)end;fq.MAP_RELOADED=function()return ConvertMapFlag(8192*64)end;fq.MAP_PLACEMENT_RANDOM=function()return ConvertPlacement(0)end;fq.MAP_PLACEMENT_FIXED=function()return ConvertPlacement(1)end;fq.MAP_PLACEMENT_USE_MAP_SETTINGS=function()return ConvertPlacement(2)end;fq.MAP_PLACEMENT_TEAMS_TOGETHER=function()return ConvertPlacement(3)end;fq.MAP_LOC_PRIO_LOW=function()return ConvertStartLocPrio(0)end;fq.MAP_LOC_PRIO_HIGH=function()return ConvertStartLocPrio(1)end;fq.MAP_LOC_PRIO_NOT=function()return ConvertStartLocPrio(2)end;fq.MAP_DENSITY_NONE=function()return ConvertMapDensity(0)end;fq.MAP_DENSITY_LIGHT=function()return ConvertMapDensity(1)end;fq.MAP_DENSITY_MEDIUM=function()return ConvertMapDensity(2)end;fq.MAP_DENSITY_HEAVY=function()return ConvertMapDensity(3)end;fq.MAP_DIFFICULTY_EASY=function()return ConvertGameDifficulty(0)end;fq.MAP_DIFFICULTY_NORMAL=function()return ConvertGameDifficulty(1)end;fq.MAP_DIFFICULTY_HARD=function()return ConvertGameDifficulty(2)end;fq.MAP_DIFFICULTY_INSANE=function()return ConvertGameDifficulty(3)end;fq.MAP_SPEED_SLOWEST=function()return ConvertGameSpeed(0)end;fq.MAP_SPEED_SLOW=function()return ConvertGameSpeed(1)end;fq.MAP_SPEED_FAST=function()return ConvertGameSpeed(3)end;fq.MAP_SPEED_FASTEST=function()return ConvertGameSpeed(4)end;fq.PLAYER_SLOT_STATE_EMPTY=function()return ConvertPlayerSlotState(0)end;fq.PLAYER_SLOT_STATE_PLAYING=function()return ConvertPlayerSlotState(1)end;fq.PLAYER_SLOT_STATE_LEFT=function()return ConvertPlayerSlotState(2)end;fq.SOUND_VOLUMEGROUP_UNITMOVEMENT=function()return ConvertVolumeGroup(0)end;fq.SOUND_VOLUMEGROUP_UNITSOUNDS=function()return ConvertVolumeGroup(1)end;fq.SOUND_VOLUMEGROUP_COMBAT=function()return ConvertVolumeGroup(2)end;fq.SOUND_VOLUMEGROUP_SPELLS=function()return ConvertVolumeGroup(3)end;fq.SOUND_VOLUMEGROUP_UI=function()return ConvertVolumeGroup(4)end;fq.SOUND_VOLUMEGROUP_MUSIC=function()return ConvertVolumeGroup(5)end;fq.SOUND_VOLUMEGROUP_AMBIENTSOUNDS=function()return ConvertVolumeGroup(6)end;fq.SOUND_VOLUMEGROUP_FIRE=function()return ConvertVolumeGroup(7)end;fq.GAME_STATE_DIVINE_INTERVENTION=function()return ConvertIGameState(0)end;fq.GAME_STATE_DISCONNECTED=function()return ConvertIGameState(1)end;fq.GAME_STATE_TIME_OF_DAY=function()return ConvertFGameState(2)end;fq.PLAYER_STATE_GAME_RESULT=function()return ConvertPlayerState(0)end;fq.PLAYER_STATE_RESOURCE_GOLD=function()return ConvertPlayerState(1)end;fq.PLAYER_STATE_RESOURCE_LUMBER=function()return ConvertPlayerState(2)end;fq.PLAYER_STATE_RESOURCE_HERO_TOKENS=function()return ConvertPlayerState(3)end;fq.PLAYER_STATE_RESOURCE_FOOD_CAP=function()return ConvertPlayerState(4)end;fq.PLAYER_STATE_RESOURCE_FOOD_USED=function()return ConvertPlayerState(5)end;fq.PLAYER_STATE_FOOD_CAP_CEILING=function()return ConvertPlayerState(6)end;fq.PLAYER_STATE_GIVES_BOUNTY=function()return ConvertPlayerState(7)end;fq.PLAYER_STATE_ALLIED_VICTORY=function()return ConvertPlayerState(8)end;fq.PLAYER_STATE_PLACED=function()return ConvertPlayerState(9)end;fq.PLAYER_STATE_OBSERVER_ON_DEATH=function()return ConvertPlayerState(10)end;fq.PLAYER_STATE_OBSERVER=function()return ConvertPlayerState(11)end;fq.PLAYER_STATE_UNFOLLOWABLE=function()return ConvertPlayerState(12)end;fq.PLAYER_STATE_GOLD_UPKEEP_RATE=function()return ConvertPlayerState(13)end;fq.PLAYER_STATE_LUMBER_UPKEEP_RATE=function()return ConvertPlayerState(14)end;fq.PLAYER_STATE_GOLD_GATHERED=function()return ConvertPlayerState(15)end;fq.PLAYER_STATE_LUMBER_GATHERED=function()return ConvertPlayerState(16)end;fq.PLAYER_STATE_NO_CREEP_SLEEP=function()return ConvertPlayerState(25)end;fq.UNIT_STATE_LIFE=function()return ConvertUnitState(0)end;fq.UNIT_STATE_MAX_LIFE=function()return ConvertUnitState(1)end;fq.UNIT_STATE_MANA=function()return ConvertUnitState(2)end;fq.UNIT_STATE_MAX_MANA=function()return ConvertUnitState(3)end;fq.UNIT_STATE_ATTACK_DICE=function()return ConvertUnitState(16)end;fq.UNIT_STATE_ATTACK_SIDE=function()return ConvertUnitState(17)end;fq.UNIT_STATE_ATTACK_WHITE=function()return ConvertUnitState(18)end;fq.UNIT_STATE_ATTACK_BONUS=function()return ConvertUnitState(19)end;fq.UNIT_STATE_ATTACK_MIX=function()return ConvertUnitState(20)end;fq.UNIT_STATE_ATTACK_MAX=function()return ConvertUnitState(21)end;fq.UNIT_STATE_ATTACK_RANGE=function()return ConvertUnitState(22)end;fq.UNIT_STATE_DEFEND_WHITE=function()return ConvertUnitState(32)end;fq.UNIT_STATE_ATTACK_SPACE=function()return ConvertUnitState(37)end;fq.UNIT_STATE_ATTACK_SPEED=function()return ConvertUnitState(81)end;fq.AI_DIFFICULTY_NEWBIE=function()return ConvertAIDifficulty(0)end;fq.AI_DIFFICULTY_NORMAL=function()return ConvertAIDifficulty(1)end;fq.AI_DIFFICULTY_INSANE=function()return ConvertAIDifficulty(2)end;fq.PLAYER_SCORE_UNITS_TRAINED=function()return ConvertPlayerScore(0)end;fq.PLAYER_SCORE_UNITS_KILLED=function()return ConvertPlayerScore(1)end;fq.PLAYER_SCORE_STRUCT_BUILT=function()return ConvertPlayerScore(2)end;fq.PLAYER_SCORE_STRUCT_RAZED=function()return ConvertPlayerScore(3)end;fq.PLAYER_SCORE_TECH_PERCENT=function()return ConvertPlayerScore(4)end;fq.PLAYER_SCORE_FOOD_MAXPROD=function()return ConvertPlayerScore(5)end;fq.PLAYER_SCORE_FOOD_MAXUSED=function()return ConvertPlayerScore(6)end;fq.PLAYER_SCORE_HEROES_KILLED=function()return ConvertPlayerScore(7)end;fq.PLAYER_SCORE_ITEMS_GAINED=function()return ConvertPlayerScore(8)end;fq.PLAYER_SCORE_MERCS_HIRED=function()return ConvertPlayerScore(9)end;fq.PLAYER_SCORE_GOLD_MINED_TOTAL=function()return ConvertPlayerScore(10)end;fq.PLAYER_SCORE_GOLD_MINED_UPKEEP=function()return ConvertPlayerScore(11)end;fq.PLAYER_SCORE_GOLD_LOST_UPKEEP=function()return ConvertPlayerScore(12)end;fq.PLAYER_SCORE_GOLD_LOST_TAX=function()return ConvertPlayerScore(13)end;fq.PLAYER_SCORE_GOLD_GIVEN=function()return ConvertPlayerScore(14)end;fq.PLAYER_SCORE_GOLD_RECEIVED=function()return ConvertPlayerScore(15)end;fq.PLAYER_SCORE_LUMBER_TOTAL=function()return ConvertPlayerScore(16)end;fq.PLAYER_SCORE_LUMBER_LOST_UPKEEP=function()return ConvertPlayerScore(17)end;fq.PLAYER_SCORE_LUMBER_LOST_TAX=function()return ConvertPlayerScore(18)end;fq.PLAYER_SCORE_LUMBER_GIVEN=function()return ConvertPlayerScore(19)end;fq.PLAYER_SCORE_LUMBER_RECEIVED=function()return ConvertPlayerScore(20)end;fq.PLAYER_SCORE_UNIT_TOTAL=function()return ConvertPlayerScore(21)end;fq.PLAYER_SCORE_HERO_TOTAL=function()return ConvertPlayerScore(22)end;fq.PLAYER_SCORE_RESOURCE_TOTAL=function()return ConvertPlayerScore(23)end;fq.PLAYER_SCORE_TOTAL=function()return ConvertPlayerScore(24)end;fq.EVENT_GAME_VICTORY=function()return ConvertGameEvent(0)end;fq.EVENT_GAME_END_LEVEL=function()return ConvertGameEvent(1)end;fq.EVENT_GAME_VARIABLE_LIMIT=function()return ConvertGameEvent(2)end;fq.EVENT_GAME_STATE_LIMIT=function()return ConvertGameEvent(3)end;fq.EVENT_GAME_TIMER_EXPIRED=function()return ConvertGameEvent(4)end;fq.EVENT_GAME_ENTER_REGION=function()return ConvertGameEvent(5)end;fq.EVENT_GAME_LEAVE_REGION=function()return ConvertGameEvent(6)end;fq.EVENT_GAME_TRACKABLE_HIT=function()return ConvertGameEvent(7)end;fq.EVENT_GAME_TRACKABLE_TRACK=function()return ConvertGameEvent(8)end;fq.EVENT_GAME_SHOW_SKILL=function()return ConvertGameEvent(9)end;fq.EVENT_GAME_BUILD_SUBMENU=function()return ConvertGameEvent(10)end;fq.EVENT_PLAYER_STATE_LIMIT=function()return ConvertPlayerEvent(11)end;fq.EVENT_PLAYER_ALLIANCE_CHANGED=function()return ConvertPlayerEvent(12)end;fq.EVENT_PLAYER_DEFEAT=function()return ConvertPlayerEvent(13)end;fq.EVENT_PLAYER_VICTORY=function()return ConvertPlayerEvent(14)end;fq.EVENT_PLAYER_LEAVE=function()return ConvertPlayerEvent(15)end;fq.EVENT_PLAYER_CHAT=function()return ConvertPlayerEvent(16)end;fq.EVENT_PLAYER_END_CINEMATIC=function()return ConvertPlayerEvent(17)end;fq.EVENT_PLAYER_UNIT_ATTACKED=function()return ConvertPlayerUnitEvent(18)end;fq.EVENT_PLAYER_UNIT_RESCUED=function()return ConvertPlayerUnitEvent(19)end;fq.EVENT_PLAYER_UNIT_DEATH=function()return ConvertPlayerUnitEvent(20)end;fq.EVENT_PLAYER_UNIT_DECAY=function()return ConvertPlayerUnitEvent(21)end;fq.EVENT_PLAYER_UNIT_DETECTED=function()return ConvertPlayerUnitEvent(22)end;fq.EVENT_PLAYER_UNIT_HIDDEN=function()return ConvertPlayerUnitEvent(23)end;fq.EVENT_PLAYER_UNIT_SELECTED=function()return ConvertPlayerUnitEvent(24)end;fq.EVENT_PLAYER_UNIT_DESELECTED=function()return ConvertPlayerUnitEvent(25)end;fq.EVENT_PLAYER_UNIT_CONSTRUCT_START=function()return ConvertPlayerUnitEvent(26)end;fq.EVENT_PLAYER_UNIT_CONSTRUCT_CANCEL=function()return ConvertPlayerUnitEvent(27)end;fq.EVENT_PLAYER_UNIT_CONSTRUCT_FINISH=function()return ConvertPlayerUnitEvent(28)end;fq.EVENT_PLAYER_UNIT_UPGRADE_START=function()return ConvertPlayerUnitEvent(29)end;fq.EVENT_PLAYER_UNIT_UPGRADE_CANCEL=function()return ConvertPlayerUnitEvent(30)end;fq.EVENT_PLAYER_UNIT_UPGRADE_FINISH=function()return ConvertPlayerUnitEvent(31)end;fq.EVENT_PLAYER_UNIT_TRAIN_START=function()return ConvertPlayerUnitEvent(32)end;fq.EVENT_PLAYER_UNIT_TRAIN_CANCEL=function()return ConvertPlayerUnitEvent(33)end;fq.EVENT_PLAYER_UNIT_TRAIN_FINISH=function()return ConvertPlayerUnitEvent(34)end;fq.EVENT_PLAYER_UNIT_RESEARCH_START=function()return ConvertPlayerUnitEvent(35)end;fq.EVENT_PLAYER_UNIT_RESEARCH_CANCEL=function()return ConvertPlayerUnitEvent(36)end;fq.EVENT_PLAYER_UNIT_RESEARCH_FINISH=function()return ConvertPlayerUnitEvent(37)end;fq.EVENT_PLAYER_UNIT_ISSUED_ORDER=function()return ConvertPlayerUnitEvent(38)end;fq.EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER=function()return ConvertPlayerUnitEvent(39)end;fq.EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER=function()return ConvertPlayerUnitEvent(40)end;fq.EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER=function()return ConvertPlayerUnitEvent(40)end;fq.EVENT_PLAYER_HERO_LEVEL=function()return ConvertPlayerUnitEvent(41)end;fq.EVENT_PLAYER_HERO_SKILL=function()return ConvertPlayerUnitEvent(42)end;fq.EVENT_PLAYER_HERO_REVIVABLE=function()return ConvertPlayerUnitEvent(43)end;fq.EVENT_PLAYER_HERO_REVIVE_START=function()return ConvertPlayerUnitEvent(44)end;fq.EVENT_PLAYER_HERO_REVIVE_CANCEL=function()return ConvertPlayerUnitEvent(45)end;fq.EVENT_PLAYER_HERO_REVIVE_FINISH=function()return ConvertPlayerUnitEvent(46)end;fq.EVENT_PLAYER_UNIT_SUMMON=function()return ConvertPlayerUnitEvent(47)end;fq.EVENT_PLAYER_UNIT_DROP_ITEM=function()return ConvertPlayerUnitEvent(48)end;fq.EVENT_PLAYER_UNIT_PICKUP_ITEM=function()return ConvertPlayerUnitEvent(49)end;fq.EVENT_PLAYER_UNIT_USE_ITEM=function()return ConvertPlayerUnitEvent(50)end;fq.EVENT_PLAYER_UNIT_LOADED=function()return ConvertPlayerUnitEvent(51)end;fq.EVENT_UNIT_DAMAGED=function()return ConvertUnitEvent(52)end;fq.EVENT_UNIT_DEATH=function()return ConvertUnitEvent(53)end;fq.EVENT_UNIT_DECAY=function()return ConvertUnitEvent(54)end;fq.EVENT_UNIT_DETECTED=function()return ConvertUnitEvent(55)end;fq.EVENT_UNIT_HIDDEN=function()return ConvertUnitEvent(56)end;fq.EVENT_UNIT_SELECTED=function()return ConvertUnitEvent(57)end;fq.EVENT_UNIT_DESELECTED=function()return ConvertUnitEvent(58)end;fq.EVENT_UNIT_STATE_LIMIT=function()return ConvertUnitEvent(59)end;fq.EVENT_UNIT_ACQUIRED_TARGET=function()return ConvertUnitEvent(60)end;fq.EVENT_UNIT_TARGET_IN_RANGE=function()return ConvertUnitEvent(61)end;fq.EVENT_UNIT_ATTACKED=function()return ConvertUnitEvent(62)end;fq.EVENT_UNIT_RESCUED=function()return ConvertUnitEvent(63)end;fq.EVENT_UNIT_CONSTRUCT_CANCEL=function()return ConvertUnitEvent(64)end;fq.EVENT_UNIT_CONSTRUCT_FINISH=function()return ConvertUnitEvent(65)end;fq.EVENT_UNIT_UPGRADE_START=function()return ConvertUnitEvent(66)end;fq.EVENT_UNIT_UPGRADE_CANCEL=function()return ConvertUnitEvent(67)end;fq.EVENT_UNIT_UPGRADE_FINISH=function()return ConvertUnitEvent(68)end;fq.EVENT_UNIT_TRAIN_START=function()return ConvertUnitEvent(69)end;fq.EVENT_UNIT_TRAIN_CANCEL=function()return ConvertUnitEvent(70)end;fq.EVENT_UNIT_TRAIN_FINISH=function()return ConvertUnitEvent(71)end;fq.EVENT_UNIT_RESEARCH_START=function()return ConvertUnitEvent(72)end;fq.EVENT_UNIT_RESEARCH_CANCEL=function()return ConvertUnitEvent(73)end;fq.EVENT_UNIT_RESEARCH_FINISH=function()return ConvertUnitEvent(74)end;fq.EVENT_UNIT_ISSUED_ORDER=function()return ConvertUnitEvent(75)end;fq.EVENT_UNIT_ISSUED_POINT_ORDER=function()return ConvertUnitEvent(76)end;fq.EVENT_UNIT_ISSUED_TARGET_ORDER=function()return ConvertUnitEvent(77)end;fq.EVENT_UNIT_HERO_LEVEL=function()return ConvertUnitEvent(78)end;fq.EVENT_UNIT_HERO_SKILL=function()return ConvertUnitEvent(79)end;fq.EVENT_UNIT_HERO_REVIVABLE=function()return ConvertUnitEvent(80)end;fq.EVENT_UNIT_HERO_REVIVE_START=function()return ConvertUnitEvent(81)end;fq.EVENT_UNIT_HERO_REVIVE_CANCEL=function()return ConvertUnitEvent(82)end;fq.EVENT_UNIT_HERO_REVIVE_FINISH=function()return ConvertUnitEvent(83)end;fq.EVENT_UNIT_SUMMON=function()return ConvertUnitEvent(84)end;fq.EVENT_UNIT_DROP_ITEM=function()return ConvertUnitEvent(85)end;fq.EVENT_UNIT_PICKUP_ITEM=function()return ConvertUnitEvent(86)end;fq.EVENT_UNIT_USE_ITEM=function()return ConvertUnitEvent(87)end;fq.EVENT_UNIT_LOADED=function()return ConvertUnitEvent(88)end;fq.EVENT_WIDGET_DEATH=function()return ConvertWidgetEvent(89)end;fq.EVENT_DIALOG_BUTTON_CLICK=function()return ConvertDialogEvent(90)end;fq.EVENT_DIALOG_CLICK=function()return ConvertDialogEvent(91)end;fq.EVENT_GAME_LOADED=function()return ConvertGameEvent(256)end;fq.EVENT_GAME_TOURNAMENT_FINISH_SOON=function()return ConvertGameEvent(257)end;fq.EVENT_GAME_TOURNAMENT_FINISH_NOW=function()return ConvertGameEvent(258)end;fq.EVENT_GAME_SAVE=function()return ConvertGameEvent(259)end;fq.EVENT_PLAYER_ARROW_LEFT_DOWN=function()return ConvertPlayerEvent(261)end;fq.EVENT_PLAYER_ARROW_LEFT_UP=function()return ConvertPlayerEvent(262)end;fq.EVENT_PLAYER_ARROW_RIGHT_DOWN=function()return ConvertPlayerEvent(263)end;fq.EVENT_PLAYER_ARROW_RIGHT_UP=function()return ConvertPlayerEvent(264)end;fq.EVENT_PLAYER_ARROW_DOWN_DOWN=function()return ConvertPlayerEvent(265)end;fq.EVENT_PLAYER_ARROW_DOWN_UP=function()return ConvertPlayerEvent(266)end;fq.EVENT_PLAYER_ARROW_UP_DOWN=function()return ConvertPlayerEvent(267)end;fq.EVENT_PLAYER_ARROW_UP_UP=function()return ConvertPlayerEvent(268)end;fq.EVENT_PLAYER_UNIT_SELL=function()return ConvertPlayerUnitEvent(269)end;fq.EVENT_PLAYER_UNIT_CHANGE_OWNER=function()return ConvertPlayerUnitEvent(270)end;fq.EVENT_PLAYER_UNIT_SELL_ITEM=function()return ConvertPlayerUnitEvent(271)end;fq.EVENT_PLAYER_UNIT_SPELL_CHANNEL=function()return ConvertPlayerUnitEvent(272)end;fq.EVENT_PLAYER_UNIT_SPELL_CAST=function()return ConvertPlayerUnitEvent(273)end;fq.EVENT_PLAYER_UNIT_SPELL_EFFECT=function()return ConvertPlayerUnitEvent(274)end;fq.EVENT_PLAYER_UNIT_SPELL_FINISH=function()return ConvertPlayerUnitEvent(275)end;fq.EVENT_PLAYER_UNIT_SPELL_ENDCAST=function()return ConvertPlayerUnitEvent(276)end;fq.EVENT_PLAYER_UNIT_PAWN_ITEM=function()return ConvertPlayerUnitEvent(277)end;fq.EVENT_UNIT_SELL=function()return ConvertUnitEvent(286)end;fq.EVENT_UNIT_CHANGE_OWNER=function()return ConvertUnitEvent(287)end;fq.EVENT_UNIT_SELL_ITEM=function()return ConvertUnitEvent(288)end;fq.EVENT_UNIT_SPELL_CHANNEL=function()return ConvertUnitEvent(289)end;fq.EVENT_UNIT_SPELL_CAST=function()return ConvertUnitEvent(290)end;fq.EVENT_UNIT_SPELL_EFFECT=function()return ConvertUnitEvent(291)end;fq.EVENT_UNIT_SPELL_FINISH=function()return ConvertUnitEvent(292)end;fq.EVENT_UNIT_SPELL_ENDCAST=function()return ConvertUnitEvent(293)end;fq.EVENT_UNIT_PAWN_ITEM=function()return ConvertUnitEvent(294)end;fq.LESS_THAN=function()return ConvertLimitOp(0)end;fq.LESS_THAN_OR_EQUAL=function()return ConvertLimitOp(1)end;fq.EQUAL=function()return ConvertLimitOp(2)end;fq.GREATER_THAN_OR_EQUAL=function()return ConvertLimitOp(3)end;fq.GREATER_THAN=function()return ConvertLimitOp(4)end;fq.NOT_EQUAL=function()return ConvertLimitOp(5)end;fq.UNIT_TYPE_HERO=function()return ConvertUnitType(0)end;fq.UNIT_TYPE_DEAD=function()return ConvertUnitType(1)end;fq.UNIT_TYPE_STRUCTURE=function()return ConvertUnitType(2)end;fq.UNIT_TYPE_FLYING=function()return ConvertUnitType(3)end;fq.UNIT_TYPE_GROUND=function()return ConvertUnitType(4)end;fq.UNIT_TYPE_ATTACKS_FLYING=function()return ConvertUnitType(5)end;fq.UNIT_TYPE_ATTACKS_GROUND=function()return ConvertUnitType(6)end;fq.UNIT_TYPE_MELEE_ATTACKER=function()return ConvertUnitType(7)end;fq.UNIT_TYPE_RANGED_ATTACKER=function()return ConvertUnitType(8)end;fq.UNIT_TYPE_GIANT=function()return ConvertUnitType(9)end;fq.UNIT_TYPE_SUMMONED=function()return ConvertUnitType(10)end;fq.UNIT_TYPE_STUNNED=function()return ConvertUnitType(11)end;fq.UNIT_TYPE_PLAGUED=function()return ConvertUnitType(12)end;fq.UNIT_TYPE_SNARED=function()return ConvertUnitType(13)end;fq.UNIT_TYPE_UNDEAD=function()return ConvertUnitType(14)end;fq.UNIT_TYPE_MECHANICAL=function()return ConvertUnitType(15)end;fq.UNIT_TYPE_PEON=function()return ConvertUnitType(16)end;fq.UNIT_TYPE_SAPPER=function()return ConvertUnitType(17)end;fq.UNIT_TYPE_TOWNHALL=function()return ConvertUnitType(18)end;fq.UNIT_TYPE_ANCIENT=function()return ConvertUnitType(19)end;fq.UNIT_TYPE_TAUREN=function()return ConvertUnitType(20)end;fq.UNIT_TYPE_POISONED=function()return ConvertUnitType(21)end;fq.UNIT_TYPE_POLYMORPHED=function()return ConvertUnitType(22)end;fq.UNIT_TYPE_SLEEPING=function()return ConvertUnitType(23)end;fq.UNIT_TYPE_RESISTANT=function()return ConvertUnitType(24)end;fq.UNIT_TYPE_ETHEREAL=function()return ConvertUnitType(25)end;fq.UNIT_TYPE_MAGIC_IMMUNE=function()return ConvertUnitType(26)end;fq.ITEM_TYPE_PERMANENT=function()return ConvertItemType(0)end;fq.ITEM_TYPE_CHARGED=function()return ConvertItemType(1)end;fq.ITEM_TYPE_POWERUP=function()return ConvertItemType(2)end;fq.ITEM_TYPE_ARTIFACT=function()return ConvertItemType(3)end;fq.ITEM_TYPE_PURCHASABLE=function()return ConvertItemType(4)end;fq.ITEM_TYPE_CAMPAIGN=function()return ConvertItemType(5)end;fq.ITEM_TYPE_MISCELLANEOUS=function()return ConvertItemType(6)end;fq.ITEM_TYPE_UNKNOWN=function()return ConvertItemType(7)end;fq.ITEM_TYPE_ANY=function()return ConvertItemType(8)end;fq.ITEM_TYPE_TOME=function()return ConvertItemType(2)end;fq.CAMERA_FIELD_TARGET_DISTANCE=function()return ConvertCameraField(0)end;fq.CAMERA_FIELD_FARZ=function()return ConvertCameraField(1)end;fq.CAMERA_FIELD_ANGLE_OF_ATTACK=function()return ConvertCameraField(2)end;fq.CAMERA_FIELD_FIELD_OF_VIEW=function()return ConvertCameraField(3)end;fq.CAMERA_FIELD_ROLL=function()return ConvertCameraField(4)end;fq.CAMERA_FIELD_ROTATION=function()return ConvertCameraField(5)end;fq.CAMERA_FIELD_ZOFFSET=function()return ConvertCameraField(6)end;fq.BLEND_MODE_NONE=function()return ConvertBlendMode(0)end;fq.BLEND_MODE_DONT_CARE=function()return ConvertBlendMode(0)end;fq.BLEND_MODE_KEYALPHA=function()return ConvertBlendMode(1)end;fq.BLEND_MODE_BLEND=function()return ConvertBlendMode(2)end;fq.BLEND_MODE_ADDITIVE=function()return ConvertBlendMode(3)end;fq.BLEND_MODE_MODULATE=function()return ConvertBlendMode(4)end;fq.BLEND_MODE_MODULATE_2X=function()return ConvertBlendMode(5)end;fq.RARITY_FREQUENT=function()return ConvertRarityControl(0)end;fq.RARITY_RARE=function()return ConvertRarityControl(1)end;fq.TEXMAP_FLAG_NONE=function()return ConvertTexMapFlags(0)end;fq.TEXMAP_FLAG_WRAP_U=function()return ConvertTexMapFlags(1)end;fq.TEXMAP_FLAG_WRAP_V=function()return ConvertTexMapFlags(2)end;fq.TEXMAP_FLAG_WRAP_UV=function()return ConvertTexMapFlags(3)end;fq.FOG_OF_WAR_MASKED=function()return ConvertFogState(1)end;fq.FOG_OF_WAR_FOGGED=function()return ConvertFogState(2)end;fq.FOG_OF_WAR_VISIBLE=function()return ConvertFogState(4)end;fq.CAMERA_MARGIN_LEFT=0;fq.CAMERA_MARGIN_RIGHT=1;fq.CAMERA_MARGIN_TOP=2;fq.CAMERA_MARGIN_BOTTOM=3;fq.EFFECT_TYPE_EFFECT=function()return ConvertEffectType(0)end;fq.EFFECT_TYPE_TARGET=function()return ConvertEffectType(1)end;fq.EFFECT_TYPE_CASTER=function()return ConvertEffectType(2)end;fq.EFFECT_TYPE_SPECIAL=function()return ConvertEffectType(3)end;fq.EFFECT_TYPE_AREA_EFFECT=function()return ConvertEffectType(4)end;fq.EFFECT_TYPE_MISSILE=function()return ConvertEffectType(5)end;fq.EFFECT_TYPE_LIGHTNING=function()return ConvertEffectType(6)end;fq.SOUND_TYPE_EFFECT=function()return ConvertSoundType(0)end;fq.SOUND_TYPE_EFFECT_LOOPED=function()return ConvertSoundType(1)end;fq.EVENT_DAMAGE_DATA_VAILD=0;fq.EVENT_DAMAGE_DATA_IS_PHYSICAL=1;fq.EVENT_DAMAGE_DATA_IS_ATTACK=2;fq.EVENT_DAMAGE_DATA_IS_RANGED=3;fq.EVENT_DAMAGE_DATA_DAMAGE_TYPE=4;fq.EVENT_DAMAGE_DATA_WEAPON_TYPE=5;fq.EVENT_DAMAGE_DATA_ATTACK_TYPE=6;fq.MOVE_TYPE_NONE=0;fq.MOVE_TYPE_NOT=1;fq.MOVE_TYPE_FOOT=2;fq.MOVE_TYPE_FLY=4;fq.MOVE_TYPE_MINE=8;fq.MOVE_TYPE_WIND=16;fq.MOVE_TYPE_UN=32;fq.MOVE_TYPE_FLOAT=64;fq.MOVE_TYPE_AMPH=128;fq.COLLISION_TYPE_UNIT=1;fq.COLLISION_TYPE_BUILDING=3;fq.FRAME_ALIGN_LEFT_TOP=0;fq.FRAME_ALIGN_TOP=1;fq.FRAME_ALIGN_RIGHT_TOP=2;fq.FRAME_ALIGN_LEFT=3;fq.FRAME_ALIGN_CENTER=4;fq.FRAME_ALIGN_RIGHT=5;fq.FRAME_ALIGN_LEFT_BOTTOM=6;fq.FRAME_ALIGN_BOTTOM=7;fq.FRAME_ALIGN_RIGHT_BOTTOM=8;fq.MOUSE_ORDER_CLICK=1;fq.MOUSE_ORDER_ENTER=2;fq.MOUSE_ORDER_LEAVE=3;fq.MOUSE_ORDER_RELEASE=4;fq.MOUSE_ORDER_SCROLL=6;fq.MOUSE_ORDER_DOUBLE_CLICK=12;fq.GAME_KEY_MOUSE_LEFT=1;fq.GAME_KEY_MOUSE_RIGHT=2;fq.GAME_KEY_A=65;fq.GAME_KEY_B=66;fq.GAME_KEY_C=67;fq.GAME_KEY_D=68;fq.GAME_KEY_E=69;fq.GAME_KEY_F=70;fq.GAME_KEY_G=71;fq.GAME_KEY_H=72;fq.GAME_KEY_I=73;fq.GAME_KEY_J=74;fq.GAME_KEY_K=75;fq.GAME_KEY_L=76;fq.GAME_KEY_M=77;fq.GAME_KEY_N=78;fq.GAME_KEY_O=79;fq.GAME_KEY_P=80;fq.GAME_KEY_Q=81;fq.GAME_KEY_R=82;fq.GAME_KEY_S=83;fq.GAME_KEY_T=84;fq.GAME_KEY_U=85;fq.GAME_KEY_V=86;fq.GAME_KEY_W=87;fq.GAME_KEY_X=88;fq.GAME_KEY_Y=89;fq.GAME_KEY_Z=90;fq.GAME_KEY_0=48;fq.GAME_KEY_1=49;fq.GAME_KEY_2=50;fq.GAME_KEY_3=51;fq.GAME_KEY_4=52;fq.GAME_KEY_5=53;fq.GAME_KEY_6=53;fq.GAME_KEY_7=55;fq.GAME_KEY_8=56;fq.GAME_KEY_9=57;fq.GAME_KEY_TAB=9;fq.GAME_KEY_SPACE=32;fq.GAME_KEY_ENTER=513;fq.GAME_KEY_BACKSPACE=514;fq.GAME_KEY_SHIFT=0;fq.GAME_KEY_RIGHT=516;fq.GAME_KEY_UP=517;fq.GAME_KEY_LEFT=518;fq.GAME_KEY_DOWN=519;fq.GAME_KEY_ACTION_PRESS=1;fq.GAME_KEY_ACTION_RELEASE=0;fq.TEXT_ALIGN_LEFT_TOP=11;fq.TEXT_ALIGN_TOP=17;fq.TEXT_ALIGN_RIGHT_TOP=37;fq.TEXT_ALIGN_CENTER=18;fq.TEXT_ALIGN_LEFT=10;fq.TEXT_ALIGN_RIGHT=34;fq.TEXT_ALIGN_LEFT_BOTTOM=12;fq.TEXT_ALIGN_BOTTOM=20;fq.TEXT_ALIGN_RIGHT_BOTTOM=36;return fq end,["src.services.UnitService"]=function(...)local fr=require("lualib_bundle")local b4=fr.__TS__Class;local d9=fr.Map;local aY=fr.__TS__New;local N=fr.__TS__Iterator;local fq={}local fY=require("src.lib.helper")local fZ=fY.c2i;local f_=require("src.lib.define")local g0=f_.UNIT_STATE_LIFE;local g1=f_.UNIT_STATE_MANA;fq.UnitService=b4()local g2=fq.UnitService;g2.name="UnitService"function g2.prototype.____constructor(self)self.name="UnitService"self.initialized=false;self.unitRegistry=aY(d9)end;function g2.prototype.initialize(self)if self.initialized then return end;print(">>> Initializing Unit Service...")self.initialized=true;print(">>> Unit Service initialized")end;function g2.prototype.destroy(self)self.unitRegistry:clear()self.initialized=false;print(">>> Unit Service destroyed")end;function g2.prototype.createUnit(self,g3,g4,g5,g6,g7,g8)if g7==nil then g7=270 end;do local function fK(bj)print((("Error creating unit "..g4)..": ")..tostring(bj))return true,nil end;local fL,fM,g9=pcall(function()local ga=fZ(g4)local gb=CreateUnit(g3,ga,g5,g6,g7)if gb and g8 then self.unitRegistry:set(g8,gb)end;return true,gb end)if not fL then fM,g9=fK(fM)end;if fM then return g9 end end end;function g2.prototype.getUnit(self,g8)return self.unitRegistry:get(g8)end;function g2.prototype.removeUnit(self,gc)do local function fK(bj)print("Error removing unit: "..tostring(bj))end;local fL,fM=pcall(function()RemoveUnit(gc)for a1,fJ in N(self.unitRegistry:entries())do local x=fJ[1]local gd=fJ[2]if gd==gc then self.unitRegistry:delete(x)break end end end)if not fL then fK(fM)end end end;function g2.prototype.setUnitLife(self,gc,ge)do local function fK(bj)print("Error setting unit life: "..tostring(bj))end;local fL,fM=pcall(function()SetUnitState(gc,g0(),ge)end)if not fL then fK(fM)end end end;function g2.prototype.setUnitMana(self,gc,gf)do local function fK(bj)print("Error setting unit mana: "..tostring(bj))end;local fL,fM=pcall(function()SetUnitState(gc,g1(),gf)end)if not fL then fK(fM)end end end;function g2.prototype.getUnitLife(self,gc)do local function fK(bj)print("Error getting unit life: "..tostring(bj))return true,0 end;local fL,fM,g9=pcall(function()return true,GetUnitState(gc,g0())end)if not fL then fM,g9=fK(fM)end;if fM then return g9 end end end;function g2.prototype.getUnitMana(self,gc)do local function fK(bj)print("Error getting unit mana: "..tostring(bj))return true,0 end;local fL,fM,g9=pcall(function()return true,GetUnitState(gc,g1())end)if not fL then fM,g9=fK(fM)end;if fM then return g9 end end end;function g2.prototype.getAllRegisteredUnits(self)return aY(d9,self.unitRegistry)end;function g2.prototype.clearRegistry(self)self.unitRegistry:clear()print(">>> Unit registry cleared")end;return fq end,["src.map.start"]=function(...)local fr=require("lualib_bundle")local d9=fr.Map;local N=fr.__TS__Iterator;local fq={}local gg,gh,gi;function gg(gj)print(">>> Setting up event listeners...")gj:on("unit.created",function(e9)print("Unit created for player "..tostring(GetPlayerId(e9.player)))end)gj:on("unit.died",function(e9)print("Unit died: "..GetUnitName(e9.unit))if e9.killer then print("Killed by: "..GetUnitName(e9.killer))end end)gj:on("player.left",function(e9)print(("Player "..tostring(GetPlayerId(e9.player))).." left the game")end)end;function gh(gk)print(">>> Creating initial units...")local gl=GetLocalPlayer()local gm=gk:createUnit(gl,"hpea",0,0,270,"demo-hero")if gm then print(">>> Demo hero created successfully")gk:setUnitLife(gm,500)gk:setUnitMana(gm,200)local ge=gk:getUnitLife(gm)local gf=gk:getUnitMana(gm)print(((">>> Hero stats - Life: "..tostring(ge))..", Mana: ")..tostring(gf))end end;function gi(gn)print(">>> Starting gameplay demo...")local fD=gn:getConfigManager():getConfig()if fD.debug then print(">>> Debug mode is enabled")local gk=gn:getService("UnitService")if gk then do local o=1;while o<=3 do local gc=gk:createUnit(GetLocalPlayer(),"hfoo",o*100,o*100,0,"debug-unit-"..tostring(o))if gc then print((((((">>> Debug unit "..tostring(o)).." created at (")..tostring(o*100))..", ")..tostring(o*100))..")")end;o=o+1 end end end end;local gk=gn:getService("UnitService")if gk then local go=gk:getAllRegisteredUnits()print(">>> Total registered units: "..tostring(go.size))for a1,fJ in N(go)do local x=fJ[1]print(">>> Registered unit: "..x)end end end;function fq.mapInit(gn)print(">>> Initializing map components...")local gj=gn:getService("EventService")local gk=gn:getService("UnitService")if not gj or not gk then print(">>> Error: Required services not found")return end;gg(gj)gh(gk)gi(gn)print(">>> Map initialization complete")end;return fq end,["src.index"]=function(...)local fr=require("lualib_bundle")local aY=fr.__TS__New;local bB=fr.__TS__AsyncAwaiter;local bC=fr.__TS__Await;local fq={}local gp=require("src.core.index")local fP=gp.Application;local gq=require("src.services.EventService")local fS=gq.EventService;local gr=require("src.services.UnitService")local g2=gr.UnitService;local gs=require("src.map.start")local gt=gs.mapInit;local function gu()return bB(function(fo)local fL=bB(function()local gn=fP:getInstance()gn:registerService(aY(fS))gn:registerService(aY(g2))bC(gn:initialize())print(">>> Starting map logic...")gt(gn)print(">>> Map logic initialized")end)bC(fL.catch(fL,function(a1,bj)print(">>> Failed to start application: "..tostring(bj))end))end)end;gu()return fq end,["src.runtime"]=function(...)local fr=require("lualib_bundle")local e1=fr.__TS__ObjectKeys;local H=fr.__TS__ArrayForEach;local fq={}local fw=require("src.lib.ydlua")local fx=fw.ydcommon;local fy=fw.ydconsole;local fz=fw.ydjapi;local fA=fw.ydruntime;function fq.initConsole(gv)if gv==nil then gv=true end;fy.enable=gv end;function fq.env(gv)if gv==nil then gv=true end;fq.initConsole(gv)_G.print=fy.write;fA.console=gv;fA.sleep=false;fA.debugger=4279;fA.catch_crash=gv;fA.error_hanlde=function(self,fF)print("========lua-err========")print(tostring(fF))print("=========================")end;H(e1(fx),function(a1,a2)_G[a2]=fx[a2]end)H(e1(fz),function(a1,a2)_G[a2]=fz[a2]end)end;return fq end,["src.lib.const"]=function(...)local fq={}fq.EPlayerColor=EPlayerColor or{}fq.EPlayerColor.COLOR1="|cFFFF0303"fq.EPlayerColor.COLOR2="|cFF0042FF"fq.EPlayerColor.COLOR3="|cFF1CE6B9"fq.EPlayerColor.COLOR4="|cFF540081"fq.EPlayerColor.COLOR5="|cFFFFFC01"fq.EPlayerColor.COLOR6="|cFFFE8A0E"fq.EPlayerColor.COLOR7="|cFF20C000"fq.EPlayerColor.COLOR8="|cFFE55BB0"fq.EPlayerColor.COLOR9="|cFF959697"fq.EPlayerColor.COLOR10="|cFF7EBFF1"fq.EPlayerColor.COLOR11="|cFFFFFC01"fq.EPlayerColor.COLOR12="|cFF0042FF"fq.EPlayerColor.COLOR13="|cFF282828"fq.EPlayerColor.COLOR14="|cFF282828"fq.EPlayerColor.COLOR15="|cFF282828"fq.EPlayerColor.COLOR16="|cFF282828"return fq end,["src.modules.AutoSaveModule"]=function(...)local fr=require("lualib_bundle")local b4=fr.__TS__Class;local ch=fr.__TS__SetDescriptor;local fq={}fq.AutoSaveModule=b4()local gw=fq.AutoSaveModule;gw.name="AutoSaveModule"function gw.prototype.____constructor(self)self.name="AutoSaveModule"self._enabled=false;self.saveInterval=60 end;function gw.prototype.enable(self)if self._enabled then print(self.name.." is already enabled")return end;print((">>> Enabling "..self.name).."...")self.saveTimer=CreateTimer()TimerStart(self.saveTimer,self.saveInterval,true,function()self:performAutoSave()end)self._enabled=true;print((((">>> "..self.name).." enabled with interval ")..tostring(self.saveInterval)).."s")end;function gw.prototype.disable(self)if not self._enabled then print(self.name.." is already disabled")return end;print((">>> Disabling "..self.name).."...")if self.saveTimer then DestroyTimer(self.saveTimer)self.saveTimer=nil end;self._enabled=false;print((">>> "..self.name).." disabled")end;function gw.prototype.setSaveInterval(self,gx)self.saveInterval=gx;if self._enabled and self.saveTimer then self:disable()self:enable()end;print((">>> Auto-save interval set to "..tostring(gx)).."s")end;function gw.prototype.performAutoSave(self)print(">>> Performing auto-save...")do local o=0;while o<12 do local g3=Player(o)DisplayTextToPlayer(g3,0,0,"Game auto-saved")o=o+1 end end;print(">>> Auto-save completed")end;ch(gw.prototype,"enabled",{get=function(self)return self._enabled end},true)return fq end,["src.modules.index"]=function(...)local fq={}do local gy=require("src.modules.AutoSaveModule")fq.AutoSaveModule=gy.AutoSaveModule end;return fq end}return require("src.index",...)
+
+local ____modules = {}
+local ____moduleCache = {}
+local ____originalRequire = require
+local function require(file, ...)
+    if ____moduleCache[file] then
+        return ____moduleCache[file].value
+    end
+    if ____modules[file] then
+        local module = ____modules[file]
+        local value = nil
+        if (select("#", ...) > 0) then value = module(...) else value = module(file) end
+        ____moduleCache[file] = { value = value }
+        return value
+    else
+        if ____originalRequire then
+            return ____originalRequire(file)
+        else
+            error("module '" .. file .. "' not found")
+        end
+    end
+end
+____modules = {
+["lualib_bundle"] = function(...) 
+local function __TS__ArrayAt(self, relativeIndex)
+    local absoluteIndex = relativeIndex < 0 and #self + relativeIndex or relativeIndex
+    if absoluteIndex >= 0 and absoluteIndex < #self then
+        return self[absoluteIndex + 1]
+    end
+    return nil
+end
+
+local function __TS__ArrayIsArray(value)
+    return type(value) == "table" and (value[1] ~= nil or next(value) == nil)
+end
+
+local function __TS__ArrayConcat(self, ...)
+    local items = {...}
+    local result = {}
+    local len = 0
+    for i = 1, #self do
+        len = len + 1
+        result[len] = self[i]
+    end
+    for i = 1, #items do
+        local item = items[i]
+        if __TS__ArrayIsArray(item) then
+            for j = 1, #item do
+                len = len + 1
+                result[len] = item[j]
+            end
+        else
+            len = len + 1
+            result[len] = item
+        end
+    end
+    return result
+end
+
+local __TS__Symbol, Symbol
+do
+    local symbolMetatable = {__tostring = function(self)
+        return ("Symbol(" .. (self.description or "")) .. ")"
+    end}
+    function __TS__Symbol(description)
+        return setmetatable({description = description}, symbolMetatable)
+    end
+    Symbol = {
+        asyncDispose = __TS__Symbol("Symbol.asyncDispose"),
+        dispose = __TS__Symbol("Symbol.dispose"),
+        iterator = __TS__Symbol("Symbol.iterator"),
+        hasInstance = __TS__Symbol("Symbol.hasInstance"),
+        species = __TS__Symbol("Symbol.species"),
+        toStringTag = __TS__Symbol("Symbol.toStringTag")
+    }
+end
+
+local function __TS__ArrayEntries(array)
+    local key = 0
+    return {
+        [Symbol.iterator] = function(self)
+            return self
+        end,
+        next = function(self)
+            local result = {done = array[key + 1] == nil, value = {key, array[key + 1]}}
+            key = key + 1
+            return result
+        end
+    }
+end
+
+local function __TS__ArrayEvery(self, callbackfn, thisArg)
+    for i = 1, #self do
+        if not callbackfn(thisArg, self[i], i - 1, self) then
+            return false
+        end
+    end
+    return true
+end
+
+local function __TS__ArrayFill(self, value, start, ____end)
+    local relativeStart = start or 0
+    local relativeEnd = ____end or #self
+    if relativeStart < 0 then
+        relativeStart = relativeStart + #self
+    end
+    if relativeEnd < 0 then
+        relativeEnd = relativeEnd + #self
+    end
+    do
+        local i = relativeStart
+        while i < relativeEnd do
+            self[i + 1] = value
+            i = i + 1
+        end
+    end
+    return self
+end
+
+local function __TS__ArrayFilter(self, callbackfn, thisArg)
+    local result = {}
+    local len = 0
+    for i = 1, #self do
+        if callbackfn(thisArg, self[i], i - 1, self) then
+            len = len + 1
+            result[len] = self[i]
+        end
+    end
+    return result
+end
+
+local function __TS__ArrayForEach(self, callbackFn, thisArg)
+    for i = 1, #self do
+        callbackFn(thisArg, self[i], i - 1, self)
+    end
+end
+
+local function __TS__ArrayFind(self, predicate, thisArg)
+    for i = 1, #self do
+        local elem = self[i]
+        if predicate(thisArg, elem, i - 1, self) then
+            return elem
+        end
+    end
+    return nil
+end
+
+local function __TS__ArrayFindIndex(self, callbackFn, thisArg)
+    for i = 1, #self do
+        if callbackFn(thisArg, self[i], i - 1, self) then
+            return i - 1
+        end
+    end
+    return -1
+end
+
+local __TS__Iterator
+do
+    local function iteratorGeneratorStep(self)
+        local co = self.____coroutine
+        local status, value = coroutine.resume(co)
+        if not status then
+            error(value, 0)
+        end
+        if coroutine.status(co) == "dead" then
+            return
+        end
+        return true, value
+    end
+    local function iteratorIteratorStep(self)
+        local result = self:next()
+        if result.done then
+            return
+        end
+        return true, result.value
+    end
+    local function iteratorStringStep(self, index)
+        index = index + 1
+        if index > #self then
+            return
+        end
+        return index, string.sub(self, index, index)
+    end
+    function __TS__Iterator(iterable)
+        if type(iterable) == "string" then
+            return iteratorStringStep, iterable, 0
+        elseif iterable.____coroutine ~= nil then
+            return iteratorGeneratorStep, iterable
+        elseif iterable[Symbol.iterator] then
+            local iterator = iterable[Symbol.iterator](iterable)
+            return iteratorIteratorStep, iterator
+        else
+            return ipairs(iterable)
+        end
+    end
+end
+
+local __TS__ArrayFrom
+do
+    local function arrayLikeStep(self, index)
+        index = index + 1
+        if index > self.length then
+            return
+        end
+        return index, self[index]
+    end
+    local function arrayLikeIterator(arr)
+        if type(arr.length) == "number" then
+            return arrayLikeStep, arr, 0
+        end
+        return __TS__Iterator(arr)
+    end
+    function __TS__ArrayFrom(arrayLike, mapFn, thisArg)
+        local result = {}
+        if mapFn == nil then
+            for ____, v in arrayLikeIterator(arrayLike) do
+                result[#result + 1] = v
+            end
+        else
+            local i = 0
+            for ____, v in arrayLikeIterator(arrayLike) do
+                local ____mapFn_3 = mapFn
+                local ____thisArg_1 = thisArg
+                local ____v_2 = v
+                local ____i_0 = i
+                i = ____i_0 + 1
+                result[#result + 1] = ____mapFn_3(____thisArg_1, ____v_2, ____i_0)
+            end
+        end
+        return result
+    end
+end
+
+local function __TS__ArrayIncludes(self, searchElement, fromIndex)
+    if fromIndex == nil then
+        fromIndex = 0
+    end
+    local len = #self
+    local k = fromIndex
+    if fromIndex < 0 then
+        k = len + fromIndex
+    end
+    if k < 0 then
+        k = 0
+    end
+    for i = k + 1, len do
+        if self[i] == searchElement then
+            return true
+        end
+    end
+    return false
+end
+
+local function __TS__ArrayIndexOf(self, searchElement, fromIndex)
+    if fromIndex == nil then
+        fromIndex = 0
+    end
+    local len = #self
+    if len == 0 then
+        return -1
+    end
+    if fromIndex >= len then
+        return -1
+    end
+    if fromIndex < 0 then
+        fromIndex = len + fromIndex
+        if fromIndex < 0 then
+            fromIndex = 0
+        end
+    end
+    for i = fromIndex + 1, len do
+        if self[i] == searchElement then
+            return i - 1
+        end
+    end
+    return -1
+end
+
+local function __TS__ArrayJoin(self, separator)
+    if separator == nil then
+        separator = ","
+    end
+    local parts = {}
+    for i = 1, #self do
+        parts[i] = tostring(self[i])
+    end
+    return table.concat(parts, separator)
+end
+
+local function __TS__ArrayMap(self, callbackfn, thisArg)
+    local result = {}
+    for i = 1, #self do
+        result[i] = callbackfn(thisArg, self[i], i - 1, self)
+    end
+    return result
+end
+
+local function __TS__ArrayPush(self, ...)
+    local items = {...}
+    local len = #self
+    for i = 1, #items do
+        len = len + 1
+        self[len] = items[i]
+    end
+    return len
+end
+
+local function __TS__ArrayPushArray(self, items)
+    local len = #self
+    for i = 1, #items do
+        len = len + 1
+        self[len] = items[i]
+    end
+    return len
+end
+
+local function __TS__CountVarargs(...)
+    return select("#", ...)
+end
+
+local function __TS__ArrayReduce(self, callbackFn, ...)
+    local len = #self
+    local k = 0
+    local accumulator = nil
+    if __TS__CountVarargs(...) ~= 0 then
+        accumulator = ...
+    elseif len > 0 then
+        accumulator = self[1]
+        k = 1
+    else
+        error("Reduce of empty array with no initial value", 0)
+    end
+    for i = k + 1, len do
+        accumulator = callbackFn(
+            nil,
+            accumulator,
+            self[i],
+            i - 1,
+            self
+        )
+    end
+    return accumulator
+end
+
+local function __TS__ArrayReduceRight(self, callbackFn, ...)
+    local len = #self
+    local k = len - 1
+    local accumulator = nil
+    if __TS__CountVarargs(...) ~= 0 then
+        accumulator = ...
+    elseif len > 0 then
+        accumulator = self[k + 1]
+        k = k - 1
+    else
+        error("Reduce of empty array with no initial value", 0)
+    end
+    for i = k + 1, 1, -1 do
+        accumulator = callbackFn(
+            nil,
+            accumulator,
+            self[i],
+            i - 1,
+            self
+        )
+    end
+    return accumulator
+end
+
+local function __TS__ArrayReverse(self)
+    local i = 1
+    local j = #self
+    while i < j do
+        local temp = self[j]
+        self[j] = self[i]
+        self[i] = temp
+        i = i + 1
+        j = j - 1
+    end
+    return self
+end
+
+local function __TS__ArrayUnshift(self, ...)
+    local items = {...}
+    local numItemsToInsert = #items
+    if numItemsToInsert == 0 then
+        return #self
+    end
+    for i = #self, 1, -1 do
+        self[i + numItemsToInsert] = self[i]
+    end
+    for i = 1, numItemsToInsert do
+        self[i] = items[i]
+    end
+    return #self
+end
+
+local function __TS__ArraySort(self, compareFn)
+    if compareFn ~= nil then
+        table.sort(
+            self,
+            function(a, b) return compareFn(nil, a, b) < 0 end
+        )
+    else
+        table.sort(self)
+    end
+    return self
+end
+
+local function __TS__ArraySlice(self, first, last)
+    local len = #self
+    first = first or 0
+    if first < 0 then
+        first = len + first
+        if first < 0 then
+            first = 0
+        end
+    else
+        if first > len then
+            first = len
+        end
+    end
+    last = last or len
+    if last < 0 then
+        last = len + last
+        if last < 0 then
+            last = 0
+        end
+    else
+        if last > len then
+            last = len
+        end
+    end
+    local out = {}
+    first = first + 1
+    last = last + 1
+    local n = 1
+    while first < last do
+        out[n] = self[first]
+        first = first + 1
+        n = n + 1
+    end
+    return out
+end
+
+local function __TS__ArraySome(self, callbackfn, thisArg)
+    for i = 1, #self do
+        if callbackfn(thisArg, self[i], i - 1, self) then
+            return true
+        end
+    end
+    return false
+end
+
+local function __TS__ArraySplice(self, ...)
+    local args = {...}
+    local len = #self
+    local actualArgumentCount = __TS__CountVarargs(...)
+    local start = args[1]
+    local deleteCount = args[2]
+    if start < 0 then
+        start = len + start
+        if start < 0 then
+            start = 0
+        end
+    elseif start > len then
+        start = len
+    end
+    local itemCount = actualArgumentCount - 2
+    if itemCount < 0 then
+        itemCount = 0
+    end
+    local actualDeleteCount
+    if actualArgumentCount == 0 then
+        actualDeleteCount = 0
+    elseif actualArgumentCount == 1 then
+        actualDeleteCount = len - start
+    else
+        actualDeleteCount = deleteCount or 0
+        if actualDeleteCount < 0 then
+            actualDeleteCount = 0
+        end
+        if actualDeleteCount > len - start then
+            actualDeleteCount = len - start
+        end
+    end
+    local out = {}
+    for k = 1, actualDeleteCount do
+        local from = start + k
+        if self[from] ~= nil then
+            out[k] = self[from]
+        end
+    end
+    if itemCount < actualDeleteCount then
+        for k = start + 1, len - actualDeleteCount do
+            local from = k + actualDeleteCount
+            local to = k + itemCount
+            if self[from] then
+                self[to] = self[from]
+            else
+                self[to] = nil
+            end
+        end
+        for k = len - actualDeleteCount + itemCount + 1, len do
+            self[k] = nil
+        end
+    elseif itemCount > actualDeleteCount then
+        for k = len - actualDeleteCount, start + 1, -1 do
+            local from = k + actualDeleteCount
+            local to = k + itemCount
+            if self[from] then
+                self[to] = self[from]
+            else
+                self[to] = nil
+            end
+        end
+    end
+    local j = start + 1
+    for i = 3, actualArgumentCount do
+        self[j] = args[i]
+        j = j + 1
+    end
+    for k = #self, len - actualDeleteCount + itemCount + 1, -1 do
+        self[k] = nil
+    end
+    return out
+end
+
+local function __TS__ArrayToObject(self)
+    local object = {}
+    for i = 1, #self do
+        object[i - 1] = self[i]
+    end
+    return object
+end
+
+local function __TS__ArrayFlat(self, depth)
+    if depth == nil then
+        depth = 1
+    end
+    local result = {}
+    local len = 0
+    for i = 1, #self do
+        local value = self[i]
+        if depth > 0 and __TS__ArrayIsArray(value) then
+            local toAdd
+            if depth == 1 then
+                toAdd = value
+            else
+                toAdd = __TS__ArrayFlat(value, depth - 1)
+            end
+            for j = 1, #toAdd do
+                local val = toAdd[j]
+                len = len + 1
+                result[len] = val
+            end
+        else
+            len = len + 1
+            result[len] = value
+        end
+    end
+    return result
+end
+
+local function __TS__ArrayFlatMap(self, callback, thisArg)
+    local result = {}
+    local len = 0
+    for i = 1, #self do
+        local value = callback(thisArg, self[i], i - 1, self)
+        if __TS__ArrayIsArray(value) then
+            for j = 1, #value do
+                len = len + 1
+                result[len] = value[j]
+            end
+        else
+            len = len + 1
+            result[len] = value
+        end
+    end
+    return result
+end
+
+local function __TS__ArraySetLength(self, length)
+    if length < 0 or length ~= length or length == math.huge or math.floor(length) ~= length then
+        error(
+            "invalid array length: " .. tostring(length),
+            0
+        )
+    end
+    for i = length + 1, #self do
+        self[i] = nil
+    end
+    return length
+end
+
+local __TS__Unpack = table.unpack or unpack
+
+local function __TS__ArrayToReversed(self)
+    local copy = {__TS__Unpack(self)}
+    __TS__ArrayReverse(copy)
+    return copy
+end
+
+local function __TS__ArrayToSorted(self, compareFn)
+    local copy = {__TS__Unpack(self)}
+    __TS__ArraySort(copy, compareFn)
+    return copy
+end
+
+local function __TS__ArrayToSpliced(self, start, deleteCount, ...)
+    local copy = {__TS__Unpack(self)}
+    __TS__ArraySplice(copy, start, deleteCount, ...)
+    return copy
+end
+
+local function __TS__ArrayWith(self, index, value)
+    local copy = {__TS__Unpack(self)}
+    copy[index + 1] = value
+    return copy
+end
+
+local function __TS__New(target, ...)
+    local instance = setmetatable({}, target.prototype)
+    instance:____constructor(...)
+    return instance
+end
+
+local function __TS__InstanceOf(obj, classTbl)
+    if type(classTbl) ~= "table" then
+        error("Right-hand side of 'instanceof' is not an object", 0)
+    end
+    if classTbl[Symbol.hasInstance] ~= nil then
+        return not not classTbl[Symbol.hasInstance](classTbl, obj)
+    end
+    if type(obj) == "table" then
+        local luaClass = obj.constructor
+        while luaClass ~= nil do
+            if luaClass == classTbl then
+                return true
+            end
+            luaClass = luaClass.____super
+        end
+    end
+    return false
+end
+
+local function __TS__Class(self)
+    local c = {prototype = {}}
+    c.prototype.__index = c.prototype
+    c.prototype.constructor = c
+    return c
+end
+
+local __TS__Promise
+do
+    local function makeDeferredPromiseFactory()
+        local resolve
+        local reject
+        local function executor(____, res, rej)
+            resolve = res
+            reject = rej
+        end
+        return function()
+            local promise = __TS__New(__TS__Promise, executor)
+            return promise, resolve, reject
+        end
+    end
+    local makeDeferredPromise = makeDeferredPromiseFactory()
+    local function isPromiseLike(value)
+        return __TS__InstanceOf(value, __TS__Promise)
+    end
+    local function doNothing(self)
+    end
+    local ____pcall = _G.pcall
+    __TS__Promise = __TS__Class()
+    __TS__Promise.name = "__TS__Promise"
+    function __TS__Promise.prototype.____constructor(self, executor)
+        self.state = 0
+        self.fulfilledCallbacks = {}
+        self.rejectedCallbacks = {}
+        self.finallyCallbacks = {}
+        local success, ____error = ____pcall(
+            executor,
+            nil,
+            function(____, v) return self:resolve(v) end,
+            function(____, err) return self:reject(err) end
+        )
+        if not success then
+            self:reject(____error)
+        end
+    end
+    function __TS__Promise.resolve(value)
+        if __TS__InstanceOf(value, __TS__Promise) then
+            return value
+        end
+        local promise = __TS__New(__TS__Promise, doNothing)
+        promise.state = 1
+        promise.value = value
+        return promise
+    end
+    function __TS__Promise.reject(reason)
+        local promise = __TS__New(__TS__Promise, doNothing)
+        promise.state = 2
+        promise.rejectionReason = reason
+        return promise
+    end
+    __TS__Promise.prototype["then"] = function(self, onFulfilled, onRejected)
+        local promise, resolve, reject = makeDeferredPromise()
+        self:addCallbacks(
+            onFulfilled and self:createPromiseResolvingCallback(onFulfilled, resolve, reject) or resolve,
+            onRejected and self:createPromiseResolvingCallback(onRejected, resolve, reject) or reject
+        )
+        return promise
+    end
+    function __TS__Promise.prototype.addCallbacks(self, fulfilledCallback, rejectedCallback)
+        if self.state == 1 then
+            return fulfilledCallback(nil, self.value)
+        end
+        if self.state == 2 then
+            return rejectedCallback(nil, self.rejectionReason)
+        end
+        local ____self_fulfilledCallbacks_0 = self.fulfilledCallbacks
+        ____self_fulfilledCallbacks_0[#____self_fulfilledCallbacks_0 + 1] = fulfilledCallback
+        local ____self_rejectedCallbacks_1 = self.rejectedCallbacks
+        ____self_rejectedCallbacks_1[#____self_rejectedCallbacks_1 + 1] = rejectedCallback
+    end
+    function __TS__Promise.prototype.catch(self, onRejected)
+        return self["then"](self, nil, onRejected)
+    end
+    function __TS__Promise.prototype.finally(self, onFinally)
+        if onFinally then
+            local ____self_finallyCallbacks_2 = self.finallyCallbacks
+            ____self_finallyCallbacks_2[#____self_finallyCallbacks_2 + 1] = onFinally
+            if self.state ~= 0 then
+                onFinally(nil)
+            end
+        end
+        return self
+    end
+    function __TS__Promise.prototype.resolve(self, value)
+        if isPromiseLike(value) then
+            return value:addCallbacks(
+                function(____, v) return self:resolve(v) end,
+                function(____, err) return self:reject(err) end
+            )
+        end
+        if self.state == 0 then
+            self.state = 1
+            self.value = value
+            return self:invokeCallbacks(self.fulfilledCallbacks, value)
+        end
+    end
+    function __TS__Promise.prototype.reject(self, reason)
+        if self.state == 0 then
+            self.state = 2
+            self.rejectionReason = reason
+            return self:invokeCallbacks(self.rejectedCallbacks, reason)
+        end
+    end
+    function __TS__Promise.prototype.invokeCallbacks(self, callbacks, value)
+        local callbacksLength = #callbacks
+        local finallyCallbacks = self.finallyCallbacks
+        local finallyCallbacksLength = #finallyCallbacks
+        if callbacksLength ~= 0 then
+            for i = 1, callbacksLength - 1 do
+                callbacks[i](callbacks, value)
+            end
+            if finallyCallbacksLength == 0 then
+                return callbacks[callbacksLength](callbacks, value)
+            end
+            callbacks[callbacksLength](callbacks, value)
+        end
+        if finallyCallbacksLength ~= 0 then
+            for i = 1, finallyCallbacksLength - 1 do
+                finallyCallbacks[i](finallyCallbacks)
+            end
+            return finallyCallbacks[finallyCallbacksLength](finallyCallbacks)
+        end
+    end
+    function __TS__Promise.prototype.createPromiseResolvingCallback(self, f, resolve, reject)
+        return function(____, value)
+            local success, resultOrError = ____pcall(f, nil, value)
+            if not success then
+                return reject(nil, resultOrError)
+            end
+            return self:handleCallbackValue(resultOrError, resolve, reject)
+        end
+    end
+    function __TS__Promise.prototype.handleCallbackValue(self, value, resolve, reject)
+        if isPromiseLike(value) then
+            local nextpromise = value
+            if nextpromise.state == 1 then
+                return resolve(nil, nextpromise.value)
+            elseif nextpromise.state == 2 then
+                return reject(nil, nextpromise.rejectionReason)
+            else
+                return nextpromise:addCallbacks(resolve, reject)
+            end
+        else
+            return resolve(nil, value)
+        end
+    end
+end
+
+local __TS__AsyncAwaiter, __TS__Await
+do
+    local ____coroutine = _G.coroutine or ({})
+    local cocreate = ____coroutine.create
+    local coresume = ____coroutine.resume
+    local costatus = ____coroutine.status
+    local coyield = ____coroutine.yield
+    function __TS__AsyncAwaiter(generator)
+        return __TS__New(
+            __TS__Promise,
+            function(____, resolve, reject)
+                local fulfilled, step, resolved, asyncCoroutine
+                function fulfilled(self, value)
+                    local success, resultOrError = coresume(asyncCoroutine, value)
+                    if success then
+                        return step(resultOrError)
+                    end
+                    return reject(nil, resultOrError)
+                end
+                function step(result)
+                    if resolved then
+                        return
+                    end
+                    if costatus(asyncCoroutine) == "dead" then
+                        return resolve(nil, result)
+                    end
+                    return __TS__Promise.resolve(result):addCallbacks(fulfilled, reject)
+                end
+                resolved = false
+                asyncCoroutine = cocreate(generator)
+                local success, resultOrError = coresume(
+                    asyncCoroutine,
+                    function(____, v)
+                        resolved = true
+                        return __TS__Promise.resolve(v):addCallbacks(resolve, reject)
+                    end
+                )
+                if success then
+                    return step(resultOrError)
+                else
+                    return reject(nil, resultOrError)
+                end
+            end
+        )
+    end
+    function __TS__Await(thing)
+        return coyield(thing)
+    end
+end
+
+local function __TS__ClassExtends(target, base)
+    target.____super = base
+    local staticMetatable = setmetatable({__index = base}, base)
+    setmetatable(target, staticMetatable)
+    local baseMetatable = getmetatable(base)
+    if baseMetatable then
+        if type(baseMetatable.__index) == "function" then
+            staticMetatable.__index = baseMetatable.__index
+        end
+        if type(baseMetatable.__newindex) == "function" then
+            staticMetatable.__newindex = baseMetatable.__newindex
+        end
+    end
+    setmetatable(target.prototype, base.prototype)
+    if type(base.prototype.__index) == "function" then
+        target.prototype.__index = base.prototype.__index
+    end
+    if type(base.prototype.__newindex) == "function" then
+        target.prototype.__newindex = base.prototype.__newindex
+    end
+    if type(base.prototype.__tostring) == "function" then
+        target.prototype.__tostring = base.prototype.__tostring
+    end
+end
+
+local function __TS__CloneDescriptor(____bindingPattern0)
+    local value
+    local writable
+    local set
+    local get
+    local configurable
+    local enumerable
+    enumerable = ____bindingPattern0.enumerable
+    configurable = ____bindingPattern0.configurable
+    get = ____bindingPattern0.get
+    set = ____bindingPattern0.set
+    writable = ____bindingPattern0.writable
+    value = ____bindingPattern0.value
+    local descriptor = {enumerable = enumerable == true, configurable = configurable == true}
+    local hasGetterOrSetter = get ~= nil or set ~= nil
+    local hasValueOrWritableAttribute = writable ~= nil or value ~= nil
+    if hasGetterOrSetter and hasValueOrWritableAttribute then
+        error("Invalid property descriptor. Cannot both specify accessors and a value or writable attribute.", 0)
+    end
+    if get or set then
+        descriptor.get = get
+        descriptor.set = set
+    else
+        descriptor.value = value
+        descriptor.writable = writable == true
+    end
+    return descriptor
+end
+
+local function __TS__Decorate(self, originalValue, decorators, context)
+    local result = originalValue
+    do
+        local i = #decorators
+        while i >= 0 do
+            local decorator = decorators[i + 1]
+            if decorator ~= nil then
+                local ____decorator_result_0 = decorator(self, result, context)
+                if ____decorator_result_0 == nil then
+                    ____decorator_result_0 = result
+                end
+                result = ____decorator_result_0
+            end
+            i = i - 1
+        end
+    end
+    return result
+end
+
+local function __TS__ObjectAssign(target, ...)
+    local sources = {...}
+    for i = 1, #sources do
+        local source = sources[i]
+        for key in pairs(source) do
+            target[key] = source[key]
+        end
+    end
+    return target
+end
+
+local function __TS__ObjectGetOwnPropertyDescriptor(object, key)
+    local metatable = getmetatable(object)
+    if not metatable then
+        return
+    end
+    if not rawget(metatable, "_descriptors") then
+        return
+    end
+    return rawget(metatable, "_descriptors")[key]
+end
+
+local __TS__DescriptorGet
+do
+    local getmetatable = _G.getmetatable
+    local ____rawget = _G.rawget
+    function __TS__DescriptorGet(self, metatable, key)
+        while metatable do
+            local rawResult = ____rawget(metatable, key)
+            if rawResult ~= nil then
+                return rawResult
+            end
+            local descriptors = ____rawget(metatable, "_descriptors")
+            if descriptors then
+                local descriptor = descriptors[key]
+                if descriptor ~= nil then
+                    if descriptor.get then
+                        return descriptor.get(self)
+                    end
+                    return descriptor.value
+                end
+            end
+            metatable = getmetatable(metatable)
+        end
+    end
+end
+
+local __TS__DescriptorSet
+do
+    local getmetatable = _G.getmetatable
+    local ____rawget = _G.rawget
+    local rawset = _G.rawset
+    function __TS__DescriptorSet(self, metatable, key, value)
+        while metatable do
+            local descriptors = ____rawget(metatable, "_descriptors")
+            if descriptors then
+                local descriptor = descriptors[key]
+                if descriptor ~= nil then
+                    if descriptor.set then
+                        descriptor.set(self, value)
+                    else
+                        if descriptor.writable == false then
+                            error(
+                                ((("Cannot assign to read only property '" .. key) .. "' of object '") .. tostring(self)) .. "'",
+                                0
+                            )
+                        end
+                        descriptor.value = value
+                    end
+                    return
+                end
+            end
+            metatable = getmetatable(metatable)
+        end
+        rawset(self, key, value)
+    end
+end
+
+local __TS__SetDescriptor
+do
+    local getmetatable = _G.getmetatable
+    local function descriptorIndex(self, key)
+        return __TS__DescriptorGet(
+            self,
+            getmetatable(self),
+            key
+        )
+    end
+    local function descriptorNewIndex(self, key, value)
+        return __TS__DescriptorSet(
+            self,
+            getmetatable(self),
+            key,
+            value
+        )
+    end
+    function __TS__SetDescriptor(target, key, desc, isPrototype)
+        if isPrototype == nil then
+            isPrototype = false
+        end
+        local ____isPrototype_0
+        if isPrototype then
+            ____isPrototype_0 = target
+        else
+            ____isPrototype_0 = getmetatable(target)
+        end
+        local metatable = ____isPrototype_0
+        if not metatable then
+            metatable = {}
+            setmetatable(target, metatable)
+        end
+        local value = rawget(target, key)
+        if value ~= nil then
+            rawset(target, key, nil)
+        end
+        if not rawget(metatable, "_descriptors") then
+            metatable._descriptors = {}
+        end
+        metatable._descriptors[key] = __TS__CloneDescriptor(desc)
+        metatable.__index = descriptorIndex
+        metatable.__newindex = descriptorNewIndex
+    end
+end
+
+local function __TS__DecorateLegacy(decorators, target, key, desc)
+    local result = target
+    do
+        local i = #decorators
+        while i >= 0 do
+            local decorator = decorators[i + 1]
+            if decorator ~= nil then
+                local oldResult = result
+                if key == nil then
+                    result = decorator(nil, result)
+                elseif desc == true then
+                    local value = rawget(target, key)
+                    local descriptor = __TS__ObjectGetOwnPropertyDescriptor(target, key) or ({configurable = true, writable = true, value = value})
+                    local desc = decorator(nil, target, key, descriptor) or descriptor
+                    local isSimpleValue = desc.configurable == true and desc.writable == true and not desc.get and not desc.set
+                    if isSimpleValue then
+                        rawset(target, key, desc.value)
+                    else
+                        __TS__SetDescriptor(
+                            target,
+                            key,
+                            __TS__ObjectAssign({}, descriptor, desc)
+                        )
+                    end
+                elseif desc == false then
+                    result = decorator(nil, target, key, desc)
+                else
+                    result = decorator(nil, target, key)
+                end
+                result = result or oldResult
+            end
+            i = i - 1
+        end
+    end
+    return result
+end
+
+local function __TS__DecorateParam(paramIndex, decorator)
+    return function(____, target, key) return decorator(nil, target, key, paramIndex) end
+end
+
+local function __TS__StringIncludes(self, searchString, position)
+    if not position then
+        position = 1
+    else
+        position = position + 1
+    end
+    local index = string.find(self, searchString, position, true)
+    return index ~= nil
+end
+
+local Error, RangeError, ReferenceError, SyntaxError, TypeError, URIError
+do
+    local function getErrorStack(self, constructor)
+        if debug == nil then
+            return nil
+        end
+        local level = 1
+        while true do
+            local info = debug.getinfo(level, "f")
+            level = level + 1
+            if not info then
+                level = 1
+                break
+            elseif info.func == constructor then
+                break
+            end
+        end
+        if __TS__StringIncludes(_VERSION, "Lua 5.0") then
+            return debug.traceback(("[Level " .. tostring(level)) .. "]")
+        elseif _VERSION == "Lua 5.1" then
+            return string.sub(
+                debug.traceback("", level),
+                2
+            )
+        else
+            return debug.traceback(nil, level)
+        end
+    end
+    local function wrapErrorToString(self, getDescription)
+        return function(self)
+            local description = getDescription(self)
+            local caller = debug.getinfo(3, "f")
+            local isClassicLua = __TS__StringIncludes(_VERSION, "Lua 5.0")
+            if isClassicLua or caller and caller.func ~= error then
+                return description
+            else
+                return (description .. "\n") .. tostring(self.stack)
+            end
+        end
+    end
+    local function initErrorClass(self, Type, name)
+        Type.name = name
+        return setmetatable(
+            Type,
+            {__call = function(____, _self, message) return __TS__New(Type, message) end}
+        )
+    end
+    local ____initErrorClass_1 = initErrorClass
+    local ____class_0 = __TS__Class()
+    ____class_0.name = ""
+    function ____class_0.prototype.____constructor(self, message)
+        if message == nil then
+            message = ""
+        end
+        self.message = message
+        self.name = "Error"
+        self.stack = getErrorStack(nil, __TS__New)
+        local metatable = getmetatable(self)
+        if metatable and not metatable.__errorToStringPatched then
+            metatable.__errorToStringPatched = true
+            metatable.__tostring = wrapErrorToString(nil, metatable.__tostring)
+        end
+    end
+    function ____class_0.prototype.__tostring(self)
+        return self.message ~= "" and (self.name .. ": ") .. self.message or self.name
+    end
+    Error = ____initErrorClass_1(nil, ____class_0, "Error")
+    local function createErrorClass(self, name)
+        local ____initErrorClass_3 = initErrorClass
+        local ____class_2 = __TS__Class()
+        ____class_2.name = ____class_2.name
+        __TS__ClassExtends(____class_2, Error)
+        function ____class_2.prototype.____constructor(self, ...)
+            ____class_2.____super.prototype.____constructor(self, ...)
+            self.name = name
+        end
+        return ____initErrorClass_3(nil, ____class_2, name)
+    end
+    RangeError = createErrorClass(nil, "RangeError")
+    ReferenceError = createErrorClass(nil, "ReferenceError")
+    SyntaxError = createErrorClass(nil, "SyntaxError")
+    TypeError = createErrorClass(nil, "TypeError")
+    URIError = createErrorClass(nil, "URIError")
+end
+
+local function __TS__ObjectGetOwnPropertyDescriptors(object)
+    local metatable = getmetatable(object)
+    if not metatable then
+        return {}
+    end
+    return rawget(metatable, "_descriptors") or ({})
+end
+
+local function __TS__Delete(target, key)
+    local descriptors = __TS__ObjectGetOwnPropertyDescriptors(target)
+    local descriptor = descriptors[key]
+    if descriptor then
+        if not descriptor.configurable then
+            error(
+                __TS__New(
+                    TypeError,
+                    ((("Cannot delete property " .. tostring(key)) .. " of ") .. tostring(target)) .. "."
+                ),
+                0
+            )
+        end
+        descriptors[key] = nil
+        return true
+    end
+    target[key] = nil
+    return true
+end
+
+local function __TS__StringAccess(self, index)
+    if index >= 0 and index < #self then
+        return string.sub(self, index + 1, index + 1)
+    end
+end
+
+local function __TS__DelegatedYield(iterable)
+    if type(iterable) == "string" then
+        for index = 0, #iterable - 1 do
+            coroutine.yield(__TS__StringAccess(iterable, index))
+        end
+    elseif iterable.____coroutine ~= nil then
+        local co = iterable.____coroutine
+        while true do
+            local status, value = coroutine.resume(co)
+            if not status then
+                error(value, 0)
+            end
+            if coroutine.status(co) == "dead" then
+                return value
+            else
+                coroutine.yield(value)
+            end
+        end
+    elseif iterable[Symbol.iterator] then
+        local iterator = iterable[Symbol.iterator](iterable)
+        while true do
+            local result = iterator:next()
+            if result.done then
+                return result.value
+            else
+                coroutine.yield(result.value)
+            end
+        end
+    else
+        for ____, value in ipairs(iterable) do
+            coroutine.yield(value)
+        end
+    end
+end
+
+local function __TS__FunctionBind(fn, ...)
+    local boundArgs = {...}
+    return function(____, ...)
+        local args = {...}
+        __TS__ArrayUnshift(
+            args,
+            __TS__Unpack(boundArgs)
+        )
+        return fn(__TS__Unpack(args))
+    end
+end
+
+local __TS__Generator
+do
+    local function generatorIterator(self)
+        return self
+    end
+    local function generatorNext(self, ...)
+        local co = self.____coroutine
+        if coroutine.status(co) == "dead" then
+            return {done = true}
+        end
+        local status, value = coroutine.resume(co, ...)
+        if not status then
+            error(value, 0)
+        end
+        return {
+            value = value,
+            done = coroutine.status(co) == "dead"
+        }
+    end
+    function __TS__Generator(fn)
+        return function(...)
+            local args = {...}
+            local argsLength = __TS__CountVarargs(...)
+            return {
+                ____coroutine = coroutine.create(function() return fn(__TS__Unpack(args, 1, argsLength)) end),
+                [Symbol.iterator] = generatorIterator,
+                next = generatorNext
+            }
+        end
+    end
+end
+
+local function __TS__InstanceOfObject(value)
+    local valueType = type(value)
+    return valueType == "table" or valueType == "function"
+end
+
+local function __TS__LuaIteratorSpread(self, state, firstKey)
+    local results = {}
+    local key, value = self(state, firstKey)
+    while key do
+        results[#results + 1] = {key, value}
+        key, value = self(state, key)
+    end
+    return __TS__Unpack(results)
+end
+
+local Map
+do
+    Map = __TS__Class()
+    Map.name = "Map"
+    function Map.prototype.____constructor(self, entries)
+        self[Symbol.toStringTag] = "Map"
+        self.items = {}
+        self.size = 0
+        self.nextKey = {}
+        self.previousKey = {}
+        if entries == nil then
+            return
+        end
+        local iterable = entries
+        if iterable[Symbol.iterator] then
+            local iterator = iterable[Symbol.iterator](iterable)
+            while true do
+                local result = iterator:next()
+                if result.done then
+                    break
+                end
+                local value = result.value
+                self:set(value[1], value[2])
+            end
+        else
+            local array = entries
+            for ____, kvp in ipairs(array) do
+                self:set(kvp[1], kvp[2])
+            end
+        end
+    end
+    function Map.prototype.clear(self)
+        self.items = {}
+        self.nextKey = {}
+        self.previousKey = {}
+        self.firstKey = nil
+        self.lastKey = nil
+        self.size = 0
+    end
+    function Map.prototype.delete(self, key)
+        local contains = self:has(key)
+        if contains then
+            self.size = self.size - 1
+            local next = self.nextKey[key]
+            local previous = self.previousKey[key]
+            if next ~= nil and previous ~= nil then
+                self.nextKey[previous] = next
+                self.previousKey[next] = previous
+            elseif next ~= nil then
+                self.firstKey = next
+                self.previousKey[next] = nil
+            elseif previous ~= nil then
+                self.lastKey = previous
+                self.nextKey[previous] = nil
+            else
+                self.firstKey = nil
+                self.lastKey = nil
+            end
+            self.nextKey[key] = nil
+            self.previousKey[key] = nil
+        end
+        self.items[key] = nil
+        return contains
+    end
+    function Map.prototype.forEach(self, callback)
+        for ____, key in __TS__Iterator(self:keys()) do
+            callback(nil, self.items[key], key, self)
+        end
+    end
+    function Map.prototype.get(self, key)
+        return self.items[key]
+    end
+    function Map.prototype.has(self, key)
+        return self.nextKey[key] ~= nil or self.lastKey == key
+    end
+    function Map.prototype.set(self, key, value)
+        local isNewValue = not self:has(key)
+        if isNewValue then
+            self.size = self.size + 1
+        end
+        self.items[key] = value
+        if self.firstKey == nil then
+            self.firstKey = key
+            self.lastKey = key
+        elseif isNewValue then
+            self.nextKey[self.lastKey] = key
+            self.previousKey[key] = self.lastKey
+            self.lastKey = key
+        end
+        return self
+    end
+    Map.prototype[Symbol.iterator] = function(self)
+        return self:entries()
+    end
+    function Map.prototype.entries(self)
+        local items = self.items
+        local nextKey = self.nextKey
+        local key = self.firstKey
+        return {
+            [Symbol.iterator] = function(self)
+                return self
+            end,
+            next = function(self)
+                local result = {done = not key, value = {key, items[key]}}
+                key = nextKey[key]
+                return result
+            end
+        }
+    end
+    function Map.prototype.keys(self)
+        local nextKey = self.nextKey
+        local key = self.firstKey
+        return {
+            [Symbol.iterator] = function(self)
+                return self
+            end,
+            next = function(self)
+                local result = {done = not key, value = key}
+                key = nextKey[key]
+                return result
+            end
+        }
+    end
+    function Map.prototype.values(self)
+        local items = self.items
+        local nextKey = self.nextKey
+        local key = self.firstKey
+        return {
+            [Symbol.iterator] = function(self)
+                return self
+            end,
+            next = function(self)
+                local result = {done = not key, value = items[key]}
+                key = nextKey[key]
+                return result
+            end
+        }
+    end
+    Map[Symbol.species] = Map
+end
+
+local function __TS__MapGroupBy(items, keySelector)
+    local result = __TS__New(Map)
+    local i = 0
+    for ____, item in __TS__Iterator(items) do
+        local key = keySelector(nil, item, i)
+        if result:has(key) then
+            local ____temp_0 = result:get(key)
+            ____temp_0[#____temp_0 + 1] = item
+        else
+            result:set(key, {item})
+        end
+        i = i + 1
+    end
+    return result
+end
+
+local __TS__Match = string.match
+
+local __TS__MathAtan2 = math.atan2 or math.atan
+
+local __TS__MathModf = math.modf
+
+local function __TS__NumberIsNaN(value)
+    return value ~= value
+end
+
+local function __TS__MathSign(val)
+    if __TS__NumberIsNaN(val) or val == 0 then
+        return val
+    end
+    if val < 0 then
+        return -1
+    end
+    return 1
+end
+
+local function __TS__NumberIsFinite(value)
+    return type(value) == "number" and value == value and value ~= math.huge and value ~= -math.huge
+end
+
+local function __TS__MathTrunc(val)
+    if not __TS__NumberIsFinite(val) or val == 0 then
+        return val
+    end
+    return val > 0 and math.floor(val) or math.ceil(val)
+end
+
+local function __TS__Number(value)
+    local valueType = type(value)
+    if valueType == "number" then
+        return value
+    elseif valueType == "string" then
+        local numberValue = tonumber(value)
+        if numberValue then
+            return numberValue
+        end
+        if value == "Infinity" then
+            return math.huge
+        end
+        if value == "-Infinity" then
+            return -math.huge
+        end
+        local stringWithoutSpaces = string.gsub(value, "%s", "")
+        if stringWithoutSpaces == "" then
+            return 0
+        end
+        return 0 / 0
+    elseif valueType == "boolean" then
+        return value and 1 or 0
+    else
+        return 0 / 0
+    end
+end
+
+local function __TS__NumberIsInteger(value)
+    return __TS__NumberIsFinite(value) and math.floor(value) == value
+end
+
+local function __TS__StringSubstring(self, start, ____end)
+    if ____end ~= ____end then
+        ____end = 0
+    end
+    if ____end ~= nil and start > ____end then
+        start, ____end = ____end, start
+    end
+    if start >= 0 then
+        start = start + 1
+    else
+        start = 1
+    end
+    if ____end ~= nil and ____end < 0 then
+        ____end = 0
+    end
+    return string.sub(self, start, ____end)
+end
+
+local __TS__ParseInt
+do
+    local parseIntBasePattern = "0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTvVwWxXyYzZ"
+    function __TS__ParseInt(numberString, base)
+        if base == nil then
+            base = 10
+            local hexMatch = __TS__Match(numberString, "^%s*-?0[xX]")
+            if hexMatch ~= nil then
+                base = 16
+                numberString = (__TS__Match(hexMatch, "-")) and "-" .. __TS__StringSubstring(numberString, #hexMatch) or __TS__StringSubstring(numberString, #hexMatch)
+            end
+        end
+        if base < 2 or base > 36 then
+            return 0 / 0
+        end
+        local allowedDigits = base <= 10 and __TS__StringSubstring(parseIntBasePattern, 0, base) or __TS__StringSubstring(parseIntBasePattern, 0, 10 + 2 * (base - 10))
+        local pattern = ("^%s*(-?[" .. allowedDigits) .. "]*)"
+        local number = tonumber((__TS__Match(numberString, pattern)), base)
+        if number == nil then
+            return 0 / 0
+        end
+        if number >= 0 then
+            return math.floor(number)
+        else
+            return math.ceil(number)
+        end
+    end
+end
+
+local function __TS__ParseFloat(numberString)
+    local infinityMatch = __TS__Match(numberString, "^%s*(-?Infinity)")
+    if infinityMatch ~= nil then
+        return __TS__StringAccess(infinityMatch, 0) == "-" and -math.huge or math.huge
+    end
+    local number = tonumber((__TS__Match(numberString, "^%s*(-?%d+%.?%d*)")))
+    return number or 0 / 0
+end
+
+local __TS__NumberToString
+do
+    local radixChars = "0123456789abcdefghijklmnopqrstuvwxyz"
+    function __TS__NumberToString(self, radix)
+        if radix == nil or radix == 10 or self == math.huge or self == -math.huge or self ~= self then
+            return tostring(self)
+        end
+        radix = math.floor(radix)
+        if radix < 2 or radix > 36 then
+            error("toString() radix argument must be between 2 and 36", 0)
+        end
+        local integer, fraction = __TS__MathModf(math.abs(self))
+        local result = ""
+        if radix == 8 then
+            result = string.format("%o", integer)
+        elseif radix == 16 then
+            result = string.format("%x", integer)
+        else
+            repeat
+                do
+                    result = __TS__StringAccess(radixChars, integer % radix) .. result
+                    integer = math.floor(integer / radix)
+                end
+            until not (integer ~= 0)
+        end
+        if fraction ~= 0 then
+            result = result .. "."
+            local delta = 1e-16
+            repeat
+                do
+                    fraction = fraction * radix
+                    delta = delta * radix
+                    local digit = math.floor(fraction)
+                    result = result .. __TS__StringAccess(radixChars, digit)
+                    fraction = fraction - digit
+                end
+            until not (fraction >= delta)
+        end
+        if self < 0 then
+            result = "-" .. result
+        end
+        return result
+    end
+end
+
+local function __TS__NumberToFixed(self, fractionDigits)
+    if math.abs(self) >= 1e+21 or self ~= self then
+        return tostring(self)
+    end
+    local f = math.floor(fractionDigits or 0)
+    if f < 0 or f > 99 then
+        error("toFixed() digits argument must be between 0 and 99", 0)
+    end
+    return string.format(
+        ("%." .. tostring(f)) .. "f",
+        self
+    )
+end
+
+local function __TS__ObjectDefineProperty(target, key, desc)
+    local luaKey = type(key) == "number" and key + 1 or key
+    local value = rawget(target, luaKey)
+    local hasGetterOrSetter = desc.get ~= nil or desc.set ~= nil
+    local descriptor
+    if hasGetterOrSetter then
+        if value ~= nil then
+            error(
+                "Cannot redefine property: " .. tostring(key),
+                0
+            )
+        end
+        descriptor = desc
+    else
+        local valueExists = value ~= nil
+        local ____desc_set_4 = desc.set
+        local ____desc_get_5 = desc.get
+        local ____desc_configurable_0 = desc.configurable
+        if ____desc_configurable_0 == nil then
+            ____desc_configurable_0 = valueExists
+        end
+        local ____desc_enumerable_1 = desc.enumerable
+        if ____desc_enumerable_1 == nil then
+            ____desc_enumerable_1 = valueExists
+        end
+        local ____desc_writable_2 = desc.writable
+        if ____desc_writable_2 == nil then
+            ____desc_writable_2 = valueExists
+        end
+        local ____temp_3
+        if desc.value ~= nil then
+            ____temp_3 = desc.value
+        else
+            ____temp_3 = value
+        end
+        descriptor = {
+            set = ____desc_set_4,
+            get = ____desc_get_5,
+            configurable = ____desc_configurable_0,
+            enumerable = ____desc_enumerable_1,
+            writable = ____desc_writable_2,
+            value = ____temp_3
+        }
+    end
+    __TS__SetDescriptor(target, luaKey, descriptor)
+    return target
+end
+
+local function __TS__ObjectEntries(obj)
+    local result = {}
+    local len = 0
+    for key in pairs(obj) do
+        len = len + 1
+        result[len] = {key, obj[key]}
+    end
+    return result
+end
+
+local function __TS__ObjectFromEntries(entries)
+    local obj = {}
+    local iterable = entries
+    if iterable[Symbol.iterator] then
+        local iterator = iterable[Symbol.iterator](iterable)
+        while true do
+            local result = iterator:next()
+            if result.done then
+                break
+            end
+            local value = result.value
+            obj[value[1]] = value[2]
+        end
+    else
+        for ____, entry in ipairs(entries) do
+            obj[entry[1]] = entry[2]
+        end
+    end
+    return obj
+end
+
+local function __TS__ObjectGroupBy(items, keySelector)
+    local result = {}
+    local i = 0
+    for ____, item in __TS__Iterator(items) do
+        local key = keySelector(nil, item, i)
+        if result[key] ~= nil then
+            local ____result_key_0 = result[key]
+            ____result_key_0[#____result_key_0 + 1] = item
+        else
+            result[key] = {item}
+        end
+        i = i + 1
+    end
+    return result
+end
+
+local function __TS__ObjectKeys(obj)
+    local result = {}
+    local len = 0
+    for key in pairs(obj) do
+        len = len + 1
+        result[len] = key
+    end
+    return result
+end
+
+local function __TS__ObjectRest(target, usedProperties)
+    local result = {}
+    for property in pairs(target) do
+        if not usedProperties[property] then
+            result[property] = target[property]
+        end
+    end
+    return result
+end
+
+local function __TS__ObjectValues(obj)
+    local result = {}
+    local len = 0
+    for key in pairs(obj) do
+        len = len + 1
+        result[len] = obj[key]
+    end
+    return result
+end
+
+local function __TS__PromiseAll(iterable)
+    local results = {}
+    local toResolve = {}
+    local numToResolve = 0
+    local i = 0
+    for ____, item in __TS__Iterator(iterable) do
+        if __TS__InstanceOf(item, __TS__Promise) then
+            if item.state == 1 then
+                results[i + 1] = item.value
+            elseif item.state == 2 then
+                return __TS__Promise.reject(item.rejectionReason)
+            else
+                numToResolve = numToResolve + 1
+                toResolve[i] = item
+            end
+        else
+            results[i + 1] = item
+        end
+        i = i + 1
+    end
+    if numToResolve == 0 then
+        return __TS__Promise.resolve(results)
+    end
+    return __TS__New(
+        __TS__Promise,
+        function(____, resolve, reject)
+            for index, promise in pairs(toResolve) do
+                promise["then"](
+                    promise,
+                    function(____, data)
+                        results[index + 1] = data
+                        numToResolve = numToResolve - 1
+                        if numToResolve == 0 then
+                            resolve(nil, results)
+                        end
+                    end,
+                    function(____, reason)
+                        reject(nil, reason)
+                    end
+                )
+            end
+        end
+    )
+end
+
+local function __TS__PromiseAllSettled(iterable)
+    local results = {}
+    local toResolve = {}
+    local numToResolve = 0
+    local i = 0
+    for ____, item in __TS__Iterator(iterable) do
+        if __TS__InstanceOf(item, __TS__Promise) then
+            if item.state == 1 then
+                results[i + 1] = {status = "fulfilled", value = item.value}
+            elseif item.state == 2 then
+                results[i + 1] = {status = "rejected", reason = item.rejectionReason}
+            else
+                numToResolve = numToResolve + 1
+                toResolve[i] = item
+            end
+        else
+            results[i + 1] = {status = "fulfilled", value = item}
+        end
+        i = i + 1
+    end
+    if numToResolve == 0 then
+        return __TS__Promise.resolve(results)
+    end
+    return __TS__New(
+        __TS__Promise,
+        function(____, resolve)
+            for index, promise in pairs(toResolve) do
+                promise["then"](
+                    promise,
+                    function(____, data)
+                        results[index + 1] = {status = "fulfilled", value = data}
+                        numToResolve = numToResolve - 1
+                        if numToResolve == 0 then
+                            resolve(nil, results)
+                        end
+                    end,
+                    function(____, reason)
+                        results[index + 1] = {status = "rejected", reason = reason}
+                        numToResolve = numToResolve - 1
+                        if numToResolve == 0 then
+                            resolve(nil, results)
+                        end
+                    end
+                )
+            end
+        end
+    )
+end
+
+local function __TS__PromiseAny(iterable)
+    local rejections = {}
+    local pending = {}
+    for ____, item in __TS__Iterator(iterable) do
+        if __TS__InstanceOf(item, __TS__Promise) then
+            if item.state == 1 then
+                return __TS__Promise.resolve(item.value)
+            elseif item.state == 2 then
+                rejections[#rejections + 1] = item.rejectionReason
+            else
+                pending[#pending + 1] = item
+            end
+        else
+            return __TS__Promise.resolve(item)
+        end
+    end
+    if #pending == 0 then
+        return __TS__Promise.reject("No promises to resolve with .any()")
+    end
+    local numResolved = 0
+    return __TS__New(
+        __TS__Promise,
+        function(____, resolve, reject)
+            for ____, promise in ipairs(pending) do
+                promise["then"](
+                    promise,
+                    function(____, data)
+                        resolve(nil, data)
+                    end,
+                    function(____, reason)
+                        rejections[#rejections + 1] = reason
+                        numResolved = numResolved + 1
+                        if numResolved == #pending then
+                            reject(nil, {name = "AggregateError", message = "All Promises rejected", errors = rejections})
+                        end
+                    end
+                )
+            end
+        end
+    )
+end
+
+local function __TS__PromiseRace(iterable)
+    local pending = {}
+    for ____, item in __TS__Iterator(iterable) do
+        if __TS__InstanceOf(item, __TS__Promise) then
+            if item.state == 1 then
+                return __TS__Promise.resolve(item.value)
+            elseif item.state == 2 then
+                return __TS__Promise.reject(item.rejectionReason)
+            else
+                pending[#pending + 1] = item
+            end
+        else
+            return __TS__Promise.resolve(item)
+        end
+    end
+    return __TS__New(
+        __TS__Promise,
+        function(____, resolve, reject)
+            for ____, promise in ipairs(pending) do
+                promise["then"](
+                    promise,
+                    function(____, value) return resolve(nil, value) end,
+                    function(____, reason) return reject(nil, reason) end
+                )
+            end
+        end
+    )
+end
+
+local Set
+do
+    Set = __TS__Class()
+    Set.name = "Set"
+    function Set.prototype.____constructor(self, values)
+        self[Symbol.toStringTag] = "Set"
+        self.size = 0
+        self.nextKey = {}
+        self.previousKey = {}
+        if values == nil then
+            return
+        end
+        local iterable = values
+        if iterable[Symbol.iterator] then
+            local iterator = iterable[Symbol.iterator](iterable)
+            while true do
+                local result = iterator:next()
+                if result.done then
+                    break
+                end
+                self:add(result.value)
+            end
+        else
+            local array = values
+            for ____, value in ipairs(array) do
+                self:add(value)
+            end
+        end
+    end
+    function Set.prototype.add(self, value)
+        local isNewValue = not self:has(value)
+        if isNewValue then
+            self.size = self.size + 1
+        end
+        if self.firstKey == nil then
+            self.firstKey = value
+            self.lastKey = value
+        elseif isNewValue then
+            self.nextKey[self.lastKey] = value
+            self.previousKey[value] = self.lastKey
+            self.lastKey = value
+        end
+        return self
+    end
+    function Set.prototype.clear(self)
+        self.nextKey = {}
+        self.previousKey = {}
+        self.firstKey = nil
+        self.lastKey = nil
+        self.size = 0
+    end
+    function Set.prototype.delete(self, value)
+        local contains = self:has(value)
+        if contains then
+            self.size = self.size - 1
+            local next = self.nextKey[value]
+            local previous = self.previousKey[value]
+            if next ~= nil and previous ~= nil then
+                self.nextKey[previous] = next
+                self.previousKey[next] = previous
+            elseif next ~= nil then
+                self.firstKey = next
+                self.previousKey[next] = nil
+            elseif previous ~= nil then
+                self.lastKey = previous
+                self.nextKey[previous] = nil
+            else
+                self.firstKey = nil
+                self.lastKey = nil
+            end
+            self.nextKey[value] = nil
+            self.previousKey[value] = nil
+        end
+        return contains
+    end
+    function Set.prototype.forEach(self, callback)
+        for ____, key in __TS__Iterator(self:keys()) do
+            callback(nil, key, key, self)
+        end
+    end
+    function Set.prototype.has(self, value)
+        return self.nextKey[value] ~= nil or self.lastKey == value
+    end
+    Set.prototype[Symbol.iterator] = function(self)
+        return self:values()
+    end
+    function Set.prototype.entries(self)
+        local nextKey = self.nextKey
+        local key = self.firstKey
+        return {
+            [Symbol.iterator] = function(self)
+                return self
+            end,
+            next = function(self)
+                local result = {done = not key, value = {key, key}}
+                key = nextKey[key]
+                return result
+            end
+        }
+    end
+    function Set.prototype.keys(self)
+        local nextKey = self.nextKey
+        local key = self.firstKey
+        return {
+            [Symbol.iterator] = function(self)
+                return self
+            end,
+            next = function(self)
+                local result = {done = not key, value = key}
+                key = nextKey[key]
+                return result
+            end
+        }
+    end
+    function Set.prototype.values(self)
+        local nextKey = self.nextKey
+        local key = self.firstKey
+        return {
+            [Symbol.iterator] = function(self)
+                return self
+            end,
+            next = function(self)
+                local result = {done = not key, value = key}
+                key = nextKey[key]
+                return result
+            end
+        }
+    end
+    function Set.prototype.union(self, other)
+        local result = __TS__New(Set, self)
+        for ____, item in __TS__Iterator(other) do
+            result:add(item)
+        end
+        return result
+    end
+    function Set.prototype.intersection(self, other)
+        local result = __TS__New(Set)
+        for ____, item in __TS__Iterator(self) do
+            if other:has(item) then
+                result:add(item)
+            end
+        end
+        return result
+    end
+    function Set.prototype.difference(self, other)
+        local result = __TS__New(Set, self)
+        for ____, item in __TS__Iterator(other) do
+            result:delete(item)
+        end
+        return result
+    end
+    function Set.prototype.symmetricDifference(self, other)
+        local result = __TS__New(Set, self)
+        for ____, item in __TS__Iterator(other) do
+            if self:has(item) then
+                result:delete(item)
+            else
+                result:add(item)
+            end
+        end
+        return result
+    end
+    function Set.prototype.isSubsetOf(self, other)
+        for ____, item in __TS__Iterator(self) do
+            if not other:has(item) then
+                return false
+            end
+        end
+        return true
+    end
+    function Set.prototype.isSupersetOf(self, other)
+        for ____, item in __TS__Iterator(other) do
+            if not self:has(item) then
+                return false
+            end
+        end
+        return true
+    end
+    function Set.prototype.isDisjointFrom(self, other)
+        for ____, item in __TS__Iterator(self) do
+            if other:has(item) then
+                return false
+            end
+        end
+        return true
+    end
+    Set[Symbol.species] = Set
+end
+
+local function __TS__SparseArrayNew(...)
+    local sparseArray = {...}
+    sparseArray.sparseLength = __TS__CountVarargs(...)
+    return sparseArray
+end
+
+local function __TS__SparseArrayPush(sparseArray, ...)
+    local args = {...}
+    local argsLen = __TS__CountVarargs(...)
+    local listLen = sparseArray.sparseLength
+    for i = 1, argsLen do
+        sparseArray[listLen + i] = args[i]
+    end
+    sparseArray.sparseLength = listLen + argsLen
+end
+
+local function __TS__SparseArraySpread(sparseArray)
+    local _unpack = unpack or table.unpack
+    return _unpack(sparseArray, 1, sparseArray.sparseLength)
+end
+
+local WeakMap
+do
+    WeakMap = __TS__Class()
+    WeakMap.name = "WeakMap"
+    function WeakMap.prototype.____constructor(self, entries)
+        self[Symbol.toStringTag] = "WeakMap"
+        self.items = {}
+        setmetatable(self.items, {__mode = "k"})
+        if entries == nil then
+            return
+        end
+        local iterable = entries
+        if iterable[Symbol.iterator] then
+            local iterator = iterable[Symbol.iterator](iterable)
+            while true do
+                local result = iterator:next()
+                if result.done then
+                    break
+                end
+                local value = result.value
+                self.items[value[1]] = value[2]
+            end
+        else
+            for ____, kvp in ipairs(entries) do
+                self.items[kvp[1]] = kvp[2]
+            end
+        end
+    end
+    function WeakMap.prototype.delete(self, key)
+        local contains = self:has(key)
+        self.items[key] = nil
+        return contains
+    end
+    function WeakMap.prototype.get(self, key)
+        return self.items[key]
+    end
+    function WeakMap.prototype.has(self, key)
+        return self.items[key] ~= nil
+    end
+    function WeakMap.prototype.set(self, key, value)
+        self.items[key] = value
+        return self
+    end
+    WeakMap[Symbol.species] = WeakMap
+end
+
+local WeakSet
+do
+    WeakSet = __TS__Class()
+    WeakSet.name = "WeakSet"
+    function WeakSet.prototype.____constructor(self, values)
+        self[Symbol.toStringTag] = "WeakSet"
+        self.items = {}
+        setmetatable(self.items, {__mode = "k"})
+        if values == nil then
+            return
+        end
+        local iterable = values
+        if iterable[Symbol.iterator] then
+            local iterator = iterable[Symbol.iterator](iterable)
+            while true do
+                local result = iterator:next()
+                if result.done then
+                    break
+                end
+                self.items[result.value] = true
+            end
+        else
+            for ____, value in ipairs(values) do
+                self.items[value] = true
+            end
+        end
+    end
+    function WeakSet.prototype.add(self, value)
+        self.items[value] = true
+        return self
+    end
+    function WeakSet.prototype.delete(self, value)
+        local contains = self:has(value)
+        self.items[value] = nil
+        return contains
+    end
+    function WeakSet.prototype.has(self, value)
+        return self.items[value] == true
+    end
+    WeakSet[Symbol.species] = WeakSet
+end
+
+local function __TS__SourceMapTraceBack(fileName, sourceMap)
+    _G.__TS__sourcemap = _G.__TS__sourcemap or ({})
+    _G.__TS__sourcemap[fileName] = sourceMap
+    if _G.__TS__originalTraceback == nil then
+        local originalTraceback = debug.traceback
+        _G.__TS__originalTraceback = originalTraceback
+        debug.traceback = function(thread, message, level)
+            local trace
+            if thread == nil and message == nil and level == nil then
+                trace = originalTraceback()
+            elseif __TS__StringIncludes(_VERSION, "Lua 5.0") then
+                trace = originalTraceback((("[Level " .. tostring(level)) .. "] ") .. tostring(message))
+            else
+                trace = originalTraceback(thread, message, level)
+            end
+            if type(trace) ~= "string" then
+                return trace
+            end
+            local function replacer(____, file, srcFile, line)
+                local fileSourceMap = _G.__TS__sourcemap[file]
+                if fileSourceMap ~= nil and fileSourceMap[line] ~= nil then
+                    local data = fileSourceMap[line]
+                    if type(data) == "number" then
+                        return (srcFile .. ":") .. tostring(data)
+                    end
+                    return (data.file .. ":") .. tostring(data.line)
+                end
+                return (file .. ":") .. line
+            end
+            local result = string.gsub(
+                trace,
+                "(%S+)%.lua:(%d+)",
+                function(file, line) return replacer(nil, file .. ".lua", file .. ".ts", line) end
+            )
+            local function stringReplacer(____, file, line)
+                local fileSourceMap = _G.__TS__sourcemap[file]
+                if fileSourceMap ~= nil and fileSourceMap[line] ~= nil then
+                    local chunkName = (__TS__Match(file, "%[string \"([^\"]+)\"%]"))
+                    local sourceName = string.gsub(chunkName, ".lua$", ".ts")
+                    local data = fileSourceMap[line]
+                    if type(data) == "number" then
+                        return (sourceName .. ":") .. tostring(data)
+                    end
+                    return (data.file .. ":") .. tostring(data.line)
+                end
+                return (file .. ":") .. line
+            end
+            result = string.gsub(
+                result,
+                "(%[string \"[^\"]+\"%]):(%d+)",
+                function(file, line) return stringReplacer(nil, file, line) end
+            )
+            return result
+        end
+    end
+end
+
+local function __TS__Spread(iterable)
+    local arr = {}
+    if type(iterable) == "string" then
+        for i = 0, #iterable - 1 do
+            arr[i + 1] = __TS__StringAccess(iterable, i)
+        end
+    else
+        local len = 0
+        for ____, item in __TS__Iterator(iterable) do
+            len = len + 1
+            arr[len] = item
+        end
+    end
+    return __TS__Unpack(arr)
+end
+
+local function __TS__StringCharAt(self, pos)
+    if pos ~= pos then
+        pos = 0
+    end
+    if pos < 0 then
+        return ""
+    end
+    return string.sub(self, pos + 1, pos + 1)
+end
+
+local function __TS__StringCharCodeAt(self, index)
+    if index ~= index then
+        index = 0
+    end
+    if index < 0 then
+        return 0 / 0
+    end
+    return string.byte(self, index + 1) or 0 / 0
+end
+
+local function __TS__StringEndsWith(self, searchString, endPosition)
+    if endPosition == nil or endPosition > #self then
+        endPosition = #self
+    end
+    return string.sub(self, endPosition - #searchString + 1, endPosition) == searchString
+end
+
+local function __TS__StringPadEnd(self, maxLength, fillString)
+    if fillString == nil then
+        fillString = " "
+    end
+    if maxLength ~= maxLength then
+        maxLength = 0
+    end
+    if maxLength == -math.huge or maxLength == math.huge then
+        error("Invalid string length", 0)
+    end
+    if #self >= maxLength or #fillString == 0 then
+        return self
+    end
+    maxLength = maxLength - #self
+    if maxLength > #fillString then
+        fillString = fillString .. string.rep(
+            fillString,
+            math.floor(maxLength / #fillString)
+        )
+    end
+    return self .. string.sub(
+        fillString,
+        1,
+        math.floor(maxLength)
+    )
+end
+
+local function __TS__StringPadStart(self, maxLength, fillString)
+    if fillString == nil then
+        fillString = " "
+    end
+    if maxLength ~= maxLength then
+        maxLength = 0
+    end
+    if maxLength == -math.huge or maxLength == math.huge then
+        error("Invalid string length", 0)
+    end
+    if #self >= maxLength or #fillString == 0 then
+        return self
+    end
+    maxLength = maxLength - #self
+    if maxLength > #fillString then
+        fillString = fillString .. string.rep(
+            fillString,
+            math.floor(maxLength / #fillString)
+        )
+    end
+    return string.sub(
+        fillString,
+        1,
+        math.floor(maxLength)
+    ) .. self
+end
+
+local __TS__StringReplace
+do
+    local sub = string.sub
+    function __TS__StringReplace(source, searchValue, replaceValue)
+        local startPos, endPos = string.find(source, searchValue, nil, true)
+        if not startPos then
+            return source
+        end
+        local before = sub(source, 1, startPos - 1)
+        local replacement = type(replaceValue) == "string" and replaceValue or replaceValue(nil, searchValue, startPos - 1, source)
+        local after = sub(source, endPos + 1)
+        return (before .. replacement) .. after
+    end
+end
+
+local __TS__StringSplit
+do
+    local sub = string.sub
+    local find = string.find
+    function __TS__StringSplit(source, separator, limit)
+        if limit == nil then
+            limit = 4294967295
+        end
+        if limit == 0 then
+            return {}
+        end
+        local result = {}
+        local resultIndex = 1
+        if separator == nil or separator == "" then
+            for i = 1, #source do
+                result[resultIndex] = sub(source, i, i)
+                resultIndex = resultIndex + 1
+            end
+        else
+            local currentPos = 1
+            while resultIndex <= limit do
+                local startPos, endPos = find(source, separator, currentPos, true)
+                if not startPos then
+                    break
+                end
+                result[resultIndex] = sub(source, currentPos, startPos - 1)
+                resultIndex = resultIndex + 1
+                currentPos = endPos + 1
+            end
+            if resultIndex <= limit then
+                result[resultIndex] = sub(source, currentPos)
+            end
+        end
+        return result
+    end
+end
+
+local __TS__StringReplaceAll
+do
+    local sub = string.sub
+    local find = string.find
+    function __TS__StringReplaceAll(source, searchValue, replaceValue)
+        if type(replaceValue) == "string" then
+            local concat = table.concat(
+                __TS__StringSplit(source, searchValue),
+                replaceValue
+            )
+            if #searchValue == 0 then
+                return (replaceValue .. concat) .. replaceValue
+            end
+            return concat
+        end
+        local parts = {}
+        local partsIndex = 1
+        if #searchValue == 0 then
+            parts[1] = replaceValue(nil, "", 0, source)
+            partsIndex = 2
+            for i = 1, #source do
+                parts[partsIndex] = sub(source, i, i)
+                parts[partsIndex + 1] = replaceValue(nil, "", i, source)
+                partsIndex = partsIndex + 2
+            end
+        else
+            local currentPos = 1
+            while true do
+                local startPos, endPos = find(source, searchValue, currentPos, true)
+                if not startPos then
+                    break
+                end
+                parts[partsIndex] = sub(source, currentPos, startPos - 1)
+                parts[partsIndex + 1] = replaceValue(nil, searchValue, startPos - 1, source)
+                partsIndex = partsIndex + 2
+                currentPos = endPos + 1
+            end
+            parts[partsIndex] = sub(source, currentPos)
+        end
+        return table.concat(parts)
+    end
+end
+
+local function __TS__StringSlice(self, start, ____end)
+    if start == nil or start ~= start then
+        start = 0
+    end
+    if ____end ~= ____end then
+        ____end = 0
+    end
+    if start >= 0 then
+        start = start + 1
+    end
+    if ____end ~= nil and ____end < 0 then
+        ____end = ____end - 1
+    end
+    return string.sub(self, start, ____end)
+end
+
+local function __TS__StringStartsWith(self, searchString, position)
+    if position == nil or position < 0 then
+        position = 0
+    end
+    return string.sub(self, position + 1, #searchString + position) == searchString
+end
+
+local function __TS__StringSubstr(self, from, length)
+    if from ~= from then
+        from = 0
+    end
+    if length ~= nil then
+        if length ~= length or length <= 0 then
+            return ""
+        end
+        length = length + from
+    end
+    if from >= 0 then
+        from = from + 1
+    end
+    return string.sub(self, from, length)
+end
+
+local function __TS__StringTrim(self)
+    local result = string.gsub(self, "^[%s ﻿]*(.-)[%s ﻿]*$", "%1")
+    return result
+end
+
+local function __TS__StringTrimEnd(self)
+    local result = string.gsub(self, "[%s ﻿]*$", "")
+    return result
+end
+
+local function __TS__StringTrimStart(self)
+    local result = string.gsub(self, "^[%s ﻿]*", "")
+    return result
+end
+
+local __TS__SymbolRegistryFor, __TS__SymbolRegistryKeyFor
+do
+    local symbolRegistry = {}
+    function __TS__SymbolRegistryFor(key)
+        if not symbolRegistry[key] then
+            symbolRegistry[key] = __TS__Symbol(key)
+        end
+        return symbolRegistry[key]
+    end
+    function __TS__SymbolRegistryKeyFor(sym)
+        for key in pairs(symbolRegistry) do
+            if symbolRegistry[key] == sym then
+                return key
+            end
+        end
+        return nil
+    end
+end
+
+local function __TS__TypeOf(value)
+    local luaType = type(value)
+    if luaType == "table" then
+        return "object"
+    elseif luaType == "nil" then
+        return "undefined"
+    else
+        return luaType
+    end
+end
+
+local function __TS__Using(self, cb, ...)
+    local args = {...}
+    local thrownError
+    local ok, result = xpcall(
+        function() return cb(__TS__Unpack(args)) end,
+        function(err)
+            thrownError = err
+            return thrownError
+        end
+    )
+    local argArray = {__TS__Unpack(args)}
+    do
+        local i = #argArray - 1
+        while i >= 0 do
+            local ____self_0 = argArray[i + 1]
+            ____self_0[Symbol.dispose](____self_0)
+            i = i - 1
+        end
+    end
+    if not ok then
+        error(thrownError, 0)
+    end
+    return result
+end
+
+local function __TS__UsingAsync(self, cb, ...)
+    local args = {...}
+    return __TS__AsyncAwaiter(function(____awaiter_resolve)
+        local thrownError
+        local ok, result = xpcall(
+            function() return cb(
+                nil,
+                __TS__Unpack(args)
+            ) end,
+            function(err)
+                thrownError = err
+                return thrownError
+            end
+        )
+        local argArray = {__TS__Unpack(args)}
+        do
+            local i = #argArray - 1
+            while i >= 0 do
+                if argArray[i + 1][Symbol.dispose] ~= nil then
+                    local ____self_0 = argArray[i + 1]
+                    ____self_0[Symbol.dispose](____self_0)
+                end
+                if argArray[i + 1][Symbol.asyncDispose] ~= nil then
+                    local ____self_1 = argArray[i + 1]
+                    __TS__Await(____self_1[Symbol.asyncDispose](____self_1))
+                end
+                i = i - 1
+            end
+        end
+        if not ok then
+            error(thrownError, 0)
+        end
+        return ____awaiter_resolve(nil, result)
+    end)
+end
+
+return {
+  __TS__ArrayAt = __TS__ArrayAt,
+  __TS__ArrayConcat = __TS__ArrayConcat,
+  __TS__ArrayEntries = __TS__ArrayEntries,
+  __TS__ArrayEvery = __TS__ArrayEvery,
+  __TS__ArrayFill = __TS__ArrayFill,
+  __TS__ArrayFilter = __TS__ArrayFilter,
+  __TS__ArrayForEach = __TS__ArrayForEach,
+  __TS__ArrayFind = __TS__ArrayFind,
+  __TS__ArrayFindIndex = __TS__ArrayFindIndex,
+  __TS__ArrayFrom = __TS__ArrayFrom,
+  __TS__ArrayIncludes = __TS__ArrayIncludes,
+  __TS__ArrayIndexOf = __TS__ArrayIndexOf,
+  __TS__ArrayIsArray = __TS__ArrayIsArray,
+  __TS__ArrayJoin = __TS__ArrayJoin,
+  __TS__ArrayMap = __TS__ArrayMap,
+  __TS__ArrayPush = __TS__ArrayPush,
+  __TS__ArrayPushArray = __TS__ArrayPushArray,
+  __TS__ArrayReduce = __TS__ArrayReduce,
+  __TS__ArrayReduceRight = __TS__ArrayReduceRight,
+  __TS__ArrayReverse = __TS__ArrayReverse,
+  __TS__ArrayUnshift = __TS__ArrayUnshift,
+  __TS__ArraySort = __TS__ArraySort,
+  __TS__ArraySlice = __TS__ArraySlice,
+  __TS__ArraySome = __TS__ArraySome,
+  __TS__ArraySplice = __TS__ArraySplice,
+  __TS__ArrayToObject = __TS__ArrayToObject,
+  __TS__ArrayFlat = __TS__ArrayFlat,
+  __TS__ArrayFlatMap = __TS__ArrayFlatMap,
+  __TS__ArraySetLength = __TS__ArraySetLength,
+  __TS__ArrayToReversed = __TS__ArrayToReversed,
+  __TS__ArrayToSorted = __TS__ArrayToSorted,
+  __TS__ArrayToSpliced = __TS__ArrayToSpliced,
+  __TS__ArrayWith = __TS__ArrayWith,
+  __TS__AsyncAwaiter = __TS__AsyncAwaiter,
+  __TS__Await = __TS__Await,
+  __TS__Class = __TS__Class,
+  __TS__ClassExtends = __TS__ClassExtends,
+  __TS__CloneDescriptor = __TS__CloneDescriptor,
+  __TS__CountVarargs = __TS__CountVarargs,
+  __TS__Decorate = __TS__Decorate,
+  __TS__DecorateLegacy = __TS__DecorateLegacy,
+  __TS__DecorateParam = __TS__DecorateParam,
+  __TS__Delete = __TS__Delete,
+  __TS__DelegatedYield = __TS__DelegatedYield,
+  __TS__DescriptorGet = __TS__DescriptorGet,
+  __TS__DescriptorSet = __TS__DescriptorSet,
+  Error = Error,
+  RangeError = RangeError,
+  ReferenceError = ReferenceError,
+  SyntaxError = SyntaxError,
+  TypeError = TypeError,
+  URIError = URIError,
+  __TS__FunctionBind = __TS__FunctionBind,
+  __TS__Generator = __TS__Generator,
+  __TS__InstanceOf = __TS__InstanceOf,
+  __TS__InstanceOfObject = __TS__InstanceOfObject,
+  __TS__Iterator = __TS__Iterator,
+  __TS__LuaIteratorSpread = __TS__LuaIteratorSpread,
+  Map = Map,
+  __TS__MapGroupBy = __TS__MapGroupBy,
+  __TS__Match = __TS__Match,
+  __TS__MathAtan2 = __TS__MathAtan2,
+  __TS__MathModf = __TS__MathModf,
+  __TS__MathSign = __TS__MathSign,
+  __TS__MathTrunc = __TS__MathTrunc,
+  __TS__New = __TS__New,
+  __TS__Number = __TS__Number,
+  __TS__NumberIsFinite = __TS__NumberIsFinite,
+  __TS__NumberIsInteger = __TS__NumberIsInteger,
+  __TS__NumberIsNaN = __TS__NumberIsNaN,
+  __TS__ParseInt = __TS__ParseInt,
+  __TS__ParseFloat = __TS__ParseFloat,
+  __TS__NumberToString = __TS__NumberToString,
+  __TS__NumberToFixed = __TS__NumberToFixed,
+  __TS__ObjectAssign = __TS__ObjectAssign,
+  __TS__ObjectDefineProperty = __TS__ObjectDefineProperty,
+  __TS__ObjectEntries = __TS__ObjectEntries,
+  __TS__ObjectFromEntries = __TS__ObjectFromEntries,
+  __TS__ObjectGetOwnPropertyDescriptor = __TS__ObjectGetOwnPropertyDescriptor,
+  __TS__ObjectGetOwnPropertyDescriptors = __TS__ObjectGetOwnPropertyDescriptors,
+  __TS__ObjectGroupBy = __TS__ObjectGroupBy,
+  __TS__ObjectKeys = __TS__ObjectKeys,
+  __TS__ObjectRest = __TS__ObjectRest,
+  __TS__ObjectValues = __TS__ObjectValues,
+  __TS__ParseFloat = __TS__ParseFloat,
+  __TS__ParseInt = __TS__ParseInt,
+  __TS__Promise = __TS__Promise,
+  __TS__PromiseAll = __TS__PromiseAll,
+  __TS__PromiseAllSettled = __TS__PromiseAllSettled,
+  __TS__PromiseAny = __TS__PromiseAny,
+  __TS__PromiseRace = __TS__PromiseRace,
+  Set = Set,
+  __TS__SetDescriptor = __TS__SetDescriptor,
+  __TS__SparseArrayNew = __TS__SparseArrayNew,
+  __TS__SparseArrayPush = __TS__SparseArrayPush,
+  __TS__SparseArraySpread = __TS__SparseArraySpread,
+  WeakMap = WeakMap,
+  WeakSet = WeakSet,
+  __TS__SourceMapTraceBack = __TS__SourceMapTraceBack,
+  __TS__Spread = __TS__Spread,
+  __TS__StringAccess = __TS__StringAccess,
+  __TS__StringCharAt = __TS__StringCharAt,
+  __TS__StringCharCodeAt = __TS__StringCharCodeAt,
+  __TS__StringEndsWith = __TS__StringEndsWith,
+  __TS__StringIncludes = __TS__StringIncludes,
+  __TS__StringPadEnd = __TS__StringPadEnd,
+  __TS__StringPadStart = __TS__StringPadStart,
+  __TS__StringReplace = __TS__StringReplace,
+  __TS__StringReplaceAll = __TS__StringReplaceAll,
+  __TS__StringSlice = __TS__StringSlice,
+  __TS__StringSplit = __TS__StringSplit,
+  __TS__StringStartsWith = __TS__StringStartsWith,
+  __TS__StringSubstr = __TS__StringSubstr,
+  __TS__StringSubstring = __TS__StringSubstring,
+  __TS__StringTrim = __TS__StringTrim,
+  __TS__StringTrimEnd = __TS__StringTrimEnd,
+  __TS__StringTrimStart = __TS__StringTrimStart,
+  __TS__Symbol = __TS__Symbol,
+  Symbol = Symbol,
+  __TS__SymbolRegistryFor = __TS__SymbolRegistryFor,
+  __TS__SymbolRegistryKeyFor = __TS__SymbolRegistryKeyFor,
+  __TS__TypeOf = __TS__TypeOf,
+  __TS__Unpack = __TS__Unpack,
+  __TS__Using = __TS__Using,
+  __TS__UsingAsync = __TS__UsingAsync
+}
+ end,
+["src.utils.helper"] = function(...) 
+local ____exports = {}
+function ____exports.c2i(char)
+    return (string.unpack(">I4", char))
+end
+function ____exports.i2c(id)
+    return string.pack("I4", id)
+end
+return ____exports
+ end,
+["src.index"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__AsyncAwaiter = ____lualib.__TS__AsyncAwaiter
+local __TS__Await = ____lualib.__TS__Await
+local ____exports = {}
+local ____wc3ts_2D1_2E27a = require("src.wc3ts-1.27a")
+local Unit = ____wc3ts_2D1_2E27a.Unit
+local ____globals = require("src.wc3ts-1.27a.globals")
+local Players = ____globals.Players
+local ____helper = require("src.utils.helper")
+local c2i = ____helper.c2i
+--- 应用程序主入口
+-- 负责引导整个应用程序的启动
+local function main()
+    return __TS__AsyncAwaiter(function(____awaiter_resolve)
+        Unit:create(
+            Players[1],
+            c2i("hpea"),
+            0,
+            0,
+            0
+        )
+    end)
+end
+main()
+return ____exports
+ end,
+}
+return require("src.index", ...)

@@ -1,32 +1,13 @@
-import { Application } from './core';
-import { EventService } from './services/EventService';
-import { UnitService } from './services/UnitService';
-import { mapInit } from './map/start';
-
+import { Unit } from 'wc3ts-1.27a';
+import { Players } from 'wc3ts-1.27a/globals';
+import { c2i } from './utils/helper';
 /**
  * 应用程序主入口
  * 负责引导整个应用程序的启动
  */
 async function main(): Promise<void> {
-  try {
-    // 获取应用实例
-    const app = Application.getInstance();
-
-    // 注册核心服务
-    app.registerService(new EventService());
-    app.registerService(new UnitService());
-
-    // 初始化应用程序
-    await app.initialize();
-
-    // 启动地图逻辑
-    print('>>> Starting map logic...');
-    mapInit(app);
-    print('>>> Map logic initialized');
-
-  } catch (error) {
-    print(`>>> Failed to start application: ${error}`);
-  }
+  Unit.create(Players[0], c2i('hpea'), 0, 0, 0); // 创建一个农民，防止报错
+  
 }
 
 // 启动应用程序

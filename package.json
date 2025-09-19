@@ -7,6 +7,7 @@
     "watch": "tstl --watch",
     "dev": "ts-node --project tsconfig.node.json scripts/build.ts dev",
     "build": "ts-node --project tsconfig.node.json scripts/build.ts build",
+    "build:debug": "ts-node --project tsconfig.node.json scripts/build.ts dev",
     "test": "ts-node --project tsconfig.node.json scripts/build.ts && ts-node --project tsconfig.node.json scripts/test.ts"
   },
   "keywords": [],
@@ -22,6 +23,6 @@
   "dependencies": {
     "fs-extra": "^11.3.2",
     "luamin": "^1.0.4",
-    "wc3ts-1.27a": "D:\\work\\github\\wc3ts-1.27a"
+    "wc3ts-1.27a": "file:./node_modules/wc3ts-1.27a"
   }
 }

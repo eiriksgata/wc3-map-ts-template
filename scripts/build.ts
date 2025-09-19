@@ -98,9 +98,10 @@ function main(): void {
 
   compileTypeScriptToLua();
 
-  if (!isDev) {
-    minifyLua();
-  }
+  // 注释掉这部分代码，这样即使在生产模式下也不会压缩 Lua 代码
+  // if (!isDev) {
+  //   minifyLua();
+  // }
 
   buildW3x();
 

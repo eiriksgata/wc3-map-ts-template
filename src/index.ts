@@ -8,6 +8,8 @@ import { mapInit } from './map/start';
  * 负责引导整个应用程序的启动
  */
 async function main(): Promise<void> {
+  //DisplayTextToPlayer(Player(0), 0, 0, ">>> Application initialized");
+
   try {
     // 获取应用实例
     const app = Application.getInstance();

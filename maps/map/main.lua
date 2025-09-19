@@ -4450,6 +4450,7 @@ function ____exports.env(isDebug)
     __TS__ArrayForEach(
         __TS__ObjectKeys(ydcommon),
         function(____, v)
+            _G[v] = ydcommon[v]
         end
     )
     __TS__ArrayForEach(

@@ -8,7 +8,6 @@ endglobals
 // X_JAPI include
 
 
-
 function InitGlobals takes nothing returns nothing
 //JASSHelper null local ignored(nothing to null)
 endfunction
@@ -51,8 +50,8 @@ endfunction
 //*
 //***************************************************************************
 function config takes nothing returns nothing
-    call SetMapName("只是另外一张魔兽争霸的地图")
-    call SetMapDescription("没有说明")
+    call SetMapName("WC3-Map-TS-Template")
+    call SetMapDescription("")
     call SetPlayers(1)
     call SetTeams(1)
     call SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)

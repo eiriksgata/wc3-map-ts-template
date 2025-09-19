@@ -10,9 +10,10 @@
       "wc3ts-1.27a": ["./node_modules/wc3ts-1.27a/index.ts"],
       "wc3ts-1.27a/*": ["./node_modules/wc3ts-1.27a/*"]
     },
-    "types": [
-      "@typescript-to-lua/language-extensions",
-      "lua-types/5.3"
+
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types"
     ],
     "strict": true,
     "esModuleInterop": true,
@@ -33,6 +34,7 @@
   ],
   "exclude": [
     "node_modules/wc3ts-1.27a/dist/**/*",
-    "node_modules/wc3ts-1.27a/node_modules/**/*"
+    "node_modules/wc3ts-1.27a/node_modules/**/*",
+    "node_modules/wc3ts-1.27a/globals/ydlua.ts"
   ]
 }

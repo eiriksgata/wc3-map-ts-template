@@ -2829,7 +2829,7 @@ function Force.prototype.____constructor(self)
 end
 function Force.create(self)
     local handle = CreateForce()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -3026,7 +3026,7 @@ function MapPlayer.prototype.____constructor(self, index)
 end
 function MapPlayer.create(self, index)
     local handle = Player(index)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -4473,7 +4473,7 @@ function CameraSetup.prototype.____constructor(self)
 end
 function CameraSetup.create(self)
     local handle = CreateCameraSetup()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -4887,7 +4887,7 @@ function DialogButton.create(self, whichDialog, text, hotkey, quit, score)
     else
         handle = DialogAddQuitButton(whichDialog.handle, score, text, hotkey)
     end
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -4945,7 +4945,7 @@ function Dialog.prototype.____constructor(self)
 end
 function Dialog.create(self)
     local handle = DialogCreate()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -5038,7 +5038,7 @@ function Effect.prototype.____constructor(self, modelName, a, b)
 end
 function Effect.create(self, modelName, x, y)
     local handle = AddSpecialEffect(modelName, x, y)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -5048,7 +5048,7 @@ function Effect.create(self, modelName, x, y)
 end
 function Effect.createAttachment(self, modelName, targetWidget, attachPointName)
     local handle = AddSpecialEffectTarget(modelName, targetWidget.handle, attachPointName)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -5060,7 +5060,7 @@ function Effect.createAttachment(self, modelName, targetWidget, attachPointName)
 end
 function Effect.createSpell(self, abilityId, effectType, x, y)
     local handle = AddSpellEffectById(abilityId, effectType, x, y)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -5070,7 +5070,7 @@ function Effect.createSpell(self, abilityId, effectType, x, y)
 end
 function Effect.createSpellAttachment(self, abilityId, effectType, targetWidget, attachPointName)
     local handle = AddSpellEffectTargetById(abilityId, effectType, targetWidget.handle, attachPointName)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -5387,7 +5387,7 @@ function FogModifier.create(self, forWhichPlayer, whichState, centerX, centerY, 
         useSharedVision,
         afterUnits
     )
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -5886,7 +5886,7 @@ function GameCache.prototype.____constructor(self, campaignFile)
 end
 function GameCache.create(self, campaignFile)
     local handle = InitGameCache(campaignFile)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -6035,7 +6035,7 @@ function Item.prototype.____constructor(self, itemId, x, y)
 end
 function Item.create(self, itemId, x, y)
     local handle = CreateItem(itemId, x, y)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -6405,7 +6405,7 @@ function Sound.create(self, fileName, looping, is3D, stopWhenOutOfRange, fadeInR
         fadeOutRate,
         eaxSetting
     )
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -7699,7 +7699,7 @@ function Group.prototype.____constructor(self)
 end
 function Group.create(self)
     local handle = CreateGroup()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -7950,7 +7950,7 @@ function Image.create(self, file, sizeX, sizeY, sizeZ, posX, posY, posZ, originX
         originZ,
         imageType
     )
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -8031,7 +8031,7 @@ function Leaderboard.prototype.____constructor(self)
 end
 function Leaderboard.create(self)
     local handle = CreateLeaderboard()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -8250,7 +8250,7 @@ function MultiboardItem.prototype.____constructor(self, board, x, y)
 end
 function MultiboardItem.create(self, board, x, y)
     local handle = MultiboardGetItem(board.handle, x - 1, y - 1)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -8302,7 +8302,7 @@ function Multiboard.prototype.____constructor(self)
 end
 function Multiboard.create(self)
     local handle = CreateMultiboard()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -8452,7 +8452,7 @@ function QuestItem.prototype.____constructor(self, whichQuest)
 end
 function QuestItem.create(self, whichQuest)
     local handle = QuestCreateItem(whichQuest.handle)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -8494,7 +8494,7 @@ function Quest.prototype.____constructor(self)
 end
 function Quest.create(self)
     local handle = CreateQuest()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -8716,7 +8716,7 @@ function TextTag.prototype.____constructor(self)
 end
 function TextTag.create(self)
     local handle = CreateTextTag()
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -8913,7 +8913,7 @@ function TimerDialog.prototype.____constructor(self, t)
 end
 function TimerDialog.create(self, t)
     local handle = CreateTimerDialog(t.handle)
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -9021,7 +9021,7 @@ end
 function Trigger.prototype.addCondition(self, condition)
     if type(condition) == "function" then
         local cf = Condition(condition)
-        return cf and TriggerAddCondition(self.handle, cf) or nil
+        return cf ~= nil and cf ~= nil and TriggerAddCondition(self.handle, cf) or nil
     end
     return TriggerAddCondition(self.handle, condition)
 end
@@ -9302,7 +9302,7 @@ function Ubersplat.create(self, x, y, name, red, green, blue, alpha, forcePaused
         forcePaused,
         noBirthTime
     )
-    if handle then
+    if handle ~= nil and handle ~= nil then
         local obj = self:getObject(handle)
         local values = {}
         values.handle = handle
@@ -10319,7 +10319,8 @@ return ____exports
 ["src.utils.helper"] = function(...) 
 local ____exports = {}
 function ____exports.c2i(char)
-    return (string.unpack(">I4", char))
+    local result = string.unpack(">I4", char)
+    return result[0]
 end
 function ____exports.i2c(id)
     return string.pack("I4", id)
@@ -10332,22 +10333,113 @@ local __TS__AsyncAwaiter = ____lualib.__TS__AsyncAwaiter
 local __TS__Await = ____lualib.__TS__Await
 local ____exports = {}
 local ____index = require("lua_modules.wc3ts-1.27a.index")
+local Unit = ____index.Unit
 local tsGlobals = ____index.tsGlobals
+local RuntimeManager = ____index.RuntimeManager
+local ____helper = require("src.utils.helper")
+local c2i = ____helper.c2i
 local ____tsGlobals_0 = tsGlobals
 local Players = ____tsGlobals_0.Players
 --- 应用程序主入口
 -- 负责引导整个应用程序的启动
 local function main()
     return __TS__AsyncAwaiter(function(____awaiter_resolve)
-        DisplayTextToPlayer(
-            Player(0),
-            0,
-            0,
-            "Hello, Warcraft III with TypeScript and wc3ts!"
-        )
+        local ____try = __TS__AsyncAwaiter(function()
+            RuntimeManager.getInstance().initialize()
+            DisplayTextToPlayer(
+                Player(0),
+                0,
+                0,
+                "Hello, Warcraft III with TypeScript and wc3ts!"
+            )
+            Unit:create(
+                Players[1],
+                c2i("hpea"),
+                0,
+                0,
+                0
+            )
+            print(">>> Application started")
+        end)
+        __TS__Await(____try.catch(
+            ____try,
+            function(____, e)
+                console:error("Error during application startup:", e)
+            end
+        ))
     end)
 end
 main()
+return ____exports
+ end,
+["lua_modules.wc3ts-1.27a.config"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__New = ____lualib.__TS__New
+local ____exports = {}
+--- 配置管理器
+____exports.ConfigManager = __TS__Class()
+local ConfigManager = ____exports.ConfigManager
+ConfigManager.name = "ConfigManager"
+function ConfigManager.prototype.____constructor(self)
+end
+function ConfigManager.getInstance(self)
+    if not ____exports.ConfigManager.instance then
+        ____exports.ConfigManager.instance = __TS__New(____exports.ConfigManager)
+    end
+    return ____exports.ConfigManager.instance
+end
+function ConfigManager.prototype.isConsoleEnabled(self)
+    return true
+end
+function ConfigManager.prototype.getConfig(self)
+    return {console = true, runtime = {sleep = true, debuggerPort = 4279, catchCrash = true}}
+end
+return ____exports
+ end,
+["lua_modules.wc3ts-1.27a.config.index"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__ObjectAssign = ____lualib.__TS__ObjectAssign
+local __TS__New = ____lualib.__TS__New
+local ____exports = {}
+--- 默认应用配置
+local DEFAULT_CONFIG = {debug = true, console = true, runtime = {debuggerPort = 4279, sleep = false, catchCrash = true}, map = {name = "WC3 TypeScript Map", version = "1.0.0", description = "A Warcraft III map built with TypeScript"}}
+--- 配置管理器
+-- 提供应用程序配置的统一管理
+____exports.ConfigManager = __TS__Class()
+local ConfigManager = ____exports.ConfigManager
+ConfigManager.name = "ConfigManager"
+function ConfigManager.prototype.____constructor(self)
+    self.config = __TS__ObjectAssign({}, DEFAULT_CONFIG)
+end
+function ConfigManager.getInstance(self)
+    if not ____exports.ConfigManager.instance then
+        ____exports.ConfigManager.instance = __TS__New(____exports.ConfigManager)
+    end
+    return ____exports.ConfigManager.instance
+end
+function ConfigManager.prototype.getConfig(self)
+    return __TS__ObjectAssign({}, self.config)
+end
+function ConfigManager.prototype.isDebugMode(self)
+    return self.config.debug
+end
+function ConfigManager.prototype.isConsoleEnabled(self)
+    return self.config.console
+end
+function ConfigManager.prototype.getRuntimeConfig(self)
+    return __TS__ObjectAssign({}, self.config.runtime)
+end
+function ConfigManager.prototype.getMapConfig(self)
+    return __TS__ObjectAssign({}, self.config.map)
+end
+function ConfigManager.prototype.updateConfig(self, updates)
+    self.config = __TS__ObjectAssign({}, self.config, updates)
+end
+function ConfigManager.prototype.resetToDefault(self)
+    self.config = __TS__ObjectAssign({}, DEFAULT_CONFIG)
+end
 return ____exports
  end,
 ["lua_modules.wc3ts-1.27a.globals.const"] = function(...) 
@@ -10369,6 +10461,22 @@ ____exports.EPlayerColor.COLOR13 = "|cFF282828"
 ____exports.EPlayerColor.COLOR14 = "|cFF282828"
 ____exports.EPlayerColor.COLOR15 = "|cFF282828"
 ____exports.EPlayerColor.COLOR16 = "|cFF282828"
+return ____exports
+ end,
+["lua_modules.wc3ts-1.27a.globals.ydlua"] = function(...) 
+local ____exports = {}
+____exports.ydcommon = require("node_modules.wc3ts-1.27a.globals.jass.common")
+____exports.ydai = require("node_modules.wc3ts-1.27a.globals.jass.ai")
+____exports.ydglobals = require("node_modules.wc3ts-1.27a.globals.jass.globals")
+____exports.ydjapi = require("node_modules.wc3ts-1.27a.globals.jass.japi")
+____exports.ydhook = require("node_modules.wc3ts-1.27a.globals.jass.hook")
+____exports.ydruntime = require("node_modules.wc3ts-1.27a.globals.jass.runtime")
+____exports.ydslk = require("node_modules.wc3ts-1.27a.globals.jass.slk")
+____exports.ydconsole = require("node_modules.wc3ts-1.27a.globals.jass.console")
+____exports.yddebug = require("node_modules.wc3ts-1.27a.globals.jass.debug")
+____exports.ydlog = require("node_modules.wc3ts-1.27a.globals.jass.log")
+____exports.ydmessage = require("node_modules.wc3ts-1.27a.globals.jass.message")
+____exports.ydbignum = require("node_modules.wc3ts-1.27a.globals.jass.bignum")
 return ____exports
  end,
 }

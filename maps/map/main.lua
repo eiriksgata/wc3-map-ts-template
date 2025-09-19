@@ -10332,10 +10332,7 @@ local __TS__AsyncAwaiter = ____lualib.__TS__AsyncAwaiter
 local __TS__Await = ____lualib.__TS__Await
 local ____exports = {}
 local ____index = require("lua_modules.wc3ts-1.27a.index")
-local Unit = ____index.Unit
 local tsGlobals = ____index.tsGlobals
-local ____helper = require("src.utils.helper")
-local c2i = ____helper.c2i
 local ____tsGlobals_0 = tsGlobals
 local Players = ____tsGlobals_0.Players
 --- 应用程序主入口
@@ -10347,13 +10344,6 @@ local function main()
             0,
             0,
             "Hello, Warcraft III with TypeScript and wc3ts!"
-        )
-        Unit:create(
-            Players[1],
-            c2i("hpea"),
-            0,
-            0,
-            0
         )
     end)
 end

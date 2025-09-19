@@ -12,9 +12,9 @@
     },
 
     "typeRoots": [
-      "node_modules/@types",
       "src/types"
     ],
+    "skipLibCheck": true,
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
@@ -35,6 +35,7 @@
   "exclude": [
     "node_modules/wc3ts-1.27a/dist/**/*",
     "node_modules/wc3ts-1.27a/node_modules/**/*",
-    "node_modules/wc3ts-1.27a/globals/ydlua.ts"
+    "node_modules/wc3ts-1.27a/globals/ydlua.ts",
+    "src/libs/ydlua.ts"
   ]
 }

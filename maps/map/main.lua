@@ -10316,88 +10316,11 @@ end
 ____exports.tsGlobals = tsGlobals
 return ____exports
  end,
-["src.utils.helper"] = function(...) 
+["src.types.index"] = function(...) 
 local ____exports = {}
-function ____exports.c2i(char)
-    local result = string.unpack(">I4", char)
-    return result[0]
-end
-function ____exports.i2c(id)
-    return string.pack("I4", id)
-end
 return ____exports
  end,
-["src.index"] = function(...) 
-local ____lualib = require("lualib_bundle")
-local __TS__AsyncAwaiter = ____lualib.__TS__AsyncAwaiter
-local __TS__Await = ____lualib.__TS__Await
-local ____exports = {}
-local ____index = require("lua_modules.wc3ts-1.27a.index")
-local Unit = ____index.Unit
-local tsGlobals = ____index.tsGlobals
-local RuntimeManager = ____index.RuntimeManager
-local ____helper = require("src.utils.helper")
-local c2i = ____helper.c2i
-local ____tsGlobals_0 = tsGlobals
-local Players = ____tsGlobals_0.Players
---- 应用程序主入口
--- 负责引导整个应用程序的启动
-local function main()
-    return __TS__AsyncAwaiter(function(____awaiter_resolve)
-        local ____try = __TS__AsyncAwaiter(function()
-            RuntimeManager.getInstance().initialize()
-            DisplayTextToPlayer(
-                Player(0),
-                0,
-                0,
-                "Hello, Warcraft III with TypeScript and wc3ts!"
-            )
-            Unit:create(
-                Players[1],
-                c2i("hpea"),
-                0,
-                0,
-                0
-            )
-            print(">>> Application started")
-        end)
-        __TS__Await(____try.catch(
-            ____try,
-            function(____, e)
-                console:error("Error during application startup:", e)
-            end
-        ))
-    end)
-end
-main()
-return ____exports
- end,
-["lua_modules.wc3ts-1.27a.config"] = function(...) 
-local ____lualib = require("lualib_bundle")
-local __TS__Class = ____lualib.__TS__Class
-local __TS__New = ____lualib.__TS__New
-local ____exports = {}
---- 配置管理器
-____exports.ConfigManager = __TS__Class()
-local ConfigManager = ____exports.ConfigManager
-ConfigManager.name = "ConfigManager"
-function ConfigManager.prototype.____constructor(self)
-end
-function ConfigManager.getInstance(self)
-    if not ____exports.ConfigManager.instance then
-        ____exports.ConfigManager.instance = __TS__New(____exports.ConfigManager)
-    end
-    return ____exports.ConfigManager.instance
-end
-function ConfigManager.prototype.isConsoleEnabled(self)
-    return true
-end
-function ConfigManager.prototype.getConfig(self)
-    return {console = true, runtime = {sleep = true, debuggerPort = 4279, catchCrash = true}}
-end
-return ____exports
- end,
-["lua_modules.wc3ts-1.27a.config.index"] = function(...) 
+["src.config.index"] = function(...) 
 local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ObjectAssign = ____lualib.__TS__ObjectAssign
@@ -10442,6 +10365,557 @@ function ConfigManager.prototype.resetToDefault(self)
 end
 return ____exports
  end,
+["src.types.ydlua"] = function(...) 
+local ____exports = {}
+____exports.ydcommon = {}
+____exports.ydai = {}
+____exports.ydglobals = {}
+____exports.ydjapi = {}
+____exports.ydhook = {}
+____exports.ydruntime = {
+    sleep = function(timeout)
+    end,
+    console = false,
+    debugger = 0,
+    catch_crash = false,
+    error_hanlde = function(msg)
+    end
+}
+____exports.ydslk = {}
+____exports.ydconsole = {
+    write = function(message)
+    end,
+    enable = false
+}
+____exports.yddebug = {}
+____exports.ydlog = {}
+____exports.ydmessage = {}
+____exports.ydbignum = {}
+return ____exports
+ end,
+["src.core.runtime"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__New = ____lualib.__TS__New
+local __TS__ObjectKeys = ____lualib.__TS__ObjectKeys
+local __TS__ArrayForEach = ____lualib.__TS__ArrayForEach
+local ____exports = {}
+local ____config = require("src.config.index")
+local ConfigManager = ____config.ConfigManager
+local ____ydlua = require("src.types.ydlua")
+local ydcommon = ____ydlua.ydcommon
+local ydconsole = ____ydlua.ydconsole
+local ydjapi = ____ydlua.ydjapi
+local ydruntime = ____ydlua.ydruntime
+--- 运行时管理器
+-- 负责初始化游戏运行时环境
+____exports.RuntimeManager = __TS__Class()
+local RuntimeManager = ____exports.RuntimeManager
+RuntimeManager.name = "RuntimeManager"
+function RuntimeManager.prototype.____constructor(self)
+    self.initialized = false
+    self.configManager = ConfigManager:getInstance()
+end
+function RuntimeManager.getInstance(self)
+    if not ____exports.RuntimeManager.instance then
+        ____exports.RuntimeManager.instance = __TS__New(____exports.RuntimeManager)
+    end
+    return ____exports.RuntimeManager.instance
+end
+function RuntimeManager.prototype.initialize(self)
+    if self.initialized then
+        print("Runtime already initialized")
+        return
+    end
+    print(">>> Initializing runtime environment...")
+    self:initializeConsole()
+    self:initializeRuntime()
+    self:registerGlobals()
+    self.initialized = true
+    print(">>> Runtime environment initialized")
+end
+function RuntimeManager.prototype.initializeConsole(self)
+    local isConsoleEnabled = self.configManager:isConsoleEnabled()
+    ydconsole.enable = isConsoleEnabled
+    if isConsoleEnabled then
+        _G.print = function(msg) return ydconsole.write(msg) end
+        print(">>> Console enabled")
+    end
+end
+function RuntimeManager.prototype.initializeRuntime(self)
+    local config = self.configManager:getConfig()
+    local runtimeConfig = config.runtime
+    ydruntime.console = config.console
+    ydruntime.sleep = runtimeConfig.sleep
+    ydruntime.debugger = runtimeConfig.debuggerPort
+    ydruntime.catch_crash = runtimeConfig.catchCrash
+    ydruntime.error_hanlde = function(msg)
+        print("========lua-err========")
+        print(tostring(msg))
+        print("=========================")
+    end
+    print(((">>> Runtime configured: debugger=" .. tostring(runtimeConfig.debuggerPort)) .. ", crash_catch=") .. tostring(runtimeConfig.catchCrash))
+end
+function RuntimeManager.prototype.registerGlobals(self)
+    __TS__ArrayForEach(
+        __TS__ObjectKeys(ydcommon),
+        function(____, key)
+            _G[key] = ydcommon[key]
+        end
+    )
+    __TS__ArrayForEach(
+        __TS__ObjectKeys(ydjapi),
+        function(____, key)
+            _G[key] = ydjapi[key]
+        end
+    )
+    print(">>> Global APIs registered")
+end
+function RuntimeManager.prototype.isInitialized(self)
+    return self.initialized
+end
+function RuntimeManager.prototype.reset(self)
+    self.initialized = false
+    print(">>> Runtime reset")
+end
+return ____exports
+ end,
+["src.services.index"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local Map = ____lualib.Map
+local __TS__New = ____lualib.__TS__New
+local __TS__Iterator = ____lualib.__TS__Iterator
+local __TS__ArrayFrom = ____lualib.__TS__ArrayFrom
+local ____exports = {}
+--- 服务管理器
+-- 负责管理所有应用服务的生命周期
+____exports.ServiceManager = __TS__Class()
+local ServiceManager = ____exports.ServiceManager
+ServiceManager.name = "ServiceManager"
+function ServiceManager.prototype.____constructor(self)
+    self.services = __TS__New(Map)
+    self.initialized = false
+end
+function ServiceManager.getInstance(self)
+    if not ____exports.ServiceManager.instance then
+        ____exports.ServiceManager.instance = __TS__New(____exports.ServiceManager)
+    end
+    return ____exports.ServiceManager.instance
+end
+function ServiceManager.prototype.registerService(self, service)
+    if self.services:has(service.name) then
+        print(("Service " .. service.name) .. " is already registered")
+        return
+    end
+    self.services:set(service.name, service)
+    print((">>> Service " .. service.name) .. " registered")
+    if self.initialized then
+        service:initialize()
+    end
+end
+function ServiceManager.prototype.getService(self, serviceName)
+    return self.services:get(serviceName)
+end
+function ServiceManager.prototype.unregisterService(self, serviceName)
+    local service = self.services:get(serviceName)
+    if service then
+        service:destroy()
+        self.services:delete(serviceName)
+        print((">>> Service " .. serviceName) .. " unregistered")
+    end
+end
+function ServiceManager.prototype.initializeServices(self)
+    if self.initialized then
+        print("Services already initialized")
+        return
+    end
+    print(">>> Initializing all services...")
+    for ____, ____value in __TS__Iterator(self.services:entries()) do
+        local name = ____value[1]
+        local service = ____value[2]
+        do
+            local function ____catch(____error)
+                print(((">>> Error initializing service " .. name) .. ": ") .. tostring(____error))
+            end
+            local ____try, ____hasReturned = pcall(function()
+                service:initialize()
+                print((">>> Service " .. name) .. " initialized successfully")
+            end)
+            if not ____try then
+                ____catch(____hasReturned)
+            end
+        end
+    end
+    self.initialized = true
+    print(">>> All services initialized")
+end
+function ServiceManager.prototype.destroyServices(self)
+    print(">>> Destroying all services...")
+    for ____, ____value in __TS__Iterator(self.services:entries()) do
+        local name = ____value[1]
+        local service = ____value[2]
+        do
+            local function ____catch(____error)
+                print(((">>> Error destroying service " .. name) .. ": ") .. tostring(____error))
+            end
+            local ____try, ____hasReturned = pcall(function()
+                service:destroy()
+                print((">>> Service " .. name) .. " destroyed")
+            end)
+            if not ____try then
+                ____catch(____hasReturned)
+            end
+        end
+    end
+    self.services:clear()
+    self.initialized = false
+    print(">>> All services destroyed")
+end
+function ServiceManager.prototype.getRegisteredServices(self)
+    return __TS__ArrayFrom(self.services:keys())
+end
+function ServiceManager.prototype.hasService(self, serviceName)
+    return self.services:has(serviceName)
+end
+function ServiceManager.prototype.getServiceCount(self)
+    return self.services.size
+end
+function ServiceManager.prototype.isInitialized(self)
+    return self.initialized
+end
+return ____exports
+ end,
+["src.core.Application"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__New = ____lualib.__TS__New
+local __TS__AsyncAwaiter = ____lualib.__TS__AsyncAwaiter
+local __TS__Await = ____lualib.__TS__Await
+local ____exports = {}
+local ____config = require("src.config.index")
+local ConfigManager = ____config.ConfigManager
+local ____runtime = require("src.core.runtime")
+local RuntimeManager = ____runtime.RuntimeManager
+local ____services = require("src.services.index")
+local ServiceManager = ____services.ServiceManager
+--- 应用程序主类
+-- 负责整个应用的生命周期管理
+____exports.Application = __TS__Class()
+local Application = ____exports.Application
+Application.name = "Application"
+function Application.prototype.____constructor(self)
+    self.initialized = false
+    self.configManager = ConfigManager:getInstance()
+    self.runtimeManager = RuntimeManager:getInstance()
+    self.serviceManager = ServiceManager:getInstance()
+end
+function Application.getInstance(self)
+    if not ____exports.Application.instance then
+        ____exports.Application.instance = __TS__New(____exports.Application)
+    end
+    return ____exports.Application.instance
+end
+function Application.prototype.initialize(self)
+    return __TS__AsyncAwaiter(function(____awaiter_resolve)
+        if self.initialized then
+            print("Application already initialized")
+            return ____awaiter_resolve(nil)
+        end
+        print(">>> Starting application initialization...")
+        local ____try = __TS__AsyncAwaiter(function()
+            self.runtimeManager:initialize()
+            self.serviceManager:initializeServices()
+            self.initialized = true
+            print(">>> Application initialized successfully")
+            self:printApplicationInfo()
+        end)
+        __TS__Await(____try.catch(
+            ____try,
+            function(____, ____error)
+                print(">>> Application initialization failed: " .. tostring(____error))
+                error(____error, 0)
+            end
+        ))
+    end)
+end
+function Application.prototype.registerService(self, service)
+    self.serviceManager:registerService(service)
+end
+function Application.prototype.getService(self, serviceName)
+    return self.serviceManager:getService(serviceName)
+end
+function Application.prototype.getConfigManager(self)
+    return self.configManager
+end
+function Application.prototype.getRuntimeManager(self)
+    return self.runtimeManager
+end
+function Application.prototype.getServiceManager(self)
+    return self.serviceManager
+end
+function Application.prototype.destroy(self)
+    if not self.initialized then
+        return
+    end
+    print(">>> Shutting down application...")
+    do
+        local function ____catch(____error)
+            print(">>> Error during application shutdown: " .. tostring(____error))
+        end
+        local ____try, ____hasReturned = pcall(function()
+            self.serviceManager:destroyServices()
+            self.runtimeManager:reset()
+            self.initialized = false
+            print(">>> Application shutdown complete")
+        end)
+        if not ____try then
+            ____catch(____hasReturned)
+        end
+    end
+end
+function Application.prototype.isInitialized(self)
+    return self.initialized
+end
+function Application.prototype.printApplicationInfo(self)
+    local config = self.configManager:getConfig()
+    local mapConfig = config.map
+    print(">>> ============================")
+    print(((">>> " .. mapConfig.name) .. " v") .. mapConfig.version)
+    print(">>> " .. mapConfig.description)
+    print(">>> Debug Mode: " .. (config.debug and "ON" or "OFF"))
+    print(">>> Console: " .. (config.console and "ON" or "OFF"))
+    print(">>> Services: " .. tostring(self.serviceManager:getServiceCount()))
+    print(">>> ============================")
+end
+return ____exports
+ end,
+["src.core.index"] = function(...) 
+local ____exports = {}
+do
+    local ____Application = require("src.core.Application")
+    ____exports.Application = ____Application.Application
+end
+do
+    local ____runtime = require("src.core.runtime")
+    ____exports.RuntimeManager = ____runtime.RuntimeManager
+end
+return ____exports
+ end,
+["src.services.EventService"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local Map = ____lualib.Map
+local __TS__New = ____lualib.__TS__New
+local __TS__ArrayIndexOf = ____lualib.__TS__ArrayIndexOf
+local __TS__ArraySplice = ____lualib.__TS__ArraySplice
+local __TS__ArrayForEach = ____lualib.__TS__ArrayForEach
+local ____exports = {}
+--- 事件服务
+-- 提供游戏事件的统一管理
+____exports.EventService = __TS__Class()
+local EventService = ____exports.EventService
+EventService.name = "EventService"
+function EventService.prototype.____constructor(self)
+    self.name = "EventService"
+    self.listeners = __TS__New(Map)
+    self.initialized = false
+end
+function EventService.prototype.initialize(self)
+    if self.initialized then
+        return
+    end
+    print(">>> Initializing Event Service...")
+    self:setupGameEvents()
+    self.initialized = true
+    print(">>> Event Service initialized")
+end
+function EventService.prototype.destroy(self)
+    self.listeners:clear()
+    self.initialized = false
+    print(">>> Event Service destroyed")
+end
+function EventService.prototype.on(self, eventType, listener)
+    if not self.listeners:has(eventType) then
+        self.listeners:set(eventType, {})
+    end
+    local ____temp_0 = self.listeners:get(eventType)
+    ____temp_0[#____temp_0 + 1] = listener
+end
+function EventService.prototype.off(self, eventType, listener)
+    local eventListeners = self.listeners:get(eventType)
+    if eventListeners then
+        local index = __TS__ArrayIndexOf(eventListeners, listener)
+        if index > -1 then
+            __TS__ArraySplice(eventListeners, index, 1)
+        end
+    end
+end
+function EventService.prototype.emit(self, eventType, data)
+    local eventListeners = self.listeners:get(eventType)
+    if eventListeners then
+        __TS__ArrayForEach(
+            eventListeners,
+            function(____, listener)
+                do
+                    local function ____catch(____error)
+                        print((("Error in event listener for " .. eventType) .. ": ") .. tostring(____error))
+                    end
+                    local ____try, ____hasReturned = pcall(function()
+                        listener(data)
+                    end)
+                    if not ____try then
+                        ____catch(____hasReturned)
+                    end
+                end
+            end
+        )
+    end
+end
+function EventService.prototype.setupGameEvents(self)
+    print(">>> Setting up game event triggers...")
+end
+return ____exports
+ end,
+["src.utils.helper"] = function(...) 
+local ____exports = {}
+function ____exports.c2i(char)
+    local result = string.unpack(">I4", char)
+    return result[0]
+end
+function ____exports.i2c(id)
+    return string.pack("I4", id)
+end
+return ____exports
+ end,
+["src.map.start"] = function(...) 
+local ____exports = {}
+local setupEventListeners, initializeMapUnits
+local ____index = require("lua_modules.wc3ts-1.27a.index")
+local Unit = ____index.Unit
+local MapPlayer = ____index.MapPlayer
+local ____helper = require("src.utils.helper")
+local c2i = ____helper.c2i
+function setupEventListeners(eventService)
+    print(">>> Setting up event listeners...")
+    eventService:on(
+        "unit.created",
+        function(data)
+            print("Unit created for player " .. tostring(GetPlayerId(data.player)))
+        end
+    )
+    eventService:on(
+        "unit.died",
+        function(data)
+            print("Unit died: " .. GetUnitName(data.unit))
+            if data.killer then
+                print("Killed by: " .. GetUnitName(data.killer))
+            end
+        end
+    )
+    eventService:on(
+        "player.left",
+        function(data)
+            print(("Player " .. tostring(GetPlayerId(data.player))) .. " left the game")
+        end
+    )
+end
+function initializeMapUnits()
+    print(">>> Creating initial units...")
+    local localPlayer = GetLocalPlayer()
+    local hero = Unit:create(
+        MapPlayer:fromIndex(0),
+        c2i("hpea"),
+        0,
+        0,
+        270
+    )
+end
+--- 地图初始化函数
+-- 展示如何使用新的解耦架构
+function ____exports.mapInit(app)
+    print(">>> Initializing map components...")
+    local eventService = app:getService("EventService")
+    if not eventService then
+        print(">>> Error: Required services not found")
+        return
+    end
+    setupEventListeners(eventService)
+    initializeMapUnits()
+    print(">>> Map initialization complete")
+end
+return ____exports
+ end,
+["src.index"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__New = ____lualib.__TS__New
+local __TS__AsyncAwaiter = ____lualib.__TS__AsyncAwaiter
+local __TS__Await = ____lualib.__TS__Await
+local ____exports = {}
+local ____index = require("lua_modules.wc3ts-1.27a.index")
+local tsGlobals = ____index.tsGlobals
+local ____core = require("src.core.index")
+local Application = ____core.Application
+local ____start = require("src.map.start")
+local mapInit = ____start.mapInit
+local ____EventService = require("src.services.EventService")
+local EventService = ____EventService.EventService
+local ____tsGlobals_0 = tsGlobals
+local Players = ____tsGlobals_0.Players
+--- 应用程序主入口
+-- 负责引导整个应用程序的启动
+local function main()
+    return __TS__AsyncAwaiter(function(____awaiter_resolve)
+        local ____try = __TS__AsyncAwaiter(function()
+            local app = Application:getInstance()
+            app:registerService(__TS__New(EventService))
+            __TS__Await(app:initialize())
+            DisplayTextToPlayer(
+                Player(0),
+                0,
+                0,
+                ">>> Application initialized"
+            )
+            print(">>> Starting map logic...")
+            mapInit(app)
+            print(">>> Map logic initialized")
+        end)
+        __TS__Await(____try.catch(
+            ____try,
+            function(____, ____error)
+                print(">>> Failed to start application: " .. tostring(____error))
+            end
+        ))
+    end)
+end
+main()
+return ____exports
+ end,
+["lua_modules.wc3ts-1.27a.config"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__New = ____lualib.__TS__New
+local ____exports = {}
+--- 配置管理器
+____exports.ConfigManager = __TS__Class()
+local ConfigManager = ____exports.ConfigManager
+ConfigManager.name = "ConfigManager"
+function ConfigManager.prototype.____constructor(self)
+end
+function ConfigManager.getInstance(self)
+    if not ____exports.ConfigManager.instance then
+        ____exports.ConfigManager.instance = __TS__New(____exports.ConfigManager)
+    end
+    return ____exports.ConfigManager.instance
+end
+function ConfigManager.prototype.isConsoleEnabled(self)
+    return true
+end
+function ConfigManager.prototype.getConfig(self)
+    return {console = true, runtime = {sleep = true, debuggerPort = 4279, catchCrash = true}}
+end
+return ____exports
+ end,
 ["lua_modules.wc3ts-1.27a.globals.const"] = function(...) 
 local ____exports = {}
 ____exports.EPlayerColor = EPlayerColor or ({})
@@ -10461,22 +10935,6 @@ ____exports.EPlayerColor.COLOR13 = "|cFF282828"
 ____exports.EPlayerColor.COLOR14 = "|cFF282828"
 ____exports.EPlayerColor.COLOR15 = "|cFF282828"
 ____exports.EPlayerColor.COLOR16 = "|cFF282828"
-return ____exports
- end,
-["lua_modules.wc3ts-1.27a.globals.ydlua"] = function(...) 
-local ____exports = {}
-____exports.ydcommon = require("node_modules.wc3ts-1.27a.globals.jass.common")
-____exports.ydai = require("node_modules.wc3ts-1.27a.globals.jass.ai")
-____exports.ydglobals = require("node_modules.wc3ts-1.27a.globals.jass.globals")
-____exports.ydjapi = require("node_modules.wc3ts-1.27a.globals.jass.japi")
-____exports.ydhook = require("node_modules.wc3ts-1.27a.globals.jass.hook")
-____exports.ydruntime = require("node_modules.wc3ts-1.27a.globals.jass.runtime")
-____exports.ydslk = require("node_modules.wc3ts-1.27a.globals.jass.slk")
-____exports.ydconsole = require("node_modules.wc3ts-1.27a.globals.jass.console")
-____exports.yddebug = require("node_modules.wc3ts-1.27a.globals.jass.debug")
-____exports.ydlog = require("node_modules.wc3ts-1.27a.globals.jass.log")
-____exports.ydmessage = require("node_modules.wc3ts-1.27a.globals.jass.message")
-____exports.ydbignum = require("node_modules.wc3ts-1.27a.globals.jass.bignum")
 return ____exports
  end,
 }

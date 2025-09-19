@@ -19,6 +19,8 @@ async function main(): Promise<void> {
     // 初始化应用程序
     await app.initialize();
 
+    DisplayTextToPlayer(Player(0), 0, 0, ">>> Application initialized");
+
     // 启动地图逻辑
     print('>>> Starting map logic...');
     mapInit(app);

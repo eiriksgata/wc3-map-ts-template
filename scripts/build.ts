@@ -99,7 +99,7 @@ function main(): void {
   compileTypeScriptToLua();
 
   if (!isDev) {
-    minifyLua();
+    //minifyLua();
   }
 
   buildW3x();

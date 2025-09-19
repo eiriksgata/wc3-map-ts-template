@@ -25,7 +25,7 @@ export function env(isDebug = true) {
     // 注册jass.common和jass.japi到全局
     Object.keys(ydcommon).forEach(v => {
         // @ts-ignore
-        _G[v] = ydcommon[v]
+        //_G[v] = ydcommon[v]
     })
     
     Object.keys(ydjapi).forEach(v => {

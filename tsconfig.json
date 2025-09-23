@@ -4,38 +4,36 @@
     "lib": [
       "esnext"
     ],
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "wc3ts-1.27a": ["./node_modules/wc3ts-1.27a/index.ts"],
-      "wc3ts-1.27a/*": ["./node_modules/wc3ts-1.27a/*"]
-    },
-
-    "typeRoots": [
-      "src/types"
+    "moduleResolution": "bundler",
+    "types": [
+      "lua-types/5.3"
     ],
-    "skipLibCheck": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "strict": true
   },
   "tstl": {
     "luaTarget": "5.3",
     "noImplicitSelf": true,
     "noHeader": true,
+    "noResolvePaths": [
+      "jass.common",
+      "jass.ai",
+      "jass.globals",
+      "jass.japi",
+      "jass.hook",
+      "jass.runtime",
+      "jass.slk",
+      "jass.console",
+      "jass.debug",
+      "jass.log",
+      "jass.runtime",
+      "jass.message",
+      "jass.bignum"
+    ],
     "luaBundle": "maps/map/main.lua",
-    "luaBundleEntry": "src/index.ts",
-    "luaLibImport": "require",
-    "buildMode": "default"
+    "luaBundleEntry": "src/index.ts"
   },
   "include": [
     "src/**/*",
-    "node_modules/wc3ts-1.27a/**/*"
-  ],
-  "exclude": [
-    "node_modules/wc3ts-1.27a/dist/**/*",
-    "node_modules/wc3ts-1.27a/node_modules/**/*",
-    "node_modules/wc3ts-1.27a/globals/ydlua.ts",
-    "src/libs/ydlua.ts"
+    "types/**/*"
   ]
 }

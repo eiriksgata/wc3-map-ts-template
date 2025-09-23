@@ -242,6 +242,12 @@ v8-compile-cache-lib@^3.0.1:
   resolved "https://registry.npmmirror.com/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz#6336e8d71965cb3d35a1bbb7868445a7c05264bf"
   integrity sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==
 
+"wc3ts-1.27a@D:\\work\\github\\wc3ts-1.27a":
+  version "1.0.0"
+
+"wc3ts-1.27a@file:../wc3ts-1.27a":
+  version "1.0.0"
+
 yn@3.1.1:
   version "3.1.1"
   resolved "https://registry.npmmirror.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"

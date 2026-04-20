@@ -11,7 +11,10 @@
     "build:prod": "ts-node --project tsconfig.node.json scripts/build.ts prod",
     "test": "ts-node --project tsconfig.node.json scripts/build.ts && ts-node --project tsconfig.node.json scripts/test.ts",
     "build:map": "dev_lib/w3x2lni/w2l.exe obj maps dist/map.w3x",
-    "test:map": "dev_lib/KKWE/bin/YDWEConfig.exe -launchwar3 -loadfile \"./dist/map.w3x\""
+    "test:map": "dev_lib/KKWE/bin/YDWEConfig.exe -launchwar3 -loadfile \"./dist/map.w3x\"",
+    "ui:pull": "node scripts/ui-codegen.mjs pull",
+    "ui:check": "node scripts/ui-codegen.mjs check",
+    "ui:push": "node scripts/ui-codegen.mjs push"
   },
   "keywords": [],
   "author": "",

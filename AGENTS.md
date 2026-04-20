@@ -120,3 +120,23 @@ For routine AI-agent verification, default to yarn build:dev first, then use yar
 
 - Use repository-root relative paths when referencing files.
 - Include line numbers when discussing specific code locations.
+
+## UI Designer Collaboration (AI Loop)
+
+This repo pairs with the sibling [`ui-designer`](../ui-designer/) repository for AI-driven UI design. The canonical workflow is:
+
+**AI designs → user Accepts in the designer → `yarn ui:pull` regenerates TS → user edits custom logic outside BEGIN/END → `yarn build:dev` verifies → optionally `yarn ui:push` syncs back.**
+
+Agents operating in this repo must respect the following:
+
+1. **Generated directory is controlled**: all codegen output lives in `src/ui/generated/`. Anything in that directory is produced by `yarn ui:pull` (or the designer's "Export → File" menu using the `wc3-map-ts-template` plugin). Hand-editing files here, **especially between `// <ui-designer:generated:BEGIN>` and `// <ui-designer:generated:END>` markers**, will be overwritten on the next pull. Custom game-logic hooks (event listeners, visibility toggles, state wiring) must be written **outside** those markers.
+2. **Sidecar is the reverse-import contract**: each generated `*.ts` has a sibling `*.ui.json` (the `wc3-template-export` sidecar). `yarn ui:push` uses this sidecar — not the TS — to reconstruct the designer state. Never delete the sidecar.
+3. **Standard command order** (both repos cloned as siblings, `../ui-designer` resolvable, or `UI_DESIGNER_PATH` env var set):
+   1. `yarn tauri:dev` in `../ui-designer` — starts the designer with its MCP HTTP listener (default `http://127.0.0.1:8765`; override via `UI_DESIGNER_MCP_HTTP_URL`).
+   2. `yarn ui:pull` — regenerate `src/ui/generated/*.ts` + `*.ui.json` from the current designer state.
+   3. `yarn build:dev` — verify the generated TS compiles with the real `src/system/ui/` component API.
+   4. `yarn ui:check` — idempotence / drift gate suitable for CI and pre-commit hooks.
+   5. `yarn ui:push` — only when you've **intentionally** hand-edited a `*.ui.json` sidecar locally and want to replay that state into the designer UI. Do NOT use this to bypass the proposal gateway.
+4. **Resource path contract**: all UI image paths originate from the designer and must be rooted at `war3mapImported/`. The codegen fails strict-mode if any widget image string does not match this prefix — this keeps Lua import names stable across two-way sync.
+5. **HotReload integration**: generated modules export `initialize()` / `cleanup()` so they plug into [`src/system/HotReload.ts`](src/system/HotReload.ts) automatically. Keep the `UIComponentManager.getInstance().destroyAll?.()` call inside `cleanup()` intact; it prevents stale frames when the generated module reloads.
+6. **Never run `ui:push` without user awareness**: it performs `replaceProjectSnapshot` on the running designer and can discard unsaved designer-side edits. Prefer the designer's "工具 → 从模板 sidecar 导入…" menu for one-off imports.

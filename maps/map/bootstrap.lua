@@ -1,5 +1,3 @@
-PROJECT_PATH = "D:/work/github/wc3-map-ts-template/dist"
-package.path = package.path .. ";D:/work/github/wc3-map-ts-template/dist/?.lua;"
 -- Bootstrap script for loading TSTL output
 -- Supports both dev (modular) and prod (bundled) modes
 

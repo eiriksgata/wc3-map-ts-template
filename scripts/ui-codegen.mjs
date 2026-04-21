@@ -28,6 +28,9 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 
 const DEFAULT_OUT_DIR = path.join(REPO_ROOT, 'src', 'ui', 'generated');
 const DEFAULT_MCP = process.env.UI_DESIGNER_MCP_HTTP_URL || 'http://127.0.0.1:8765';
+// 资源落点：默认放到模板仓的 resource/。widget.image 里 war3 相对路径会叠加到这里，
+// 例如 "war3mapImported/icon.blp" -> resource/war3mapImported/icon.blp
+const DEFAULT_RES_DIR = path.join(REPO_ROOT, 'resource');
 
 function resolveUiDesignerRepo() {
     const envPath = process.env.UI_DESIGNER_PATH;
@@ -126,8 +129,16 @@ async function main() {
             [
                 'Usage:',
                 '  yarn ui:pull  [extra codegen flags]   Pull current UI Designer state into src/ui/generated/',
-                '  yarn ui:check [extra codegen flags]   Verify src/ui/generated/ matches current UI Designer state',
+                '                                        (also copies referenced image resources into resource/)',
+                '  yarn ui:check [extra codegen flags]   Verify src/ui/generated/ and resource/ match designer state',
                 '  yarn ui:push  [--mcp <url>]           Push local *.ui.json sidecars back into UI Designer',
+                '',
+                'Extra flags (pass through to codegen.mjs):',
+                '  --copy-resources <dir>     Override resource copy target (default: <repo>/resource)',
+                '  --no-copy-resources        Skip resource copying entirely (layout-only pull)',
+                '  --no-overwrite-resources   Keep existing files on collision',
+                '  --resources-prefix <p>     Required war3 prefix (default war3mapImported/)',
+                '  --class-name <Name>       Override generated module/class name',
                 '',
                 'Env:',
                 '  UI_DESIGNER_PATH          Path to ui-designer repo (default: ../ui-designer)',
@@ -154,6 +165,13 @@ async function main() {
     }
     if (!passthrough.includes('--mcp') && !passthrough.some((a) => !a.startsWith('--'))) {
         passthrough.push('--mcp', DEFAULT_MCP);
+    }
+    // 默认把资源拷贝到本仓 resource/；显式 --no-copy-resources 或 --copy-resources <dir> 都可覆盖
+    const hasCopyFlag = passthrough.some(
+        (a) => a === '--copy-resources' || a === '--no-copy-resources',
+    );
+    if (!hasCopyFlag) {
+        passthrough.push('--copy-resources', DEFAULT_RES_DIR);
     }
     if (sub === 'check' && !passthrough.includes('--check')) {
         passthrough.push('--check');

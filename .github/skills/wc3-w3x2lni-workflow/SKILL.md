@@ -154,6 +154,8 @@ w2l 在 lni 模式下并不按「统一前缀剥离」对所有文件一视同�
 ### 对代码/ini 引用的直接影响
 
 - **在 `unit.ini` / `ability.ini` 里写 `file = "..."`、或 Lua 里 `SetUnitModel(u, "…")` / `BlzFrameSetTexture(f, "…")`**：统一写 **MPQ 路径**（剥离后的）。比如自定义模型放 `maps/resource/CustomModel/boss.mdx` → 代码里写 `"CustomModel\\boss.mdx"`，**不要** 写 `"resource\\CustomModel\\boss.mdx"`。
+- **`Panel.setBackground("…")` / `BlzFrameSetTexture` 等 TS/Lua UI 代码**：同样写 MPQ 路径（剥离后的）。  
+  物理 `maps/resource/ui/Console/back.tga` → 代码里写 `"ui\\Console\\back.tga"`，**不要** 写 `"resource\\ui\\Console\\back.tga"` 也**不要** 写 `"war3mapImported\\ui\\Console\\back.tga"`（`war3mapImported/` 是 UI 设计器的内部资源注册前缀，与游戏运行时路径无关）。
 - **在 FDF 文件里 `File "resource\\Texture\\ui\\panel_title_background.tga"`**：这里同样写 MPQ 路径。panel 背景是 tga，会被剥离，所以实际写 `"Texture\\ui\\panel_title_background.tga"`（对应本仓库的 imp.ini 条目）。  
   但 FDF 里如果引用 **字体 ttf** 就必须带 `resource\` 前缀（ttf 不剥离），这正是 `imp.ini` 中 `resource\\Texture\\ui\\hpbar\\ZiTi.TTf` 的原因。
 - **TOC 文件**（如 `maps/resource/fdf/path.toc`）里列出的 FDF 需要写 **MPQ 路径**：每行一个 `resource\fdf\FrameTemplate.fdf`（反斜杠、保留 `resource\` 前缀）。

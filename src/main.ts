@@ -35,7 +35,7 @@ async function main(): Promise<void> {
     // relicSystemTestExample();
     // buffBarTestExample();
 
-    runSpellCardBulletHellTest();
+    // runSpellCardBulletHellTest()
     // 或者你也可以在任意单位上直接调用 castSpellCardFromUnit(unitHandle, SpellCardId.RING_BURST)
     
   });

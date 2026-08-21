@@ -2,6 +2,9 @@ import { Players, Timer } from "@eiriksgata/wc3ts/*";
 import { Actor } from "src/system/actor";
 import { SpellCardBulletSystem, SpellCardId } from "src/system/bullethell";
 import { FourCC } from "src/utils/helper";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("BulletHellTest");
 
 function getDefaultSpellCardOptions(cardId: SpellCardId): {
   duration: number;
@@ -90,7 +93,7 @@ export function runSpellCardBulletHellTest(): void {
   Actor.create(Players[1], FourCC("Ulic"), -700, 700, 90);
 
   if (!caster) {
-    print("[BulletHellTest] 创建巫妖失败");
+    log.error("创建巫妖失败");
     return;
   }
 
@@ -128,13 +131,13 @@ export function runSpellCardBulletHellTest(): void {
   const statTimer = Timer.create();
   statTimer.start(2, true, () => {
     const s = system.getStats();
-    print(
-      `[BulletHellTest] active=${s.activeBullets}, emitters=${s.activeEmitters}, spawned=${s.totalSpawned}, dropped=${s.totalDropped}, recycled=${s.totalRecycled}, hit=${s.totalHit}`
+    log.info(
+      `active=${s.activeBullets}, emitters=${s.activeEmitters}, spawned=${s.totalSpawned}, dropped=${s.totalDropped}, recycled=${s.totalRecycled}, hit=${s.totalHit}`
     );
 
     if (s.activeEmitters <= 0 && s.activeBullets <= 0) {
       statTimer.destroy();
-      print("[BulletHellTest] 全部符卡结束");
+      log.info("全部符卡结束");
     }
   });
 }

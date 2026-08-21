@@ -1,5 +1,8 @@
 import { Timer } from "@eiriksgata/wc3ts/*";
 import { ModuleManager } from "./ModuleManager";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("HotReload");
 
 // 程序运行目录路径（仅在 dev 模式下由 bootstrap.lua 注入）
 declare const PROJECT_PATH: string | undefined;
@@ -44,18 +47,18 @@ export class HotReload {
   public start(): void {
     // 检查是否为开发模式
     if (!isDevMode()) {
-      print(">>> HotReload: Production mode detected, hot reload disabled");
+      log.info("Production mode detected, hot reload disabled");
       this.enabled = false;
       return;
     }
 
     if (!this.enabled) {
-      print(">>> HotReload: Hot reload is disabled");
+      log.info("Hot reload is disabled");
       return;
     }
 
     if (this.timer) {
-      print(">>> HotReload: Hot reload is already running");
+      log.info("Hot reload is already running");
       return;
     }
 
@@ -66,19 +69,19 @@ export class HotReload {
       this.gameStartTimestamp = os.time();
     } catch (error) {
       this.gameStartTimestamp = 0;
-      print(`>>> HotReload: os.time() not available, fallback to 0, error: ${error}`);
+      log.warn(`os.time() not available, fallback to 0, error: ${error}`);
     }
-    print(">>> HotReload: Starting hot reload system...");
-    print(`>>> HotReload: Game start timestamp: ${this.gameStartTimestamp} (seconds, 10 digits)`);
-    print(`>>> HotReload: Check interval: ${this.checkInterval} seconds`);
-    print(`>>> HotReload: PROJECT_PATH: ${PROJECT_PATH}`);
+    log.info("Starting hot reload system...");
+    log.info(`Game start timestamp: ${this.gameStartTimestamp} (seconds, 10 digits)`);
+    log.info(`Check interval: ${this.checkInterval} seconds`);
+    log.info(`PROJECT_PATH: ${PROJECT_PATH}`);
 
     this.timer = Timer.create();
     this.timer.start(this.checkInterval, true, () => {
       this.checkForUpdates();
     });
 
-    print(">>> HotReload: Hot reload system started successfully");
+    log.info("Hot reload system started successfully");
   }
 
   /**
@@ -88,7 +91,7 @@ export class HotReload {
     if (this.timer) {
       this.timer.destroy();
       this.timer = null;
-      print("Hot reload system stopped");
+      log.info("Hot reload system stopped");
     }
   }
 
@@ -100,7 +103,7 @@ export class HotReload {
     if (!enabled) {
       this.stop();
     }
-    print(`Hot reload ${enabled ? 'enabled' : 'disabled'}`);
+    log.info(`Hot reload ${enabled ? 'enabled' : 'disabled'}`);
   }
 
   /**
@@ -116,7 +119,7 @@ export class HotReload {
 
       const notification = this.parseNotification(notificationContent);
       if (!notification) {
-        print(">>> HotReload: Failed to parse notification");
+        log.error("Failed to parse notification");
         return;
       }
 
@@ -130,7 +133,7 @@ export class HotReload {
 
       // 检查时间戳是否在游戏启动之前
       if (notificationTimestampSeconds < this.gameStartTimestamp) {
-        //print(`>>> HotReload: Notification timestamp (${notificationTimestampSeconds}) is before game start (${this.gameStartTimestamp}), ignoring`);
+        //log.info(`Notification timestamp (${notificationTimestampSeconds}) is before game start (${this.gameStartTimestamp}), ignoring`);
         return;
       }
 
@@ -139,12 +142,12 @@ export class HotReload {
         return;
       }
 
-      print(`>>> HotReload: New notification detected!`);
-      print(`>>> HotReload: Notification timestamp: ${notificationTimestampSeconds} (original: ${notification.timestamp})`);
-      print(`>>> HotReload: Game start timestamp: ${this.gameStartTimestamp}`);
-      print(`>>> HotReload: Last processed: ${this.lastProcessedTimestamp}`);
-      print(`>>> HotReload: Action: ${notification.action}`);
-      print(`>>> HotReload: Modules: ${notification.modules.map(m => m.name).join(", ")}`);
+      log.info(`New notification detected!`);
+      log.info(`Notification timestamp: ${notificationTimestampSeconds} (original: ${notification.timestamp})`);
+      log.info(`Game start timestamp: ${this.gameStartTimestamp}`);
+      log.info(`Last processed: ${this.lastProcessedTimestamp}`);
+      log.info(`Action: ${notification.action}`);
+      log.info(`Modules: ${notification.modules.map(m => m.name).join(", ")}`);
 
       // 处理热更新
       this.processHotReload(notification);
@@ -153,7 +156,7 @@ export class HotReload {
       this.markAsProcessed(notificationTimestampSeconds);
 
     } catch (error) {
-      print(`>>> HotReload: Error in checkForUpdates: ${error}`);
+      log.error(`Error in checkForUpdates: ${error}`);
     }
   }
 
@@ -183,7 +186,7 @@ export class HotReload {
       file[0]?.close();
       return content;
     } catch (error) {
-      print(`>>> HotReload: Error reading hot reload file: ${error}`);
+      log.error(`Error reading hot reload file: ${error}`);
       return null;
     }
   }
@@ -259,7 +262,7 @@ export class HotReload {
     }
 
     const numberStr = str.substring(valueStart, valueEnd);
-    return numberStr ? parseInt(numberStr) : null;
+    return numberStr !== "" ? parseInt(numberStr) : null;
   }
 
   private extractString(str: string, key: string): string | null {
@@ -358,36 +361,36 @@ export class HotReload {
    * notification.modules 包含 {name, path} 对象
    */
   private processHotReload(notification: HotReloadNotification): void {
-    print(`>>> HotReload: Processing hot reload for ${notification.modules.length} modules...`);
+    log.info(`Processing hot reload for ${notification.modules.length} modules...`);
 
     const moduleManager = ModuleManager.getInstance();
     const registeredModules = moduleManager.getRegisteredModules();
-    print(`>>> HotReload: All registered modules: ${registeredModules.join(", ")}`);
+    log.info(`All registered modules: ${registeredModules.join(", ")}`);
 
     // 匹配已注册的模块，并传递路径信息
     const matchedModules: ModuleInfo[] = [];
 
     for (const moduleInfo of notification.modules) {
-      print(`>>> HotReload: Checking module: ${moduleInfo.name} (${moduleInfo.path})`);
+      log.info(`Checking module: ${moduleInfo.name} (${moduleInfo.path})`);
 
       if (moduleManager.isModuleRegistered(moduleInfo.name)) {
-        print(`>>> HotReload: ✓ Matched: ${moduleInfo.name}`);
+        log.info(`✓ Matched: ${moduleInfo.name}`);
         matchedModules.push(moduleInfo);
       } else {
-        print(`>>> HotReload: ✗ Not registered: ${moduleInfo.name}`);
+        log.warn(`✗ Not registered: ${moduleInfo.name}`);
       }
     }
 
     const matchedNames = matchedModules.map(m => m.name).join(", ");
-    print(`>>> HotReload: Matched registered modules: ${matchedNames}`);
+    log.info(`Matched registered modules: ${matchedNames}`);
 
     if (matchedModules.length === 0) {
-      print(">>> HotReload: No registered modules to hot reload");
+      log.warn("No registered modules to hot reload");
       return;
     }
 
     // 使用 ModuleManager 进行热重载，传递完整的模块信息
-    print(`>>> HotReload: Calling ModuleManager.hotReloadModules...`);
+    log.info(`Calling ModuleManager.hotReloadModules...`);
     moduleManager.hotReloadModulesWithPath(matchedModules);
   }
 
@@ -420,7 +423,7 @@ export class HotReload {
     // 由于 Lua 引擎不支持文件写入模式，我们只在内存中标记已处理的时间戳
     // 通过更新 lastProcessedTimestamp 来避免重复处理相同的通知
     this.lastProcessedTimestamp = timestampSeconds;
-    print(`>>> HotReload: Marked notification with timestamp ${timestampSeconds} as processed in memory`);
+    log.info(`Marked notification with timestamp ${timestampSeconds} as processed in memory`);
   }
 }
 

@@ -14,6 +14,9 @@ import {
   SpellCardId,
   StartSpellCardOptions,
 } from "./types";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("BulletHell");
 
 interface SystemConfig {
   bulletModel: string;
@@ -90,14 +93,45 @@ export class SpellCardBulletSystem {
     if (this.bullets.length === 0) {
       this.allocateBulletPool();
       this.allocateImpactPool();
-      print(`[BulletHell] initialized, bullet pool=${this.config.maxBullets}`);
+      log.info(`initialized, bullet pool=${this.config.maxBullets}`);
     }
+  }
 
-    if (!this.timer) {
-      this.timer = Timer.create();
-      this.timer.start(this.config.tickInterval, true, () => {
-        this.update(this.config.tickInterval);
-      });
+  private ensureTimer(): void {
+    if (this.timer !== null) {
+      return;
+    }
+    this.timer = Timer.create();
+    this.timer.start(this.config.tickInterval, true, () => {
+      this.update(this.config.tickInterval);
+      this.stopTimerIfIdle();
+    });
+  }
+
+  private hasWork(): boolean {
+    for (const id in this.emitters) {
+      if (this.emitters[id] !== undefined && this.emitters[id].active) {
+        return true;
+      }
+    }
+    if (this.activeBulletIndices.length > 0) {
+      return true;
+    }
+    for (const impact of this.impacts) {
+      if (impact.active) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private stopTimerIfIdle(): void {
+    if (this.hasWork()) {
+      return;
+    }
+    if (this.timer !== null) {
+      this.timer.destroy();
+      this.timer = null;
     }
   }
 
@@ -111,6 +145,7 @@ export class SpellCardBulletSystem {
     }
 
     this.initialize();
+    this.ensureTimer();
 
     const merged: Required<StartSpellCardOptions> = {
       ...DEFAULT_OPTIONS,

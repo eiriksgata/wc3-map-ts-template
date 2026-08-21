@@ -1,4 +1,4 @@
-import { Unit, MapPlayer } from "@eiriksgata/wc3ts/*";
+import { Unit, MapPlayer, UNIT_TYPE_DEAD } from "@eiriksgata/wc3ts/*";
 import { UnitBlood } from "./ui/component/UnitBlood";
 import { BuffManager } from "./buff/BuffManager";
 import { BUFF_DURATION_PERMANENT } from "./buff/types";
@@ -53,10 +53,13 @@ export class Actor extends Unit {
     setmetatable(obj as unknown as object, Actor.prototype as unknown as object);
   }
 
+  private static isHandleAlive(handle: unit): boolean {
+    return !IsUnitType(handle, UNIT_TYPE_DEAD()) && GetWidgetLife(handle) > 0.405;
+  }
+
   /**
    * 创建新的 Actor 单位。
-   * 注意：调用方需在单位死亡事件中调用 actor.destroy() 以防 WC3 handle ID
-   * 被复用后 allActors 返回指向已死亡单位的过期 Actor。
+   * 死亡时由 RelicSystem.bindDeathCleanup 调用 detach()，避免 handle ID 复用后指向尸体。
    */
   public static create(
     owner: MapPlayer,
@@ -114,8 +117,9 @@ export class Actor extends Unit {
     Object.assign(actor, { handle });
     Actor.allActors[actor.id] = actor;
 
-     // 通知 DamageSystem：该 Actor 已成功加入管理器，后续受击事件需要注册。
-    eventBus.emit("game:Actor:created", { actor });
+    if (Actor.isHandleAlive(handle)) {
+      eventBus.emit("game:Actor:created", { actor });
+    }
     return actor;
   }
 
@@ -129,16 +133,24 @@ export class Actor extends Unit {
   }
 
   /**
-   * 移除Actor（当单位死亡或被移除时调用）
+   * 从运行时表摘除 Actor（死亡流程用）：清 Buff、血条、allActors。
+   * 不 RemoveUnit，单位已在引擎死亡流程中。
+   */
+  public detach(): void {
+    if (this._buffManager !== null) {
+      this._buffManager.clearAll();
+      this._buffManager = null;
+    }
+    UnitBlood.remove(this);
+    this.bloodBarUI = null;
+    delete Actor.allActors[this.id];
+  }
+
+  /**
+   * 主动移除单位：先 detach 再 RemoveUnit。
    */
   public destroy(): void {
-    // 从全局管理器中移除
-    delete Actor.allActors[this.id];
-
-    // 移除相关的UI
-    UnitBlood.remove(this);
-
-    // 调用父类的销毁方法
+    this.detach();
     super.destroy();
   }
 
@@ -160,10 +172,14 @@ export class Actor extends Unit {
 
   /** Buff 管理器（护盾等均通过 buff 挂载） */
   public get buffManager(): BuffManager {
-    if (!this._buffManager) {
+    if (this._buffManager === null) {
       this._buffManager = new BuffManager(this);
     }
     return this._buffManager;
+  }
+
+  public hasBuffManager(): boolean {
+    return this._buffManager !== null;
   }
 
   /** 当前护盾总量（所有护盾 buff 的 current 之和） */

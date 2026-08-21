@@ -10,13 +10,18 @@
 
 import {
   bj_MAX_PLAYER_SLOTS,
+  EVENT_PLAYER_UNIT_ATTACKED,
   EVENT_PLAYER_UNIT_DEATH,
+  EVENT_PLAYER_UNIT_DESELECTED,
+  EVENT_PLAYER_UNIT_SELECTED,
   EVENT_PLAYER_UNIT_SPELL_EFFECT,
   EVENT_PLAYER_UNIT_SUMMON,
-  EVENT_UNIT_SPELL_EFFECT,
 } from "@eiriksgata/wc3ts/src/globals/define";
 import { EventEmitter, EventHandler, SubscribeOptions } from "./EventEmitter";
 import { Actor } from "../actor";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("GameEventManager");
 
 // 注意：1.27a 中玩家-单位事件与单位事件是区分开的，这里只用玩家单位事件常量（EVENT_PLAYER_UNIT_XXX）
 // 注册单位事件时使用 TriggerRegisterPlayerUnitEvent + EVENT_PLAYER_UNIT_XXX；
@@ -210,7 +215,7 @@ export class GameEventManager extends EventEmitter {
    */
   public initialize(): void {
     // 可选择性注册常用事件
-    print("[GameEventManager] 初始化完成");
+    log.info("初始化完成");
   }
   
   /**
@@ -304,6 +309,66 @@ export class GameEventManager extends EventEmitter {
     
     this.registeredEvents.add(GameEventType.UNIT_SPELL_EFFECT);
   }
+
+  /**
+   * 注册单位被攻击事件
+   */
+  public registerUnitAttackedEvent(): void {
+    if (this.registeredEvents.has(GameEventType.UNIT_ATTACKED)) return;
+
+    const trig = CreateTrigger();
+    this.nativeTriggers.push(trig);
+    registerAnyUnitEvent(trig, EVENT_PLAYER_UNIT_ATTACKED());
+    TriggerAddAction(trig, () => {
+      const attacked = GetTriggerUnit();
+      const attacker = GetAttacker();
+      const data = new UnitDamageEventData(
+        Actor.fromHandle(attacked),
+        GetUnitTypeId(attacked),
+        GetOwningPlayer(attacked),
+        Actor.fromHandle(attacker),
+        0
+      );
+      this.emit(GameEventType.UNIT_ATTACKED, data);
+    });
+    this.registeredEvents.add(GameEventType.UNIT_ATTACKED);
+  }
+
+  /**
+   * 注册单位选中 / 取消选中（所有玩家各一次）
+   */
+  public registerUnitSelectionEvents(): void {
+    if (this.registeredEvents.has(GameEventType.UNIT_SELECTED)) return;
+
+    const trigSel = CreateTrigger();
+    const trigDes = CreateTrigger();
+    this.nativeTriggers.push(trigSel);
+    this.nativeTriggers.push(trigDes);
+    registerAnyUnitEvent(trigSel, EVENT_PLAYER_UNIT_SELECTED());
+    registerAnyUnitEvent(trigDes, EVENT_PLAYER_UNIT_DESELECTED());
+
+    TriggerAddAction(trigSel, () => {
+      const selected = GetTriggerUnit();
+      const data: UnitEventData = {
+        Actor: Actor.fromHandle(selected),
+        unitTypeId: GetUnitTypeId(selected),
+        owner: GetOwningPlayer(selected),
+      };
+      this.emit(GameEventType.UNIT_SELECTED, data);
+    });
+    TriggerAddAction(trigDes, () => {
+      const deselected = GetTriggerUnit();
+      const data: UnitEventData = {
+        Actor: Actor.fromHandle(deselected),
+        unitTypeId: GetUnitTypeId(deselected),
+        owner: GetOwningPlayer(deselected),
+      };
+      this.emit(GameEventType.UNIT_DESELECTED, data);
+    });
+
+    this.registeredEvents.add(GameEventType.UNIT_SELECTED);
+    this.registeredEvents.add(GameEventType.UNIT_DESELECTED);
+  }
   
   /**
    * 注册玩家聊天事件
@@ -356,7 +421,30 @@ export class GameEventManager extends EventEmitter {
     handler: GameEventHandler<UnitDamageEventData>,
     options?: SubscribeOptions
   ): number {
+    this.registerUnitAttackedEvent();
     return this.on(GameEventType.UNIT_ATTACKED, handler, options);
+  }
+
+  /**
+   * 订阅单位选中。本地玩家判断请在回调内用 GetTriggerPlayer() === GetLocalPlayer()。
+   */
+  public onUnitSelected(
+    handler: GameEventHandler<UnitEventData>,
+    options?: SubscribeOptions
+  ): number {
+    this.registerUnitSelectionEvents();
+    return this.on(GameEventType.UNIT_SELECTED, handler, options);
+  }
+
+  /**
+   * 订阅单位取消选中
+   */
+  public onUnitDeselected(
+    handler: GameEventHandler<UnitEventData>,
+    options?: SubscribeOptions
+  ): number {
+    this.registerUnitSelectionEvents();
+    return this.on(GameEventType.UNIT_DESELECTED, handler, options);
   }
 
   /**

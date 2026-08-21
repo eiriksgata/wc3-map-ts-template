@@ -4,6 +4,9 @@ import { Button } from "./Button";
 import { Text, TextColors } from "./Text";
 import { UIComponent } from "src/system/ui/UIComponent";
 import { UIBackgrounds } from "src/constants/ui/preset";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("Dialog");
 
 /**
  * 对话框按钮配置
@@ -232,7 +235,7 @@ export class Dialog implements UIComponent {
    */
   public addButton(config: DialogButtonConfig): Button {
     if (!this.isCreated) {
-      print("Error: Dialog not created yet. Call create() first.");
+      log.error("Dialog not created yet. Call create() first.");
       throw new Error("Dialog not created");
     }
 
@@ -246,7 +249,7 @@ export class Dialog implements UIComponent {
     const buttonX = contentPos.x + (this.dialogWidth - buttonWidth) / 2;
     const buttonY = contentPos.y + this.buttonStartY + buttonIndex * this.buttonSpacing;
 
-    print("Creating button at absolute position: x=" + buttonX + ", y=" + buttonY + ", width=" + buttonWidth);
+    log.info("Creating button at absolute position: x=" + buttonX + ", y=" + buttonY + ", width=" + buttonWidth);
 
     // 使用 FDF 模板创建按钮（使用绝对坐标）
     const button = Button.createWithTemplatePreset(
@@ -320,7 +323,7 @@ export class Dialog implements UIComponent {
    */
   public removeButton(index: number): void {
     const button = this.buttons[index];
-    if (button) {
+    if (button !== undefined) {
       button.destroy();
       this.buttons.splice(index, 1);
 
@@ -681,31 +684,31 @@ export class Dialog implements UIComponent {
    * 销毁对话框
    */
   public destroy(): void {
-    print(`[Dialog] 开始销毁对话框: ${this.titleText}`);
+    log.info(`开始销毁对话框: ${this.titleText}`);
 
     // 销毁所有按钮
-    print(`[Dialog] 销毁 ${this.buttons.length} 个按钮`);
+    log.info(`销毁 ${this.buttons.length} 个按钮`);
     this.clearButtons();
 
     // 销毁标题文本
     if (this.titleText) {
-      print(`[Dialog] 销毁标题文本`);
+      log.info("销毁标题文本");
       this.titleText.destroy();
       this.titleText = null;
     }
 
 
     // 清理用户拖拽回调
-    print(`[Dialog] 清理拖拽回调`);
+    log.info("清理拖拽回调");
     this.userOnDragStart = null;
     this.userOnDragEnd = null;
     this.userOnDragging = null;
 
     // 销毁面板（会自动销毁所有内部 Frame）
-    print(`[Dialog] 销毁面板`);
+    log.info("销毁面板");
     this.panel.destroy();
 
     this.isCreated = false;
-    print(`[Dialog] 对话框销毁完成`);
+    log.info("对话框销毁完成");
   }
 }

@@ -1,5 +1,8 @@
 import { Timer } from "@eiriksgata/wc3ts/*";
 import { UnitBlood } from "src/system/ui/component/UnitBlood";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("CameraControl");
 
 
 /**
@@ -42,7 +45,7 @@ export class CameraControl {
       CameraControl.onWheel();
     });
 
-    print("CameraControl: 鼠标控制已初始化");
+    log.info("鼠标控制已初始化");
   }
 
   /**
@@ -59,7 +62,7 @@ export class CameraControl {
     this.resetCam = true;
 
     //获取视角角度
-    print(`CameraControl: 视角角度: ${GetCameraField(ConvertCameraField(2))}`);
+    log.info(`视角角度: ${GetCameraField(ConvertCameraField(2))}`);
 
     if (delta < 0) {
       // 滚轮下滑 - 拉远镜头
@@ -106,7 +109,7 @@ export class CameraControl {
   public static setWideScreen(): boolean {
     this.wideScr = !this.wideScr;
     DzEnableWideScreen(this.wideScr);
-    print(`CameraControl: 宽屏模式${this.wideScr ? '开启' : '关闭'}`);
+    log.info(`宽屏模式${this.wideScr ? '开启' : '关闭'}`);
     return this.wideScr;
   }
 
@@ -139,9 +142,9 @@ export class CameraControl {
     if (level >= this.viewLevelMin && level <= this.viewLevelMax) {
       this.viewLevel = level;
       this.resetCam = true;
-      print(`CameraControl: 视野等级设置为 ${level}`);
+      log.info(`视野等级设置为 ${level}`);
     } else {
-      print(`CameraControl: 视野等级必须在 ${this.viewLevelMin}-${this.viewLevelMax} 之间`);
+      log.warn(`视野等级必须在 ${this.viewLevelMin}-${this.viewLevelMax} 之间`);
     }
   }
 
@@ -159,7 +162,7 @@ export class CameraControl {
     this.viewLevel = 8;
     this.xAngle = 306;
     this.resetCam = true;
-    print("CameraControl: 镜头已重置到默认设置");
+    log.info("镜头已重置到默认设置");
   }
 
   /**
@@ -169,9 +172,9 @@ export class CameraControl {
   public static setWheelSpeed(speed: number): void {
     if (speed >= 0 && speed <= 1) {
       this.wheelSpeed = speed;
-      print(`CameraControl: 镜头平滑度设置为 ${speed}`);
+      log.info(`镜头平滑度设置为 ${speed}`);
     } else {
-      print("CameraControl: 镜头平滑度必须在 0-1 之间");
+      log.warn("镜头平滑度必须在 0-1 之间");
     }
   }
 

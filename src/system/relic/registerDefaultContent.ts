@@ -21,4 +21,5 @@ export function registerDefaultRelicsAndPools(): void {
     { id: "iron_plate", weight: 1 },
     { id: "arcane_grimoire_water", weight: 1 },
   ]);
+  rs.bindDeathCleanup();
 }

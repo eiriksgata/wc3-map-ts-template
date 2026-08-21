@@ -6,6 +6,9 @@ import { FrameEventUtils } from "src/constants/frame/utils";
 import { MouseEventManager, MouseButton } from "src/system/event/MouseEvent";
 import { Text, TextAlign, VerticalAlign } from "./Text";
 import { UIBackgrounds } from "src/constants/ui/preset";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("Button");
 
 /**
  * FDF 模板预设
@@ -248,7 +251,7 @@ export class Button {
 
   public create(parent?: Frame): void {
     if (this.backdropFrame) {
-      print("Button already created");
+      log.info("already created");
       return;
     }
 
@@ -269,7 +272,7 @@ export class Button {
         "BACKDROP",                          // typeName - 框架类型
         this.templateName                    // inherits - FDF 模板名
       ) || null;
-      print("Creating button with FDF template: " + this.templateName);
+      log.info("Creating button with FDF template: " + this.templateName);
     } else {
       // 使用普通方式创建
       this.backdropFrame = Frame.createType(
@@ -282,7 +285,7 @@ export class Button {
     }
 
     if (!this.backdropFrame) {
-      print("Error: Failed to create backdrop frame");
+      log.error("Failed to create backdrop frame");
       return;
     }
 
@@ -321,7 +324,7 @@ export class Button {
       ""
     ) || null;
     if (!this.buttonFrame) {
-      print("Error: Failed to create button frame");
+      log.error("Failed to create button frame");
       return;
     }
     
@@ -337,7 +340,7 @@ export class Button {
       this.backdropFrame.setAlpha(255);
     }
 
-    print("Button \"" + this.label + "\" created successfully with Text component");
+    log.info("\"" + this.label + "\" created successfully with Text component");
   }
 
   public setOnClick(callback: () => void): Button {
@@ -443,7 +446,7 @@ export class Button {
     this.texture = texturePath;
     if (this.backdropFrame) {
       if (this.useTemplate) {
-        print("Warning: Setting texture on a template-based button may override template styles");
+        log.warn("Setting texture on a template-based button may override template styles");
       }
       this.backdropFrame.setTexture(texturePath, 0, true);
     }
@@ -644,7 +647,7 @@ export class Button {
   public click(): void {
     if (this.isEnabled && this.onClick) {
       this.onClick();
-      print("Button \"" + this.label + "\" clicked");
+      log.info("\"" + this.label + "\" clicked");
     }
   }
 
@@ -885,7 +888,7 @@ export class Button {
     this.dragOffsetX = currentMouseX - this.pixelX;
     this.dragOffsetY = currentMouseY - this.pixelY;
 
-    print("Drag started at mouse(" + currentMouseX + ", " + currentMouseY + "), offset(" + this.dragOffsetX + ", " + this.dragOffsetY + ")");
+    log.info("Drag started at mouse(" + currentMouseX + ", " + currentMouseY + "), offset(" + this.dragOffsetX + ", " + this.dragOffsetY + ")");
 
     // 触发拖拽开始回调
     if (this.onDragStart) {
@@ -950,7 +953,7 @@ export class Button {
       this.dragMouseUpId = -1;
     }
 
-    print("Drag ended at position(" + this.pixelX + ", " + this.pixelY + ")");
+    log.info("Drag ended at position(" + this.pixelX + ", " + this.pixelY + ")");
 
     // 触发拖拽结束回调
     if (this.onDragEnd) {

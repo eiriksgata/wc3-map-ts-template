@@ -3,6 +3,9 @@ import { FourCC } from "src/utils/helper";
 import { Actor } from "src/system/actor";
 import { RelicSystem } from "src/system/relic";
 import { RelicBarUI } from "src/system/ui/component/RelicBarUI";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("RelicSystemTestExample");
 
 /**
  * 遗物系统测试说明
@@ -23,7 +26,7 @@ export function relicSystemTestExample(): void {
   const heroA = Actor.create(owner, FourCC("Hpal"), -200, 0);
   const heroB = Actor.create(owner, FourCC("Hamg"), 200, 0);
   if (!heroA || !heroB) {
-    print("[RelicSystemTestExample] 创建英雄失败");
+    log.error("创建英雄失败");
     return;
   }
 
@@ -36,16 +39,16 @@ export function relicSystemTestExample(): void {
   for (const id of relicIds) {
     const ok = rs.addRelic(heroA, id);
     if (ok) {
-      print(`[RelicSystemTestExample] 已为英雄 A 添加遗物: ${id}`);
+      log.info(`已为英雄 A 添加遗物: ${id}`);
     } else {
-      print(`[RelicSystemTestExample] 添加遗物失败（未注册或已达上限）: ${id}`);
+      log.warn(`添加遗物失败（未注册或已达上限）: ${id}`);
     }
   }
 
   // 选中谁，左上角遗物栏就显示谁的库存（仅本地玩家、且单位归属本地时才会显示）
   bar.bindFollowLocalSelection();
 
-  print(
-    "[RelicSystemTestExample] 请点击选中两名英雄对比遗物栏；点地面取消选中会清空栏。"
+  log.info(
+    "请点击选中两名英雄对比遗物栏；点地面取消选中会清空栏。"
   );
 }

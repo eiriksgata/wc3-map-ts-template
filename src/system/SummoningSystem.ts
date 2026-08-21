@@ -23,7 +23,7 @@ export default class SummoningSystem {
         //赋予英雄单位属性
         //设置召唤物血量
         summonedUnit.maxLife = summonedUnit.maxLife + summoningUnit.maxLife;
-        summonedUnit.life = 999999999;
+        summonedUnit.life = summonedUnit.maxLife;
         //设置召唤物攻击力
         summonedUnit.setBaseDamageJAPI(summonedUnit.getState(UNIT_STATE_ATTACK_WHITE()) + summoningUnit.getState(UNIT_STATE_ATTACK_WHITE()));
       }

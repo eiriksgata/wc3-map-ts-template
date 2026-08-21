@@ -3,6 +3,9 @@ import { FourCC } from "src/utils/helper";
 import { castBlizzardSkill, castRushBarrageSkill } from "src/examples/HeroUnitSkill";
 import { Actor } from "src/system/actor";
 import { UnitBlood } from "src/system/ui/component/UnitBlood";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("HeroUnitSkillTest");
 
 export function castBlizzardSkillTest(): void {
 
@@ -62,5 +65,5 @@ export function testAddShield():void{
   target!.addShield(300);
 
   // 用于快速确认 buff 是否真的加上了（shield 从 0 变大说明逻辑生效）。
-  print(`testAddShield: casterShield=${caster.shield}, targetShield=${target.shield}`);
+  log.info(`casterShield=${caster.shield}, targetShield=${target.shield}`);
 }

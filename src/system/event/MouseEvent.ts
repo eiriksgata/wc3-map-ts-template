@@ -9,6 +9,9 @@
  */
 
 import { EventEmitter, EventHandler, SubscribeOptions } from "./EventEmitter";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("MouseEventManager");
 
 /**
  * 鼠标按键类型
@@ -109,7 +112,7 @@ export class MouseEventManager extends EventEmitter {
     this.registerMouseWheelEvent();
     
     this.initialized = true;
-    print("[MouseEventManager] 初始化完成");
+    log.info("初始化完成");
   }
   
   /**

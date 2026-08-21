@@ -2,6 +2,9 @@ import { Frame, FRAME_ALIGN_BOTTOM, FRAME_ALIGN_CENTER, FRAME_ALIGN_LEFT_TOP, FR
 import { CameraControl } from "src/utils/CameraControl";
 import { worldToScreen } from "src/utils/helper";
 import { Actor } from "../../actor";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("UnitBlood");
 
 
 export class UnitBlood {
@@ -28,33 +31,33 @@ export class UnitBlood {
     //actor.setPreselectUIVisible(false);
 
     //血条UI基底框架
-    this.frame = Frame.createType("UnitBloodFrame", Frame.fromHandle(DzGetGameUI())!, 0, "BACKDROP", "")!;
+    this.frame = Frame.createType(`UnitBloodFrame_${actor.id}`, Frame.fromHandle(DzGetGameUI())!, 0, "BACKDROP", "")!;
     this.frame.setSize(130 / 2400, 28 / 1800);
     this.frame.setTexture("Texture\\ui\\hpbar\\01.tga", 0, false);
     this.frame.setVisible(true);
 
     //血条生命值框架
-    this.lifeFrame = Frame.createType("LifeFrame", this.frame, 0, "BACKDROP", "")!;
+    this.lifeFrame = Frame.createType(`LifeFrame_${actor.id}`, this.frame, 0, "BACKDROP", "")!;
     this.lifeFrame.setSize(100 / 2400, 12 / 1800);
     this.lifeFrame.setTexture("Texture\\ui\\hpbar\\02.tga", 0, false);
     this.lifeFrame.setPoint(FRAME_ALIGN_LEFT_TOP, this.frame, FRAME_ALIGN_LEFT_TOP, 26 / 2400, -4 / 1800);
 
     // 护盾值框架：与血条同位置同大小，覆盖在血条上方，只显示护盾百分比宽度，更直观
-    this.shieldFrame = Frame.createType("ShieldFrame", this.frame, 0, "BACKDROP", "")!;
+    this.shieldFrame = Frame.createType(`ShieldFrame_${actor.id}`, this.frame, 0, "BACKDROP", "")!;
     this.shieldFrame.setSize(100 / 2400, 12 / 1800);
     this.shieldFrame.setTexture("Texture\\ui\\hpbar\\huduntiao.tga", 0, false);
     this.shieldFrame.setPoint(FRAME_ALIGN_LEFT_TOP, this.frame, FRAME_ALIGN_LEFT_TOP, 26 / 2400, -4 / 1800);
     this.shieldFrame.setVisible(false);
 
     //血条魔法值框架
-    this.manaFrame = Frame.createType("ManaFrame", this.frame, 0, "BACKDROP", "")!;
+    this.manaFrame = Frame.createType(`ManaFrame_${actor.id}`, this.frame, 0, "BACKDROP", "")!;
     this.manaFrame.setSize(100 / 2400, 8 / 1800);
     this.manaFrame.setTexture("Texture\\ui\\hpbar\\03.tga", 0, false);
     // 向下微调，为护盾条留出空间
     this.manaFrame.setPoint(FRAME_ALIGN_LEFT_TOP, this.frame, FRAME_ALIGN_LEFT_TOP, 26 / 2400, -18 / 1800);
 
     //血条等级框架
-    this.levelFrame = Frame.createType("LevelFrame", this.frame, 0, "TEXT", "")!;
+    this.levelFrame = Frame.createType(`LevelFrame_${actor.id}`, this.frame, 0, "TEXT", "")!;
     this.levelFrame.setTextAlignment(50, 0);
     this.levelFrame.setText(`${actor.level}`);
     this.levelFrame.setFont("resource\\Texture\\ui\\hpbar\\ZiTi.TTf", 1, 0);
@@ -62,12 +65,12 @@ export class UnitBlood {
     this.levelFrame.setPoint(FRAME_ALIGN_CENTER, this.frame, FRAME_ALIGN_LEFT_TOP, 14 / 2400, -14 / 1800);
 
     //血条名称框架
-    this.nameBoxFrame = Frame.createType("NameBoxFrame", this.frame, 0, "BACKDROP", "")!;
+    this.nameBoxFrame = Frame.createType(`NameBoxFrame_${actor.id}`, this.frame, 0, "BACKDROP", "")!;
     this.nameBoxFrame.setTexture("Texture\\ui\\hpbar\\07.tga", 0, false);
     this.nameBoxFrame.alpha = 75;
 
     //血条名称文本框架
-    this.nameFrame = Frame.createType("NameFrame", this.nameBoxFrame, 0, "TEXT", "")!;
+    this.nameFrame = Frame.createType(`NameFrame_${actor.id}`, this.nameBoxFrame, 0, "TEXT", "")!;
     this.nameFrame.setText(actor.getLabel());
     this.nameFrame.setTextAlignment(18, 0);
     this.nameFrame.setFont("resource\\Texture\\ui\\hpbar\\ZiTi.TTf", 1, 0);
@@ -143,7 +146,7 @@ export class UnitBlood {
   public static registerLocalDrawEvent(): boolean {
     // 如果已经注册过，直接返回 false 表示未执行
     if (UnitBlood.isDrawEventRegistered) {
-      print("UnitBlood: 绘制事件已经注册过，重复调用被忽略");
+      log.warn("绘制事件已经注册过，重复调用被忽略");
       return false;
     }
 
@@ -164,7 +167,7 @@ export class UnitBlood {
     //   UnitBlood.updateAllUnitBloods();
     // });
 
-    print("UnitBlood: 绘制事件注册成功");
+    log.info("绘制事件注册成功");
     return true;
   }
 
@@ -223,15 +226,14 @@ export class UnitBlood {
    * 更新生命值条
    */
   private updateLifeBar(): void {
-    const lifePercent = this.actor.life / this.actor.maxLife;
+    const maxLife = this.actor.maxLife;
+    const lifePercent = maxLife > 0 ? this.actor.life / maxLife : 0;
     this.lifeFrame.setSize((100 / 2400) * lifePercent, 12 / 1800);
   }
 
-  /**
-   * 更新魔法值条
-   */
   private updateManaBar(): void {
-    const manaPercent = this.actor.mana / this.actor.maxMana;
+    const maxMana = this.actor.maxMana;
+    const manaPercent = maxMana > 0 ? this.actor.mana / maxMana : 0;
     this.manaFrame.setSize((100 / 2400) * manaPercent, 8 / 1800);
   }
 

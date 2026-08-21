@@ -3,6 +3,10 @@
  * 提供通用的事件订阅/发布机制，支持任意类型的事件扩展
  */
 
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("EventEmitter");
+
 /**
  * 事件处理器类型
  */
@@ -76,8 +80,16 @@ export class EventEmitter {
     if (!this.subscriptions.has(eventName)) {
       this.subscriptions.set(eventName, []);
     }
-    
-    this.subscriptions.get(eventName)!.push(subscription);
+
+    const subs = this.subscriptions.get(eventName)!;
+    let insertAt = subs.length;
+    for (let i = 0; i < subs.length; i++) {
+      if (subs[i].priority < subscription.priority) {
+        insertAt = i;
+        break;
+      }
+    }
+    subs.splice(insertAt, 0, subscription);
     
     return id;
   }
@@ -148,27 +160,21 @@ export class EventEmitter {
   public emit<T = any>(eventName: string, data?: T): void {
     const subs = this.subscriptions.get(eventName);
     if (!subs || subs.length === 0) return;
-    
-    // 按优先级排序（高优先级先执行）
-    const sortedSubs = [...subs].sort((a, b) => b.priority - a.priority);
-    
-    // 收集需要移除的一次性订阅
+
     const toRemove: number[] = [];
-    
-    // 执行所有处理器
-    for (const sub of sortedSubs) {
+
+    for (const sub of subs) {
       try {
         sub.handler(data);
       } catch (e) {
-        print(`${this.name}: Error in handler for "${eventName}" - ${tostring(e)}`);
+        log.error(`${this.name} handler "${eventName}": ${tostring(e)}`);
       }
-      
+
       if (sub.once) {
         toRemove.push(sub.id);
       }
     }
-    
-    // 移除一次性订阅
+
     for (const id of toRemove) {
       this.off(id);
     }

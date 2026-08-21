@@ -3,6 +3,10 @@
  * 负责管理各个模块的热更新和生命周期
  */
 
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("ModuleManager");
+
 interface ModuleInfo {
   name: string;
   module: any;
@@ -20,7 +24,7 @@ export class ModuleManager {
 
   private constructor() {
     // 私有构造函数，确保单例
-    print(">>> ModuleManager: Instance created");
+    log.info("Instance created");
   }
 
   /**
@@ -28,7 +32,7 @@ export class ModuleManager {
    */
   public static getInstance(): ModuleManager {
     if (!ModuleManager.instance) {
-      print(">>> ModuleManager: Creating new instance");
+      log.info("Creating new instance");
       ModuleManager.instance = new ModuleManager();
     }
     return ModuleManager.instance;
@@ -52,7 +56,7 @@ export class ModuleManager {
     const name = module.name as string;
     
     if (!name) {
-      print(">>> ModuleManager: Error - module has no name property");
+      log.error("module has no name property");
       return;
     }
 
@@ -67,8 +71,8 @@ export class ModuleManager {
     };
 
     this.modules.set(name, moduleInfo);
-    print(`>>> ModuleManager: Module registered: ${name}`);
-    print(`>>> ModuleManager: Total registered modules: ${this.modules.size}`);
+    log.info(`Module registered: ${name}`);
+    log.info(`Total registered modules: ${this.modules.size}`);
   }
 
   /**
@@ -90,7 +94,7 @@ export class ModuleManager {
   private initializeModule(name: string): void {
     const moduleInfo = this.modules.get(name);
     if (!moduleInfo) {
-      print(`Warning: Module ${name} not found`);
+      log.warn(`Module ${name} not found`);
       return;
     }
 
@@ -109,9 +113,9 @@ export class ModuleManager {
         moduleInfo.initializeFunction();
       }
       moduleInfo.initialized = true;
-      print(`Module initialized: ${name}`);
+      log.info(`Module initialized: ${name}`);
     } catch (error) {
-      print(`Error initializing module ${name}: ${error}`);
+      log.error(`initializing module ${name}: ${error}`);
     }
   }
 
@@ -121,7 +125,7 @@ export class ModuleManager {
   public hotReloadModuleWithPath(name: string, requirePath: string): void {
     const moduleInfo = this.modules.get(name);
     if (!moduleInfo) {
-      print(`Warning: Module ${name} not registered for hot reload`);
+      log.warn(`Module ${name} not registered for hot reload`);
       return;
     }
 
@@ -129,7 +133,7 @@ export class ModuleManager {
       // 1. 清理旧模块（如果有清理函数）
       if (moduleInfo.cleanupFunction) {
         moduleInfo.cleanupFunction();
-        print(`Cleaned up module: ${name}`);
+        log.info(`Cleaned up module: ${name}`);
       }
 
       // 2. 重新加载模块（使用提供的路径）
@@ -140,12 +144,12 @@ export class ModuleManager {
       const newModule = require(requirePath);
       moduleInfo.module = newModule;
       
-      print(`Reloaded module: ${name} from ${requirePath}`);
+      log.info(`Reloaded module: ${name} from ${requirePath}`);
 
       // 3. 调用热重载处理函数
       if (moduleInfo.hotReloadFunction) {
         moduleInfo.hotReloadFunction();
-        print(`Hot reload handled for module: ${name}`);
+        log.info(`Hot reload handled for module: ${name}`);
       }
 
       // 4. 重新初始化（如果需要）
@@ -155,7 +159,7 @@ export class ModuleManager {
       }
 
     } catch (error) {
-      print(`Error during hot reload of module ${name}: ${error}`);
+      log.error(`during hot reload of module ${name}: ${error}`);
     }
   }
 
@@ -163,7 +167,7 @@ export class ModuleManager {
    * 批量热重载多个模块（带路径）
    */
   public hotReloadModulesWithPath(modules: Array<{name: string, path: string}>): void {
-    print(`Hot reloading ${modules.length} modules...`);
+    log.info(`Hot reloading ${modules.length} modules...`);
     
     let successCount = 0;
     let failCount = 0;
@@ -174,11 +178,11 @@ export class ModuleManager {
         successCount++;
       } catch (error) {
         failCount++;
-        print(`Failed to hot reload module ${mod.name}: ${error}`);
+        log.error(`Failed to hot reload module ${mod.name}: ${error}`);
       }
     }
 
-    print(`Hot reload completed: ${successCount} succeeded, ${failCount} failed`);
+    log.info(`Hot reload completed: ${successCount} succeeded, ${failCount} failed`);
   }
 
   /**
@@ -189,7 +193,7 @@ export class ModuleManager {
     if (modulePath) {
       this.hotReloadModuleWithPath(name, modulePath);
     } else {
-      print(`Warning: Cannot find path for module ${name}`);
+      log.warn(`Cannot find path for module ${name}`);
     }
   }
 
@@ -197,7 +201,7 @@ export class ModuleManager {
    * 批量热重载多个模块（旧版兼容）
    */
   public hotReloadModules(moduleNames: string[]): void {
-    print(`Hot reloading ${moduleNames.length} modules...`);
+    log.info(`Hot reloading ${moduleNames.length} modules...`);
     
     let successCount = 0;
     let failCount = 0;
@@ -208,11 +212,11 @@ export class ModuleManager {
         successCount++;
       } catch (error) {
         failCount++;
-        print(`Failed to hot reload module ${moduleName}: ${error}`);
+        log.error(`Failed to hot reload module ${moduleName}: ${error}`);
       }
     }
 
-    print(`Hot reload completed: ${successCount} succeeded, ${failCount} failed`);
+    log.info(`Hot reload completed: ${successCount} succeeded, ${failCount} failed`);
   }
 
   /**

@@ -4,6 +4,9 @@
  */
 
 import { EventEmitter, EventHandler, SubscribeOptions } from "./EventEmitter";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("KeyboardEventManager");
 
 /**
  * 键盘事件类型
@@ -150,7 +153,7 @@ export class KeyboardEventManager extends EventEmitter {
     }
     
     this.initialized = true;
-    print("[KeyboardEventManager] 初始化完成");
+    log.info("初始化完成");
   }
   
   /**

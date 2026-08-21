@@ -1,6 +1,9 @@
 import { Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT } from "@eiriksgata/wc3ts/*";
 
 import { ScreenCoordinates } from "../ScreenCoordinates";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("Tips");
 
 /**
  * Tips 动画类型
@@ -253,7 +256,7 @@ export class Tips {
 
     const gameUI = Frame.fromHandle(DzGetGameUI());
     if (!gameUI) {
-      print("[Tips] Error: Cannot get game UI frame");
+      log.error("Cannot get game UI frame");
       return;
     }
 
@@ -261,7 +264,7 @@ export class Tips {
     // Frame.createType 第三参为 createContext，必须传 0；层级请用 DzFrameSetPriority，禁止误传 1000 等
     this.backdropFrame = Frame.createType(`TipsBackdrop_${timestamp}`, gameUI, 0, "BACKDROP", "") || null;
     if (!this.backdropFrame) {
-      print("[Tips] Error: Failed to create backdrop frame");
+      log.error("Failed to create backdrop frame");
       return;
     }
 
@@ -288,7 +291,7 @@ export class Tips {
     // 创建文本框架
     this.textFrame = Frame.createType(`TipsText_${timestamp}`, this.backdropFrame, 0, "TEXT", "") || null;
     if (!this.textFrame) {
-      print("[Tips] Error: Failed to create text frame");
+      log.error("Failed to create text frame");
       return;
     }
 

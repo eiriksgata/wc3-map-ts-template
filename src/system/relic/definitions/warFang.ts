@@ -19,12 +19,12 @@ function isHero(u: unit): boolean {
 }
 
 function addHeroStrength(u: unit, delta: number): void {
-  const current = GetHeroStr(u, true);
+  const current = GetHeroStr(u, false);
   SetHeroStr(u, current + delta, true);
 }
 
 function removeHeroStrength(u: unit, delta: number): void {
-  const current = GetHeroStr(u, true);
+  const current = GetHeroStr(u, false);
   SetHeroStr(u, math.max(1, current - delta), true);
 }
 

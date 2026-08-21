@@ -1,5 +1,8 @@
 import { Frame, FRAME_ALIGN_CENTER } from "@eiriksgata/wc3ts/*";
 import { FrameEventUtils } from "../../../constants/frame";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("FDFButtonBuilder");
 
 /**
  * 按钮模板类型枚举
@@ -192,7 +195,7 @@ export class FDFButtonBuilder {
     this.buttonFrame = buttonFrame || null;
 
     if (!this.buttonFrame) {
-      print(`Failed to create button: ${name}`);
+      log.error(`Failed to create button: ${name}`);
       return this;
     }
 
@@ -261,12 +264,12 @@ export class FDFButtonBuilder {
    * 设置按钮图标
    */
   setIcon(iconPath: string): this {
-    if (!this.buttonFrame) return this;
+    if (this.buttonFrame === null) return this;
 
     // 查找图标子框架
     const iconHandle = DzFrameFindByName("IconButtonIcon", 0);
 
-    if (iconHandle) {
+    if (iconHandle !== undefined && iconHandle !== null) {
       DzFrameSetTexture(iconHandle, iconPath, 0);
     }
 
@@ -277,11 +280,11 @@ export class FDFButtonBuilder {
    * 设置热键文本
    */
   setHotkey(hotkey: string): this {
-    if (!this.buttonFrame) return this;
+    if (this.buttonFrame === null) return this;
 
     const hotkeyHandle = DzFrameFindByName("ButtonHotkey", 0);
 
-    if (hotkeyHandle) {
+    if (hotkeyHandle !== undefined && hotkeyHandle !== null) {
       DzFrameSetText(hotkeyHandle, hotkey);
     }
 

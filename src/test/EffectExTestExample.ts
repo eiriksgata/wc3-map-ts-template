@@ -2,6 +2,9 @@ import { Players, Timer } from "@eiriksgata/wc3ts/*";
 import { Actor } from "src/system/actor";
 import { EffectEx } from "src/system/EffectEx";
 import { FourCC } from "src/utils/helper";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("EffectExTest");
 
 /**
  * EffectEx 测试：
@@ -13,7 +16,7 @@ export function shockwaveEffectCircleTest(): void {
   const owner = Players[0];
   const hero = Actor.create(owner, FourCC("Otch"), 0, 0);
   if (!hero) {
-    print("[EffectExTest] 创建牛头酋长失败");
+    log.error("创建牛头酋长失败");
     return;
   }
 
@@ -34,7 +37,7 @@ export function shockwaveEffectCircleTest(): void {
   const startY = centerY;
   const fx = EffectEx.create(model, startX, startY, z);
   if (!fx) {
-    print("[EffectExTest] 创建冲击波特效失败");
+    log.error("创建冲击波特效失败");
     return;
   }
 
@@ -54,10 +57,10 @@ export function shockwaveEffectCircleTest(): void {
     if (elapsed >= duration) {
       t.destroy();
       fx.destroy();
-      print("[EffectExTest] 冲击波圆轨迹测试结束");
+      log.info("冲击波圆轨迹测试结束");
     }
   });
 
-  print("[EffectExTest] 已启动：冲击波特效沿圆轨迹移动并更新面向");
+  log.info("已启动：冲击波特效沿圆轨迹移动并更新面向");
 }
 

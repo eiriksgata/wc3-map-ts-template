@@ -5,6 +5,7 @@
       "esnext"
     ],
     "moduleResolution": "bundler",
+    "preserveSymlinks": true,
     "baseUrl": ".",
     "paths": {
       "@eiriksgata/wc3ts/*": [

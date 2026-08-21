@@ -2,6 +2,10 @@
 
 import { bj_MAX_PLAYER_SLOTS, MapPlayer, Players } from "@eiriksgata/wc3ts/src/globals/define";
 import { ConfigManager } from "../config";
+import { createLogger } from "../utils/logger";
+
+const log = createLogger("ydlua");
+const runtimeLog = createLogger("LuaRuntime");
 
 
 // 将 JASS 模块声明为局部变量，避免产生 export 导出
@@ -50,14 +54,14 @@ export class ydlua {
     ydruntime.debugger = runtimeConfig.debuggerPort;
     ydruntime.catch_crash = runtimeConfig.catchCrash;
 
-    // 设置错误处理器
+    // 设置错误处理器（Lua 运行时异常，msg 内通常含堆栈）
     ydruntime.error_hanlde = function (msg: any) {
-      print("========lua-err========");
-      print(tostring(msg));
-      print("=========================");
+      runtimeLog.error("======== lua-err ========");
+      runtimeLog.error(tostring(msg));
+      runtimeLog.error("=========================");
     };
 
-    print(`>>> Runtime configured: debugger=${runtimeConfig.debuggerPort}, crash_catch=${runtimeConfig.catchCrash}`);
+    log.info(`Runtime configured: debugger=${runtimeConfig.debuggerPort}, crash_catch=${runtimeConfig.catchCrash}`);
   }
 
   /**
@@ -70,8 +74,20 @@ export class ydlua {
    */
   public initialize(): void {
     this.initializeConsole();
+    this.installErrorHandler();
     //this.initializeRuntime();
     this.registerGlobals();
+  }
+
+  /**
+   * 即使不走完整 runtime 配置，也要挂上带模块前缀的 Lua 错误输出。
+   */
+  private installErrorHandler(): void {
+    ydruntime.error_hanlde = function (msg: any) {
+      runtimeLog.error("======== lua-err ========");
+      runtimeLog.error(tostring(msg));
+      runtimeLog.error("=========================");
+    };
   }
 
   /**
@@ -84,7 +100,7 @@ export class ydlua {
     if (isConsoleEnabled) {
       // 设置全局 print 函数
       _G["print"] = (message: string) => ydconsole.write(message);
-      print('>>> print enabled');
+      log.info("print enabled");
     }
   }
 
@@ -108,7 +124,7 @@ export class ydlua {
     //   _G[key] = ydjapi[key];
     // });
 
-    print('>>> Global APIs registered');
+    log.info("Global APIs registered");
   }
 
 };

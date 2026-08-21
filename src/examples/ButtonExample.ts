@@ -1,5 +1,8 @@
 import { Button } from "src/system/ui/component/Button";
 import { UIBackgrounds } from "src/constants/ui/preset";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("ButtonExample");
 
 
 /**
@@ -11,7 +14,7 @@ export class ButtonExample {
   private centerButton: Button | null = null;
 
   public initialize(): void {
-    print("ButtonExample: 初始化按钮示例");
+    log.info("初始化按钮示例");
 
     // 方法1: 使用像素坐标创建按钮
     this.testButton = new Button("测试按钮", 400, 300, 100, 36);
@@ -21,13 +24,13 @@ export class ButtonExample {
       .setTextColor("FFCC00") // 金色文字
       .setTexturePreset("BLACK_TRANSPARENT") // 使用预设背景
       .setOnClick(() => {
-        print("测试按钮被点击了!");
+        log.info("测试按钮被点击了!");
       })
       .setOnHover(() => {
-        print("鼠标进入测试按钮");
+        log.info("鼠标进入测试按钮");
       })
       .setOnLeave(() => {
-        print("鼠标离开测试按钮");
+        log.info("鼠标离开测试按钮");
       })
       .addHoverEffect(); // 添加悬停透明度效果
 
@@ -40,11 +43,11 @@ export class ButtonExample {
       .setTextColor("00FF00") // 绿色文字
       .setBackground(UIBackgrounds.DIALOG) // 设置对话框背景
       .setOnClick(() => {
-        print("中心按钮被点击!");
+        log.info("中心按钮被点击!");
       });
     this.centerButton.create();
 
-    print("ButtonExample: 按钮已创建");
+    log.info("按钮已创建");
   }
 
   public cleanup(): void {
@@ -56,6 +59,6 @@ export class ButtonExample {
       this.centerButton.destroy();
       this.centerButton = null;
     }
-    print("ButtonExample: 清理完成");
+    log.info("清理完成");
   }
 }

@@ -3,6 +3,9 @@ import { ScreenCoordinates } from "../ScreenCoordinates";
 
 import { Panel } from "./Panel";
 import { Text } from "./Text";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("MessageList");
 
 /**
  * 消息项配置
@@ -200,7 +203,7 @@ class MessageItem {
       this.fadeTimer = null;
     }
 
-    if (this.textComponent) {
+    if (this.textComponent !== null) {
       this.textComponent.destroy();
     }
   }
@@ -348,7 +351,7 @@ export class MessageList {
    */
   public create(parent?: Frame): void {
     if (this.isCreated) {
-      print("MessageList already created");
+      log.info("already created");
       return;
     }
 
@@ -679,7 +682,7 @@ export class MessageList {
     this.clear();
 
     // 销毁Panel
-    if (this.panel) {
+    if (this.panel !== null) {
       this.panel.destroy();
     }
 

@@ -11,6 +11,9 @@ import {
   unitJumpTo,
   unitKnockUp,
 } from "src/unit/skills";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("UnitMovementSkillsTest");
 
 /** 在指定点创建单位，供本文件各测试复用。 */
 function safeCreate(owner: number, unitTypeId: number, x: number, y: number): Unit | undefined {
@@ -24,15 +27,15 @@ function safeCreate(owner: number, unitTypeId: number, x: number, y: number): Un
  * 延迟 1 秒后执行；1 号玩家圣骑士从 (0,0) 跳到 (500,500)，带 `jumpMaxHeight` / `duration`。
  */
 export function testUnitJumpToSkill(): void {
-  print("[testUnitJumpToSkill] 开始：创建单位…");
+  log.info("开始：创建单位…");
   const caster = safeCreate(0, FourCC("Hpal"), 0, 0);
   if (!caster) {
-    print("[testUnitJumpToSkill] 失败：Players[0] 或 Unit.create 未成功");
+    log.error("失败：Players[0] 或 Unit.create 未成功");
     return;
   }
 
   Timer.create().start(1, false, () => {
-    print("[testUnitJumpToSkill] 1s 后调用 unitJumpTo（以下为每 tick 高度）");
+    log.info("1s 后调用 unitJumpTo（以下为每 tick 高度）");
     unitJumpTo(caster.handle, 500, 500, {
       jumpMaxHeight: 200,
       duration: 1

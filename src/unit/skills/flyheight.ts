@@ -1,13 +1,15 @@
 import { FourCC } from "src/utils/helper";
 import { UNIT_TYPE_DEAD } from "src/constants/game/units";
+import { createLogger } from "src/utils/logger";
 
 const STORM_CROW_ABILITY = FourCC("Arav");
 
 /** 设为 true 可打印解锁前后 GetUnitFlyHeight（排错时用） */
 const DEBUG_FLY_HEIGHT = false;
+const log = createLogger("flyheight");
 
 function dbgFlyHeight(msg: string): void {
-  if (DEBUG_FLY_HEIGHT) print(`[flyheight] ${msg}`);
+  if (DEBUG_FLY_HEIGHT) log.debug(msg);
 }
 
 function isUnitAlive(u: unit): boolean {

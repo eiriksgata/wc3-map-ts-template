@@ -338,7 +338,7 @@ export class Text implements IDraggableComponent {
     // 如果需要背景，先创建背景框架（背景覆盖整个区域，不受 padding 影响）
     if (this.showBackground && this.background !== "") {
       this.backdropFrame = Frame.createType("BACKDROP", parentFrame, 0, 'BACKDROP', "")!;
-      if (this.backdropFrame) {
+      if (this.backdropFrame !== null) {
         // 总是使用绝对坐标（setAbsPoint在WC3中始终是绝对坐标，即使有parent）
         this.backdropFrame
           .setAbsPoint(FRAME_ALIGN_LEFT_TOP, wc3Pos.x, wc3Pos.y)
@@ -371,7 +371,7 @@ export class Text implements IDraggableComponent {
 
     // 创建透明按钮层用于鼠标事件检测（仅在需要拖拽时）
     this.buttonFrame = Frame.createType("BUTTON", textParent, 0, "BUTTON", "")!;
-    if (this.buttonFrame) {
+    if (this.buttonFrame !== null) {
       // 总是使用绝对坐标
       this.buttonFrame
         .setAbsPoint(FRAME_ALIGN_LEFT_TOP, wc3Pos.x, wc3Pos.y)

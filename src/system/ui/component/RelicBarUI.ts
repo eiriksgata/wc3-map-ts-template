@@ -13,8 +13,13 @@ import {
 } from "src/system/relic";
 import { Actor } from "../../actor";
 import { eventBus } from "../../event/EventBus";
+import { gameEvents } from "../../event";
 import { ScreenCoordinates } from "../ScreenCoordinates";
 import { Tips, TipsAnimation, TipsPosition } from "./Tips";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("RelicBarUI");
+let nextRelicSlotNameId = 1;
 
 /** 遗物栏布局（像素，左上角为原点） */
 export interface RelicBarLayoutConfig {
@@ -108,7 +113,7 @@ export class RelicBarUI {
     const gui = Frame.fromHandle(DzGetGameUI());
     this.gameUI = gui ?? null;
     if (!this.gameUI) {
-      print("[RelicBarUI] DzGetGameUI failed");
+      log.error("DzGetGameUI failed");
       return;
     }
 
@@ -133,20 +138,11 @@ export class RelicBarUI {
     if (RelicBarUI.followSelectionBound) return;
     RelicBarUI.followSelectionBound = true;
 
-    const evSelect = ConvertPlayerUnitEvent(24);
-    const evDeselect = ConvertPlayerUnitEvent(25);
-    const trigSel = CreateTrigger();
-    const trigDes = CreateTrigger();
-    for (let i = 0; i < 16; i++) {
-      TriggerRegisterPlayerUnitEvent(trigSel, Player(i), evSelect, null);
-      TriggerRegisterPlayerUnitEvent(trigDes, Player(i), evDeselect, null);
-    }
-    TriggerAddAction(trigSel, () => {
+    gameEvents.onUnitSelected((data) => {
       if (GetTriggerPlayer() !== GetLocalPlayer()) return;
-      const actor = Actor.fromHandle(GetTriggerUnit());
-      RelicBarUI.getInstance().setWatchTarget(actor);
+      RelicBarUI.getInstance().setWatchTarget(data.Actor);
     });
-    TriggerAddAction(trigDes, () => {
+    gameEvents.onUnitDeselected(() => {
       if (GetTriggerPlayer() !== GetLocalPlayer()) return;
       RelicBarUI.getInstance().setWatchTarget(undefined);
     });
@@ -230,8 +226,9 @@ export class RelicBarUI {
       const rightX = wc3Pos.x + wc3Outer.width;
       const bottomY = wc3Pos.y - wc3Outer.height;
 
+      const nameId = nextRelicSlotNameId++;
       const border = Frame.createType(
-        `RelicSlotBorder_${os.time()}_${nameIdx}_${i}`,
+        `RelicSlotBorder_${nameId}_${nameIdx}_${i}`,
         this.gameUI,
         0,
         "BACKDROP",
@@ -253,7 +250,7 @@ export class RelicBarUI {
       const wc3Icon = ScreenCoordinates.pixelSizeToWC3(iconSizePx, iconSizePx);
 
       const icon = Frame.createType(
-        `RelicSlotIcon_${os.time()}_${i}`,
+        `RelicSlotIcon_${nameId}_${i}`,
         border,
         0,
         "BACKDROP",
@@ -266,7 +263,7 @@ export class RelicBarUI {
         .setAlpha(255);
 
       const hit = Frame.createType(
-        `RelicSlotHit_${os.time()}_${i}`,
+        `RelicSlotHit_${nameId}_${i}`,
         border,
         0,
         "BUTTON",

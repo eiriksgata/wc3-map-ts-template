@@ -1,18 +1,34 @@
-import { EVENT_UNIT_DAMAGED, EVENT_UNIT_DEATH, Group, Rectangle, Region, Timer, Trigger, Unit } from "@eiriksgata/wc3ts/*";
+import { EVENT_UNIT_DAMAGED, Group, Rectangle, Region, Timer, Trigger, Unit, UNIT_TYPE_DEAD } from "@eiriksgata/wc3ts/*";
 import { gameEvents, GameEventType, UnitDeathEventData, UnitDamageEventData } from "./event";
 import { FourCC } from "src/utils/helper";
 import { Actor } from "./actor";
 import { eventBus } from "./event/EventBus";
+
+const LOCUST_ABILITY_ID = FourCC("Aloc");
+const REBUILD_INTERVAL = 10 * 60;
+const REBUILD_EVENT_THRESHOLD = 30000;
+
+function isLocust(u: unit): boolean {
+  return GetUnitAbilityLevel(u, LOCUST_ABILITY_ID) > 0;
+}
+
+function isAliveHandle(u: unit): boolean {
+  return !IsUnitType(u, UNIT_TYPE_DEAD()) && GetWidgetLife(u) > 0.405;
+}
 
 export default class DamageSystem {
 
   public static unitGroup: Group;
   private static instance: DamageSystem;
   private static dmgTrigger: Trigger;
+  private static enterTrigger: Trigger | undefined;
+  private static worldRegion: Region | undefined;
+  private static rebuildTimer: Timer | undefined;
 
   private static triggerEventCount = 0;
+  private static createdBound = false;
+  private static deathBound = false;
 
-  // 使用 Actor 创建事件动态补注册，避免 Timer 循环遍历。
   private constructor() {
   }
   public static getInstance(): DamageSystem {
@@ -22,43 +38,18 @@ export default class DamageSystem {
     return DamageSystem.instance;
   }
 
-  //
   public initialize() {
-    //选取地图所有的单位注册受到伤害事件
+    DamageSystem.unitGroup = DamageSystem.unitGroup ?? Group.create()!;
+    DamageSystem.bindDamageTrigger();
+    DamageSystem.bindEnterRegion();
+    DamageSystem.enumExistingUnits();
+    DamageSystem.bindRebuildTimer();
+    DamageSystem.bindActorCreated();
+    DamageSystem.bindUnitDeath();
+  }
+
+  private static bindDamageTrigger(): void {
     DamageSystem.dmgTrigger = Trigger.create();
-    DamageSystem.unitGroup = Group.create()!;
-    DamageSystem.unitGroup.enumUnitsInRange(0, 0, 10000, () => {
-      const u = GetFilterUnit();
-      DamageSystem.dmgTrigger.registerUnitEvent(Unit.fromHandle(u)!, EVENT_UNIT_DAMAGED());
-      DamageSystem.triggerEventCount++;
-      return true
-    });
-    
-    //注册地图区域进入事件
-    const region = Region.create();
-    const worldBounds = Rectangle.getWorldBounds();
-    region.addRect(worldBounds!);
-    DamageSystem.dmgTrigger.registerEnterRegion(region, () => {
-      //单位不能在单位组中
-      const u = GetEnteringUnit();
-      if (u == null) return true;
-      if(GetUnitAbilityLevel(GetFilterUnit(), FourCC('Aloc')) <= 0) return true;
-      if (DamageSystem.unitGroup.hasUnit(Unit.fromHandle(u)!)) return true;
-      DamageSystem.dmgTrigger.registerUnitEvent(Unit.fromHandle(u)!, EVENT_UNIT_DAMAGED());
-      DamageSystem.unitGroup.addUnit(Unit.fromHandle(u)!);
-      DamageSystem.triggerEventCount++;
-      return true;
-    });
-
-    //任意单位死亡时移除单位组中的单位、
-    gameEvents.onUnitDeath((data: UnitDeathEventData) => {
-      const unit = data.Actor;
-      if (unit == null) return;
-      DamageSystem.unitGroup.removeUnit(unit);
-    });
-
-    //
-    // 将原生受到伤害事件转发到 GameEvent 系统
     DamageSystem.dmgTrigger.addAction(() => {
       const damagedUnit = GetTriggerUnit();
       const damageSource = GetEventDamageSource();
@@ -74,34 +65,123 @@ export default class DamageSystem {
 
       gameEvents.emit(GameEventType.UNIT_DAMAGED, data);
     });
+  }
 
-    //每10分钟，检测触发器事件大于 30000时，则重新注册触发 用于释放资源
-    Timer.create().start(10 * 60, false, () => {
-      if (DamageSystem.triggerEventCount > 30000) {
-        this.releaseUnitEvent();
-        DamageSystem.triggerEventCount = 0;
+  private static bindEnterRegion(): void {
+    if (DamageSystem.enterTrigger !== undefined) {
+      return;
+    }
+    DamageSystem.enterTrigger = Trigger.create();
+    const region = Region.create();
+    const worldBounds = Rectangle.getWorldBounds();
+    region.addRect(worldBounds!);
+    DamageSystem.worldRegion = region;
+    DamageSystem.enterTrigger.registerEnterRegion(region, () => {
+      const u = GetEnteringUnit();
+      if (u == null) {
+        return false;
+      }
+      DamageSystem.tryRegisterHandle(u);
+      return false;
+    });
+  }
+
+  private static enumExistingUnits(): void {
+    const temp = Group.create()!;
+    temp.enumUnitsInRange(0, 0, 10000, () => {
+      const u = GetFilterUnit();
+      if (u == null) {
+        return false;
+      }
+      DamageSystem.tryRegisterHandle(u);
+      return false;
+    });
+    temp.destroy();
+  }
+
+  private static bindRebuildTimer(): void {
+    if (DamageSystem.rebuildTimer !== undefined) {
+      return;
+    }
+    DamageSystem.rebuildTimer = Timer.create();
+    DamageSystem.rebuildTimer.start(REBUILD_INTERVAL, true, () => {
+      if (DamageSystem.triggerEventCount > REBUILD_EVENT_THRESHOLD) {
+        DamageSystem.getInstance().releaseUnitEvent();
+      }
+    });
+  }
+
+  private static bindActorCreated(): void {
+    if (DamageSystem.createdBound) {
+      return;
+    }
+    DamageSystem.createdBound = true;
+    eventBus.on("game:Actor:created", ({ actor }: { actor: Actor }) => {
+      if (actor.handle == null) {
+        return;
+      }
+      DamageSystem.tryRegisterHandle(actor.handle);
+    });
+  }
+
+  private static bindUnitDeath(): void {
+    if (DamageSystem.deathBound) {
+      return;
+    }
+    DamageSystem.deathBound = true;
+    gameEvents.onUnitDeath((data: UnitDeathEventData) => {
+      const unit = data.Actor;
+      if (unit == null) {
+        return;
+      }
+      if (DamageSystem.unitGroup !== undefined) {
+        DamageSystem.unitGroup.removeUnit(unit);
+      }
+    });
+  }
+
+  /** 跳过蝗虫、已注册单位；成功注册后计入 unitGroup */
+  public static tryRegisterHandle(u: unit): boolean {
+    if (u == null || !isAliveHandle(u) || isLocust(u)) {
+      return false;
+    }
+    const wrapped = Unit.fromHandle(u);
+    if (wrapped == null) {
+      return false;
+    }
+    if (!DamageSystem.unitGroup || !DamageSystem.dmgTrigger) {
+      return false;
+    }
+    if (DamageSystem.unitGroup.hasUnit(wrapped)) {
+      return false;
+    }
+    DamageSystem.dmgTrigger.registerUnitEvent(wrapped, EVENT_UNIT_DAMAGED());
+    DamageSystem.unitGroup.addUnit(wrapped);
+    DamageSystem.triggerEventCount++;
+    return true;
+  }
+
+  public releaseUnitEvent() {
+    DamageSystem.dmgTrigger.destroy();
+    DamageSystem.bindDamageTrigger();
+    DamageSystem.triggerEventCount = 0;
+
+    const stillAlive: Unit[] = [];
+    DamageSystem.unitGroup.for(() => {
+      const u = Unit.fromHandle(GetEnumUnit());
+      if (u == null || u.handle == null) {
+        return;
+      }
+      if (isAliveHandle(u.handle)) {
+        stillAlive.push(u);
       }
     });
 
-    // 动态补注册：Actor 创建/升级时通知 DamageSystem。
-    // 这样新创建单位也能触发 UNIT_DAMAGED，从而护盾系统生效。
-    eventBus.on("game:Actor:created", ({ actor }: { actor: Actor }) => {
-      if (!DamageSystem.unitGroup || !DamageSystem.dmgTrigger) return;
-      if (DamageSystem.unitGroup.hasUnit(actor)) return;
-
-      DamageSystem.dmgTrigger.registerUnitEvent(actor, EVENT_UNIT_DAMAGED());
-      DamageSystem.unitGroup.addUnit(actor);
+    DamageSystem.unitGroup.clear();
+    for (const u of stillAlive) {
+      DamageSystem.dmgTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED());
+      DamageSystem.unitGroup.addUnit(u);
       DamageSystem.triggerEventCount++;
-    });
-
-  }
-
-
-  //释放事件中绑定的单位句柄，并重新注册触发
-  public releaseUnitEvent() {
-    //销毁原触发器和事件
-    DamageSystem.dmgTrigger.destroy();
-    DamageSystem.dmgTrigger = Trigger.create();
+    }
   }
 }
-

@@ -3,11 +3,14 @@ import { Actor } from "src/system/actor";
 import { gameEvents, SpellEventData, UnitDeathEventData } from "src/system/event";
 import { KKWEHeroBloodBar } from "src/system/ui/component/KKWEHeroBloodBar";
 import { FourCC } from "src/utils/helper";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("UnitEventExample");
 
 export function rgeisterUnitSpellEffectEvent():void{
 
   gameEvents.onSpellEffect((data: SpellEventData) => {
-    print("单位释放了技能: " + data.abilityId);
+    log.info("单位释放了技能: " + data.abilityId);
   })
   gameEvents.onUnitDeath((data: UnitDeathEventData) => {
     const time = Timer.create().start(1, false, () => {
@@ -22,7 +25,7 @@ export function rgeisterUnitSpellEffectEvent():void{
     for (let i = 0; i < 10; i++) {
       const unit = Actor.create(Players[j], FourCC('Hpal'), 0, 0);
       if (unit == null) return;
-      print("创建单位: " + unit?.id);
+      log.info("创建单位: " + unit?.id);
       unit.createBloodBar();
       unit.setLabel("测试单位");
 

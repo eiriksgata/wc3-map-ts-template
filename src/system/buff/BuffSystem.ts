@@ -21,13 +21,13 @@ export class BuffSystem {
   }
 
   public init(): void {
-    if (this.timer) return;
+    if (this.timer !== null) return;
     this.timer = Timer.create();
     this.timer.start(TICK_INTERVAL, true, () => {
       const delta = TICK_INTERVAL;
       for (const id in Actor.allActors) {
         const actor = Actor.allActors[id];
-        if (actor && actor.buffManager) {
+        if (actor !== undefined && actor.hasBuffManager()) {
           actor.buffManager.tick(delta);
         }
       }

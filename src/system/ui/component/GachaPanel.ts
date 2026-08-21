@@ -6,6 +6,9 @@ import { UIComponent } from "src/system/ui/UIComponent";
 import { UIBackgrounds } from "src/constants/ui/preset";
 import { ScreenCoordinates } from "../ScreenCoordinates";
 import { FrameEventUtils } from "src/constants/frame/utils";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("GachaPanel");
 
 /**
  * 抽卡卡片配置
@@ -117,7 +120,7 @@ export class GachaPanel implements UIComponent {
    */
   public addCard(config: GachaCardConfig): Button {
     if (!this.isCreated) {
-      print("Error: GachaPanel not created yet. Call create() first.");
+      log.error("GachaPanel not created yet. Call create() first.");
       throw new Error("GachaPanel not created");
     }
 

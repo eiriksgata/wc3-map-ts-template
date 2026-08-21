@@ -1,13 +1,17 @@
 import { Actor } from "../actor";
 import { eventBus } from "../event/EventBus";
+import { gameEvents } from "../event";
 import { RelicPool } from "./RelicPool";
 import { RelicRegistry } from "./RelicRegistry";
+import { createLogger } from "src/utils/logger";
 import {
   RelicDefinition,
   RelicId,
   RelicInventoryItem,
   RelicPoolEntry,
 } from "./types";
+
+const log = createLogger("RelicSystem");
 
 const EVENT_ADDED = "relic:added";
 const EVENT_REMOVED = "relic:removed";
@@ -28,6 +32,7 @@ export class RelicSystem {
   private readonly pools = new Map<string, RelicPool>();
   /** actorId (handle id) -> 有序遗物列表 */
   private readonly inventory = new Map<number, InternalEntry[]>();
+  private deathCleanupBound = false;
 
   public static getInstance(): RelicSystem {
     if (!RelicSystem.instance) {
@@ -58,7 +63,7 @@ export class RelicSystem {
   public drawFromPool(poolName: string): RelicId | undefined {
     const pool = this.pools.get(poolName);
     if (!pool) {
-      print(`[RelicSystem] drawFromPool: pool not found: ${poolName}`);
+      log.warn(`drawFromPool: pool not found: ${poolName}`);
       return undefined;
     }
     return pool.draw();
@@ -78,7 +83,7 @@ export class RelicSystem {
   ): boolean {
     const def = this.registry.get(id);
     if (!def) {
-      print(`[RelicSystem] addRelic: unknown relic id: ${id}`);
+      log.warn(`addRelic: unknown relic id: ${id}`);
       return false;
     }
     const uid = target.id;
@@ -142,6 +147,8 @@ export class RelicSystem {
       if (def.onRemove) {
         def.onRemove(target, delta);
       }
+    } else if (def.onStack) {
+      def.onStack(target, entry.stacks);
     }
 
     if (!options?.silent) {
@@ -183,7 +190,26 @@ export class RelicSystem {
 
   public hasRelic(target: Actor, id: RelicId): boolean {
     const list = this.inventory.get(target.id);
-    return list ? list.some((e) => e.id === id) : false;
+    return list !== undefined && list.some((e) => e.id === id);
+  }
+
+  /**
+   * 单位死亡时清遗物并 detach Actor，避免 handle id 复用。
+   * 由 registerDefaultRelicsAndPools 调用一次，避免 Actor ↔ RelicSystem 循环 import。
+   */
+  public bindDeathCleanup(): void {
+    if (this.deathCleanupBound) {
+      return;
+    }
+    this.deathCleanupBound = true;
+    gameEvents.onUnitDeath((data) => {
+      const actor = data.Actor;
+      if (actor === undefined) {
+        return;
+      }
+      this.clearUnit(actor);
+      actor.detach();
+    });
   }
 
   private emitAdded(target: Actor, relicId: RelicId, stacks: number): void {

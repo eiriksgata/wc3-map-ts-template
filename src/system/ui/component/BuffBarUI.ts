@@ -19,10 +19,15 @@ import {
 } from "src/system/buff";
 import { Actor } from "../../actor";
 import { eventBus } from "../../event/EventBus";
+import { gameEvents } from "../../event";
 import { ScreenCoordinates } from "../ScreenCoordinates";
 import { Tips, TipsAnimation, TipsPosition } from "./Tips";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("BuffBarUI");
 
 const REFRESH_INTERVAL = 0.1;
+let nextBuffSlotNameId = 1;
 
 /** 槽位时间角标用字体（与 UnitBlood 一致，地图内已有资源） */
 const SLOT_TIME_FONT = "resource\\Texture\\ui\\hpbar\\ZiTi.TTf";
@@ -127,7 +132,7 @@ export class BuffBarUI {
     const gui = Frame.fromHandle(DzGetGameUI());
     this.gameUI = gui ?? null;
     if (!this.gameUI) {
-      print("[BuffBarUI] DzGetGameUI failed");
+      log.error("DzGetGameUI failed");
       return;
     }
 
@@ -152,20 +157,11 @@ export class BuffBarUI {
     if (BuffBarUI.followSelectionBound) return;
     BuffBarUI.followSelectionBound = true;
 
-    const evSelect = ConvertPlayerUnitEvent(24);
-    const evDeselect = ConvertPlayerUnitEvent(25);
-    const trigSel = CreateTrigger();
-    const trigDes = CreateTrigger();
-    for (let i = 0; i < 16; i++) {
-      TriggerRegisterPlayerUnitEvent(trigSel, Player(i), evSelect, null);
-      TriggerRegisterPlayerUnitEvent(trigDes, Player(i), evDeselect, null);
-    }
-    TriggerAddAction(trigSel, () => {
+    gameEvents.onUnitSelected((data) => {
       if (GetTriggerPlayer() !== GetLocalPlayer()) return;
-      const actor = Actor.fromHandle(GetTriggerUnit());
-      BuffBarUI.getInstance().setWatchTarget(actor);
+      BuffBarUI.getInstance().setWatchTarget(data.Actor);
     });
-    TriggerAddAction(trigDes, () => {
+    gameEvents.onUnitDeselected(() => {
       if (GetTriggerPlayer() !== GetLocalPlayer()) return;
       BuffBarUI.getInstance().setWatchTarget(undefined);
     });
@@ -294,8 +290,9 @@ export class BuffBarUI {
       const rightX = wc3Pos.x + wc3Outer.width;
       const bottomY = wc3Pos.y - wc3Outer.height;
 
+      const nameId = nextBuffSlotNameId++;
       const border = Frame.createType(
-        `BuffSlotBorder_${os.time()}_${i}`,
+        `BuffSlotBorder_${nameId}_${i}`,
         this.gameUI,
         0,
         "BACKDROP",
@@ -309,7 +306,7 @@ export class BuffBarUI {
       DzFrameSetPriority(border.handle, 898);
 
       const icon = Frame.createType(
-        `BuffSlotIcon_${os.time()}_${i}`,
+        `BuffSlotIcon_${nameId}_${i}`,
         border,
         0,
         "BACKDROP",
@@ -322,7 +319,7 @@ export class BuffBarUI {
         .setAlpha(255);
 
       const timeText = Frame.createType(
-        `BuffSlotTime_${os.time()}_${i}`,
+        `BuffSlotTime_${nameId}_${i}`,
         border,
         0,
         "TEXT",
@@ -336,7 +333,7 @@ export class BuffBarUI {
       timeText.setFont(SLOT_TIME_FONT, 0.008, 0);
 
       const hit = Frame.createType(
-        `BuffSlotHit_${os.time()}_${i}`,
+        `BuffSlotHit_${nameId}_${i}`,
         border,
         0,
         "BUTTON",

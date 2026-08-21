@@ -3,6 +3,10 @@ import { ScreenCoordinates } from "../ScreenCoordinates";
 
 import { MouseEventManager, MouseButton } from "src/system/event/MouseEvent";
 import { UIComponent } from "../UIComponent";
+import { createLogger } from "src/utils/logger";
+
+const mixinLog = createLogger("DraggableMixin");
+const log = createLogger("UIComponentBase");
 
 /**
  * 拖拽配置
@@ -182,7 +186,7 @@ export class DraggableMixin {
     this.dragOffsetX = currentMouseX - this.component.getPixelX();
     this.dragOffsetY = currentMouseY - this.component.getPixelY();
     
-    print("Drag started");
+    mixinLog.info("Drag started");
     
     if (this.onDragStartCallback) {
       this.onDragStartCallback();
@@ -232,7 +236,7 @@ export class DraggableMixin {
       this.dragMouseUpId = -1;
     }
     
-    print("Drag ended");
+    mixinLog.info("Drag ended");
     
     if (this.onDragEndCallback) {
       this.onDragEndCallback(this.component.getPixelX(), this.component.getPixelY());
@@ -653,7 +657,7 @@ export abstract class UIComponentBase implements UIComponent, IDraggableComponen
     this.dragOffsetX = currentMouseX - this.pixelX;
     this.dragOffsetY = currentMouseY - this.pixelY;
     
-    print("Drag started at mouse(" + currentMouseX + ", " + currentMouseY + ")");
+    log.info("Drag started at mouse(" + currentMouseX + ", " + currentMouseY + ")");
     
     if (this.onDragStartCallback) {
       this.onDragStartCallback();
@@ -709,7 +713,7 @@ export abstract class UIComponentBase implements UIComponent, IDraggableComponen
       this.dragMouseUpId = -1;
     }
     
-    print("Drag ended at position(" + this.pixelX + ", " + this.pixelY + ")");
+    log.info("Drag ended at position(" + this.pixelX + ", " + this.pixelY + ")");
     
     if (this.onDragEndCallback) {
       this.onDragEndCallback(this.pixelX, this.pixelY);

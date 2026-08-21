@@ -3,6 +3,9 @@ import { ScreenCoordinates } from "../ScreenCoordinates";
 
 import { MouseEventManager, MouseButton } from "src/system/event/MouseEvent";
 import { UIBackgrounds } from "src/constants/ui/preset";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("Panel");
 
 /**
  * 面板尺寸预设
@@ -163,7 +166,7 @@ export class Panel {
 
   public create(parent?: Frame): void {
     if (this.backdropFrame) {
-      print("Panel already created");
+      log.info("already created");
       return;
     }
 
@@ -179,7 +182,7 @@ export class Panel {
     // 创建主背景框架
     this.backdropFrame = Frame.createType("PanelBackdrop", parentFrame, 0, "BACKDROP", "")!;
     if (!this.backdropFrame) {
-      print("Error: Failed to create panel backdrop frame");
+      log.error("Failed to create panel backdrop frame");
       return;
     }
 
@@ -199,7 +202,7 @@ export class Panel {
 
     this.setVisible(this.isVisible);
 
-    print("Panel created at (" + this.pixelX + ", " + this.pixelY + ") with size " + this.pixelWidth + "x" + this.pixelHeight);
+    log.info("created at (" + this.pixelX + ", " + this.pixelY + ") with size " + this.pixelWidth + "x" + this.pixelHeight);
   }
 
   /**
@@ -211,7 +214,7 @@ export class Panel {
 
     // 标题栏背景
     this.titleBarFrame = Frame.createType("PanelTitleBar", this.backdropFrame!, 0, "BACKDROP", "")!;
-    if (this.titleBarFrame) {
+    if (this.titleBarFrame !== null) {
       this.titleBarFrame
         .setAbsPoint(FRAME_ALIGN_LEFT_TOP, wc3X, wc3Y)
         .setAbsPoint(FRAME_ALIGN_RIGHT_BOTTOM, wc3X + wc3Width, wc3Y - titleBarWC3Height)
@@ -224,7 +227,7 @@ export class Panel {
 
     // 标题文本
     this.titleTextFrame = Frame.createType("PanelTitleText", this.titleBarFrame!, 0, "TEXT", "")!;
-    if (this.titleTextFrame) {
+    if (this.titleTextFrame !== null) {
       const textRightX = this.showCloseButton ? wc3X + wc3Width - closeButtonWC3Size - 0.005 : wc3X + wc3Width;
       this.titleTextFrame
         .setAbsPoint(FRAME_ALIGN_LEFT_TOP, wc3X + 0.005, wc3Y - 0.002)
@@ -245,7 +248,7 @@ export class Panel {
   private createCloseButton(wc3X: number, wc3Y: number, wc3Size: number): void {
     // 关闭按钮背景
     this.closeBackdropFrame = Frame.createType("PanelCloseBackdrop", this.titleBarFrame!, 0, "BACKDROP", "")!;
-    if (this.closeBackdropFrame) {
+    if (this.closeBackdropFrame !== null) {
       this.closeBackdropFrame
         .setAbsPoint(FRAME_ALIGN_LEFT_TOP, wc3X, wc3Y)
         .setAbsPoint(FRAME_ALIGN_RIGHT_BOTTOM, wc3X + wc3Size, wc3Y - wc3Size)
@@ -254,7 +257,7 @@ export class Panel {
 
     // 关闭按钮点击区域
     this.closeButtonFrame = Frame.createType("PanelCloseButton", this.closeBackdropFrame, 0, "BUTTON", "")!;
-    if (this.closeButtonFrame) {
+    if (this.closeButtonFrame !== null) {
       this.closeButtonFrame.setAllPoints(this.closeBackdropFrame);
 
       // 注册点击事件 (handle, eventType, handler, sync)
@@ -274,7 +277,7 @@ export class Panel {
 
     // 内容区域框架（透明，仅作为子组件容器）
     this.contentFrame = Frame.createType("PanelContent", this.backdropFrame!, 0, "FRAME", "")!;
-    if (this.contentFrame) {
+    if (this.contentFrame !== null) {
       this.contentFrame
         .setAbsPoint(FRAME_ALIGN_LEFT_TOP, wc3X, wc3Y - titleBarWC3Height)
         .setAbsPoint(FRAME_ALIGN_RIGHT_BOTTOM, wc3X + wc3Width, wc3Y - wc3Height);
@@ -289,7 +292,7 @@ export class Panel {
 
     // 使用 BUTTON 类型来接收事件
     this.titleBarHitFrame = Frame.createType("PanelTitleBarHit", this.titleBarFrame, 0, "BUTTON", "")!;
-    if (this.titleBarHitFrame) {
+    if (this.titleBarHitFrame !== null) {
       this.titleBarHitFrame.setAllPoints(this.titleBarFrame);
 
       // 注册鼠标进入/离开事件 (handle, eventType, handler, sync)
@@ -368,7 +371,7 @@ export class Panel {
     this.closeButtonSize = size;
     // 如果已经创建了标题栏，需要重新创建以应用新大小
     if (this.titleBarFrame && this.showTitleBar) {
-      print(`Panel: 更新关闭按钮大小为 ${size}px，需要重新创建标题栏`);
+      log.info(`更新关闭按钮大小为 ${size}px，需要重新创建标题栏`);
       // 注意：动态更新需要重新创建，建议在 create() 之前调用此方法
     }
     return this;

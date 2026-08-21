@@ -6,6 +6,10 @@
  * 在热重载时自动销毁所有已注册的组件
  */
 
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("UIComponentManager");
+
 /**
  * UI组件管理器
  * 单例模式，管理所有需要热重载时清理的UI组件
@@ -67,14 +71,14 @@ export class UIComponentManager {
       try {
         component.destroy();
       } catch (e) {
-        print(`[UIComponentManager] Error destroying component: ${e}`);
+        log.error(`Error destroying component: ${e}`);
       }
     }
     
     this.components.clear();
     this.taggedComponents.clear();
     
-    print(`[UIComponentManager] Destroyed ${count} components`);
+    log.info(`Destroyed ${count} components`);
   }
   
   /**
@@ -91,13 +95,13 @@ export class UIComponentManager {
         component.destroy();
         this.components.delete(component);
       } catch (e) {
-        print(`[UIComponentManager] Error destroying component: ${e}`);
+        log.error(`Error destroying component: ${e}`);
       }
     }
     
     this.taggedComponents.delete(tag);
     
-    print(`[UIComponentManager] Destroyed ${count} components with tag "${tag}"`);
+    log.info(`Destroyed ${count} components with tag "${tag}"`);
   }
   
   /**

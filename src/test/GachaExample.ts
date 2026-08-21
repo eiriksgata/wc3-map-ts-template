@@ -1,5 +1,8 @@
 import { gameEvents, SpellEventData } from "src/system/event";
 import { GachaPanel } from "src/system/ui/component/GachaPanel";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("GachaExample");
 
 export function gachaTest():void{
   
@@ -12,7 +15,7 @@ export function gachaTest():void{
     title: "圣光信仰",
     description: "提高你的治疗效果 20%，\n并在释放技能时有几率恢复生命。",
     onClick: () => {
-      print("选择了天赋：圣光信仰");
+      log.info("选择了天赋：圣光信仰");
     },
   });
 
@@ -21,7 +24,7 @@ export function gachaTest():void{
     title: "雷霆一击",
     description: "获得一个可以对敌方单位造成伤害并眩晕的主动技能。",
     onClick: () => {
-      print("选择了天赋：雷霆一击");
+      log.info("选择了天赋：雷霆一击");
     },
   });
 
@@ -30,7 +33,7 @@ export function gachaTest():void{
     title: "雷霆一击",
     description: "获得一个可以对敌方单位造成伤害并眩晕的主动技能。",
     onClick: () => {
-      print("选择了天赋：雷霆一击");
+      log.info("选择了天赋：雷霆一击");
     },
   });
 

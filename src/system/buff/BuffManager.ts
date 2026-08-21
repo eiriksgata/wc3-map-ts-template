@@ -54,6 +54,19 @@ export class BuffManager {
     return this.buffs.filter((b) => b.typeId === typeId);
   }
 
+  /** 卸掉全部 Buff（死亡回收，不保留实例） */
+  clearAll(): void {
+    if (this.buffs.length === 0) {
+      return;
+    }
+    const copy = this.buffs;
+    this.buffs = [];
+    for (let i = copy.length - 1; i >= 0; i--) {
+      copy[i].onRemove();
+    }
+    this.emitChanged();
+  }
+
   /** 获取所有护盾 Buff（用于伤害吸收与 UI 聚合） */
   getShieldBuffs(): ShieldBuff[] {
     return this.buffs.filter((b): b is ShieldBuff => b instanceof ShieldBuff);
@@ -109,11 +122,27 @@ export class BuffManager {
    */
   applyShieldDamage(damage: number): number {
     let remaining = damage;
+    let changed = false;
     const shields = this.getShieldBuffs();
     for (const sh of shields) {
-      if (remaining <= 0) break;
+      if (remaining <= 0) {
+        break;
+      }
       const absorb = sh.absorbDamage(remaining);
       remaining -= absorb;
+      if (absorb > 0) {
+        changed = true;
+      }
+      if (sh.isDepleted()) {
+        const idx = this.buffs.indexOf(sh);
+        if (idx >= 0) {
+          this.buffs.splice(idx, 1);
+          sh.onRemove();
+        }
+      }
+    }
+    if (changed) {
+      this.emitChanged();
     }
     return remaining;
   }

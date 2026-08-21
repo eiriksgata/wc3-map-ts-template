@@ -2,12 +2,14 @@ import { Timer, bj_RADTODEG } from "@eiriksgata/wc3ts/*";
 import { UNIT_TYPE_DEAD, UNIT_TYPE_STRUCTURE } from "src/constants/game/units";
 import { easeInOutQuad, lerp, parabolaArc, unitVector2, clamp01 } from "./physics";
 import { ensureStormCrowFlyHeight, reapplyStormCrowHeightUnlock, setFlyHeightInt } from "./flyheight";
+import { createLogger } from "src/utils/logger";
 
 /** 设为 true 可打印 unitJumpTo 每 tick 的 wantH / GetUnitFlyHeight（排错时用） */
 const DEBUG_UNIT_JUMP_TO = false;
+const log = createLogger("unitJumpTo");
 
 function dbgUnitJumpTo(msg: string): void {
-  if (DEBUG_UNIT_JUMP_TO) print(`[unitJumpTo] ${msg}`);
+  if (DEBUG_UNIT_JUMP_TO) log.debug(msg);
 }
 
 function unitAlive(u: unit): boolean {

@@ -2,6 +2,9 @@ import { Players } from "@eiriksgata/wc3ts/*";
 import { FourCC } from "src/utils/helper";
 import { Actor } from "src/system/actor";
 import { BuffBarUI } from "src/system/ui/component/BuffBarUI";
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("BuffBarTestExample");
 
 /**
  * Buff 栏测试：本地英雄加护盾 Buff，选中单位后屏幕中央显示 Buff 图标与剩余时间。
@@ -13,7 +16,7 @@ export function buffBarTestExample(): void {
 
   const hero = Actor.create(owner, FourCC("Hpal"), 0, 0);
   if (!hero) {
-    print("[BuffBarTestExample] 创建英雄失败");
+    log.error("创建英雄失败");
     return;
   }
 
@@ -21,7 +24,7 @@ export function buffBarTestExample(): void {
 
   bar.bindFollowLocalSelection();
 
-  print(
-    "[BuffBarTestExample] 请选中该英雄查看屏幕中央的 Buff 栏；30s 后护盾 Buff 将按持续时间移除。"
+  log.info(
+    "请选中该英雄查看屏幕中央的 Buff 栏；30s 后护盾 Buff 将按持续时间移除。"
   );
 }

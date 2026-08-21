@@ -1,6 +1,10 @@
 import { Frame, FRAME_ALIGN_BOTTOM, Timer } from "@eiriksgata/wc3ts/*";
 import { worldToScreen } from "src/utils/helper";
 import { ScreenCoordinates } from "./ScreenCoordinates";
+import { createLogger } from "src/utils/logger";
+
+const poolLog = createLogger("DamageTextPool");
+const managerLog = createLogger("DamageTextManager");
 
 /**
  * 漂浮方向
@@ -349,7 +353,7 @@ export class DamageTextPool {
     for (let i = 0; i < this.poolSize; i++) {
       this.pool.push(new DamageText(8)); // 最多 8 位数字
     }
-    print(`DamageTextPool: 初始化了 ${this.poolSize} 个伤害文字对象`);
+    poolLog.info(`初始化了 ${this.poolSize} 个伤害文字对象`);
   }
 
   /**
@@ -445,7 +449,7 @@ export class DamageTextManager {
   public static getInstance(poolSize: number = 30): DamageTextManager {
     if (!DamageTextManager.instance) {
       DamageTextManager.instance = new DamageTextManager(poolSize);
-      print("DamageTextManager: 单例已创建");
+      managerLog.info("单例已创建");
     }
     return DamageTextManager.instance;
   }

@@ -1,4 +1,7 @@
+import { createLogger } from "src/utils/logger";
 import { RelicDefinition, RelicId } from "./types";
+
+const log = createLogger("RelicRegistry");
 
 /**
  * 遗物 id → 定义（启动时注册）
@@ -8,7 +11,7 @@ export class RelicRegistry {
 
   public register(def: RelicDefinition): void {
     if (this.map.has(def.id)) {
-      print(`[RelicRegistry] overwrite relic definition: ${def.id}`);
+      log.warn(`overwrite relic definition: ${def.id}`);
     }
     this.map.set(def.id, def);
   }

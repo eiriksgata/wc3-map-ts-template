@@ -1,5 +1,9 @@
 /** @noSelfInFile */
 
+import { createLogger } from "src/utils/logger";
+
+const log = createLogger("LeakDetector");
+
 // 句柄类型标识，不限制枚举，方便扩展
 type LeakKind = string;
 
@@ -42,7 +46,7 @@ export class LeakDetector {
     this.hookTimer();
     this.hookTrigger();
 
-    print("|cffffff00[LeakDetector]|r 已安装句柄跟踪钩子");
+    log.info("已安装句柄跟踪钩子");
   }
 
   public static setEnabled(enabled: boolean): void {
@@ -66,7 +70,7 @@ export class LeakDetector {
     let count = 0;
     const kindCounts: Record<string, number> = {};
 
-    print("|cff00ff00========== LeakDetector Report ==========" + "|r");
+    log.info("|cff00ff00========== LeakDetector Report ==========|r");
 
     for (const [obj, info] of this.records.entries()) {
       const life = now - info.createdAt;
@@ -81,7 +85,7 @@ export class LeakDetector {
 
       // 是否输出详细的单个对象信息由配置控制
       if (this.showDetails) {
-        print(
+        log.info(
           string.format(
             "#%d [%s] 存活时间: %.2fs 对象: %s",
             count,
@@ -92,7 +96,7 @@ export class LeakDetector {
         );
 
         if (info.stack) {
-          print(info.stack);
+          log.debug(info.stack);
         }
       }
     }
@@ -116,29 +120,29 @@ export class LeakDetector {
 
       // 固定顺序：按 label 排序，方便对比
       parts.sort();
-      print(parts.join("，"));
+      log.info(parts.join("，"));
 
       this.lastKindCounts = kindCounts;
     }
 
     if (count === 0) {
-      print(
+      log.info(
         string.format(
-          "LeakDetector: 未发现疑似泄露对象（阈值 %.2fs）",
+          "未发现疑似泄露对象（阈值 %.2fs）",
           minLifetimeSec,
         ),
       );
     } else {
-      print(
+      log.info(
         string.format(
-          "LeakDetector: 共发现 %d 个疑似泄露对象（阈值 %.2fs）",
+          "共发现 %d 个疑似泄露对象（阈值 %.2fs）",
           count,
           minLifetimeSec,
         ),
       );
     }
 
-    print("|cff00ff00=========================================" + "|r");
+    log.info("|cff00ff00=========================================|r");
   }
 
   /** 将内部 kind 映射为更易读的中文标签 */

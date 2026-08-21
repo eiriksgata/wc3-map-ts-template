@@ -276,7 +276,7 @@ export class Tips {
 
     DzFrameSetPriority(this.backdropFrame.handle, 1000);
     // 不拦截鼠标：否则 Tips 盖住触发控件时会误触 mouse leave → hide → 再 enter，振荡甚至崩溃
-    DzFrameSetIgnoreTrackEvents(this.backdropFrame.handle as any, true);
+    this.backdropFrame.setIgnoreTrackEvents(true);
 
     // 创建图标框架（可选，初始隐藏）
     this.iconFrame = Frame.createType(`TipsIcon_${timestamp}`, this.backdropFrame, 0, "BACKDROP", "") || null;
@@ -285,7 +285,7 @@ export class Tips {
         .setSize(0.03, 0.03)
         .setPoint(FRAMEPOINT_TOPLEFT, this.backdropFrame, FRAMEPOINT_TOPLEFT, 0.005, -0.005)
         .setAlpha(0);
-      DzFrameSetIgnoreTrackEvents(this.iconFrame.handle as any, true);
+      this.iconFrame.setIgnoreTrackEvents(true);
     }
 
     // 创建文本框架
@@ -301,7 +301,7 @@ export class Tips {
       .setText("")
       .setTextAlignment(0, 50) // 左对齐，垂直居中
       .setAlpha(0);
-    DzFrameSetIgnoreTrackEvents(this.textFrame.handle as any, true);
+    this.textFrame.setIgnoreTrackEvents(true);
 
     this.isCreated = true;
     this.isVisible = false;

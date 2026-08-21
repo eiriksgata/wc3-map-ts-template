@@ -51,7 +51,7 @@ function getHeroArtPath(unitTypeId: number): string {
 }
 
 export class KKWEHeroBloodBar {
-  private unit: unit;
+  private unit: unit | null;
   private unitId: number;
   private backdrop: number;
   private lifeBar: number;
@@ -93,8 +93,8 @@ export class KKWEHeroBloodBar {
 
     const nameIconText = "血条英雄图标文字" + idStr;
 
-    const backdrop = DzCreateFrameByTagName("BACKDROP", nameBackdrop, base as any, "", 0);
-    DzFrameBindWidget(backdrop as any, u, 0, 0, 0, 0, 0, false, true, false);
+    const backdrop = DzCreateFrameByTagName("BACKDROP", nameBackdrop, base, "", 0);
+    DzFrameBindWidget(backdrop, u, 0, 0, 0, 0, 0, false, true, false);
     // 血条 UI 基底框架（与 UnitBlood 同贴图路径）
     DzFrameSetTexture(backdrop, TEX_BASE, 0);
     DzFrameSetSize(backdrop, this.baseWidth, this.baseHeight);
@@ -118,7 +118,7 @@ export class KKWEHeroBloodBar {
     DzFrameSetPoint(shieldBar, 0, backdrop, 0, BAR_OFFSET_X, LIFE_OFFSET_Y);
     DzFrameSetTexture(shieldBar, TEX_SHIELD, 0);
     DzFrameSetSize(shieldBar, this.barWidth, this.lifeHeight);
-    DzFrameShow(shieldBar as any, false);
+    DzFrameShow(shieldBar, false);
 
     const manaBar = DzCreateFrameByTagName("BACKDROP", nameMana, backdrop, "", 0);
     // 对齐 UnitBlood：蓝条下移，为护盾条预留同一行覆盖
@@ -138,24 +138,24 @@ export class KKWEHeroBloodBar {
     DzFrameSetSize(heroIconText, 0.01, 0.01);
     DzFrameSetText(heroIconText, "1");
     DzFrameSetTextAlignment(heroIconText, 4);
-    DzFrameSetIgnoreTrackEvents(heroIconText as any, true);
+    DzFrameSetIgnoreTrackEvents(heroIconText, true);
     DzFrameSetFont(heroIconText, "resource\\Texture\\ui\\hpbar\\ZiTi.TTf", 0.009, 0);
-    
+
     const heroName = DzCreateFrameByTagName("TEXT", nameText, backdrop, "", 0);
     DzFrameSetPoint(heroName, 7, backdrop, 1, 0, 0.002);
     DzFrameSetSize(heroName, 0.0, 0.01);
     DzFrameSetText(heroName, GetUnitName(u));
     DzFrameSetTextAlignment(heroName, 4);
-    DzFrameSetIgnoreTrackEvents(heroName as any, true);
-    DzFrameSetFont(heroName ,"resource\\Texture\\ui\\hpbar\\ZiTi.TTf", 0.009, 0);
+    DzFrameSetIgnoreTrackEvents(heroName, true);
+    DzFrameSetFont(heroName, "resource\\Texture\\ui\\hpbar\\ZiTi.TTf", 0.009, 0);
 
-    this.backdrop = backdrop as any;
-    this.lifeBar = lifeBar as any;
-    this.shieldBar = shieldBar as any;
-    this.manaBar = manaBar as any;
-    this.heroIcon = heroIcon as any;
-    this.heroName = heroName as any;
-    this.heroIconTextFrame = heroIconText as any;
+    this.backdrop = backdrop;
+    this.lifeBar = lifeBar;
+    this.shieldBar = shieldBar;
+    this.manaBar = manaBar;
+    this.heroIcon = heroIcon;
+    this.heroName = heroName;
+    this.heroIconTextFrame = heroIconText;
 
     this.timer = CreateTimer();
     KKWEHeroBloodBar.instanceMap[this.unitId] = this;
@@ -164,34 +164,35 @@ export class KKWEHeroBloodBar {
 
   /** 定时器回调：更新血条/蓝条宽度，单位无效时自动销毁 */
   private onTimerTick(): void {
-    if (this.unit == null || IsUnitType(this.unit, UNIT_TYPE_DEAD) || this.backdrop === 0) {
+    const u = this.unit;
+    if (u == null || IsUnitType(u, UNIT_TYPE_DEAD) || this.backdrop === 0) {
       this.destroy();
       return;
     }
-    const maxLife = GetUnitState(this.unit, UNIT_STATE_MAX_LIFE);
-    const lifePercent = maxLife <= 0 ? 0 : (GetUnitState(this.unit, UNIT_STATE_LIFE) / maxLife) * 100;
-    const maxMana = GetUnitState(this.unit, UNIT_STATE_MAX_MANA);
-    const manaPercent = maxMana <= 0 ? 0 : (GetUnitState(this.unit, UNIT_STATE_MANA) / maxMana) * 100;
-    const heroLevel = GetUnitLevel(this.unit);
+    const maxLife = GetUnitState(u, UNIT_STATE_MAX_LIFE);
+    const lifePercent = maxLife <= 0 ? 0 : (GetUnitState(u, UNIT_STATE_LIFE) / maxLife) * 100;
+    const maxMana = GetUnitState(u, UNIT_STATE_MAX_MANA);
+    const manaPercent = maxMana <= 0 ? 0 : (GetUnitState(u, UNIT_STATE_MANA) / maxMana) * 100;
+    const heroLevel = GetUnitLevel(u);
 
-    DzFrameSetText(this.heroIconTextFrame as any, heroLevel + '');
+    DzFrameSetText(this.heroIconTextFrame, heroLevel + "");
 
-    DzFrameSetSize(this.lifeBar as any, (this.barWidth * lifePercent) / 100, this.lifeHeight);
-    DzFrameSetSize(this.manaBar as any, (this.barWidth * manaPercent) / 100, this.manaHeight);
+    DzFrameSetSize(this.lifeBar, (this.barWidth * lifePercent) / 100, this.lifeHeight);
+    DzFrameSetSize(this.manaBar, (this.barWidth * manaPercent) / 100, this.manaHeight);
 
     // 护盾显示：依赖 Actor 的 shieldPercent（0~1），无护盾时隐藏
-    const actor = Actor.fromHandle(this.unit);
+    const actor = Actor.fromHandle(u);
     const shieldPercent = actor?.shieldPercent ?? 0;
     if (shieldPercent <= 0) {
-      if (DzFrameIsVisible(this.shieldBar as any)) {
-        DzFrameShow(this.shieldBar as any, false);
+      if (DzFrameIsVisible(this.shieldBar)) {
+        DzFrameShow(this.shieldBar, false);
       }
     } else {
-      if (!DzFrameIsVisible(this.shieldBar as any)) {
-        DzFrameShow(this.shieldBar as any, true);
+      if (!DzFrameIsVisible(this.shieldBar)) {
+        DzFrameShow(this.shieldBar, true);
       }
       const clamped = Math.max(0, Math.min(shieldPercent, 1));
-      DzFrameSetSize(this.shieldBar as any, this.barWidth * clamped, this.lifeHeight);
+      DzFrameSetSize(this.shieldBar, this.barWidth * clamped, this.lifeHeight);
     }
   }
 
@@ -201,17 +202,17 @@ export class KKWEHeroBloodBar {
   public destroy(): void {
     if (this.backdrop !== 0) {
       DzFrameUnBind(this.backdrop);
-      DzDestroyFrame(this.backdrop as any);
+      DzDestroyFrame(this.backdrop);
     }
-    if (this.lifeBar !== 0) DzDestroyFrame(this.lifeBar as any);
-    if (this.shieldBar !== 0) DzDestroyFrame(this.shieldBar as any);
-    if (this.manaBar !== 0) DzDestroyFrame(this.manaBar as any);
-    if (this.heroIcon !== 0) DzDestroyFrame(this.heroIcon as any);
-    if (this.heroIconTextFrame !== 0) DzDestroyFrame(this.heroIconTextFrame as any);
-    if (this.heroName !== 0) DzDestroyFrame(this.heroName as any);
+    if (this.lifeBar !== 0) DzDestroyFrame(this.lifeBar);
+    if (this.shieldBar !== 0) DzDestroyFrame(this.shieldBar);
+    if (this.manaBar !== 0) DzDestroyFrame(this.manaBar);
+    if (this.heroIcon !== 0) DzDestroyFrame(this.heroIcon);
+    if (this.heroIconTextFrame !== 0) DzDestroyFrame(this.heroIconTextFrame);
+    if (this.heroName !== 0) DzDestroyFrame(this.heroName);
     if (this.timer != null) DestroyTimer(this.timer);
 
-    this.unit = null as any;
+    this.unit = null;
     this.backdrop = 0;
     this.lifeBar = 0;
     this.shieldBar = 0;
@@ -223,7 +224,7 @@ export class KKWEHeroBloodBar {
   }
 
   /** 获取绑定的单位 */
-  public getUnit(): unit {
+  public getUnit(): unit | null {
     return this.unit;
   }
 
@@ -239,7 +240,7 @@ export class KKWEHeroBloodBar {
       return KKWEHeroBloodBar.lifeBaseFrame;
     }
     const lower = DzFrameGetLowerLevelFrame();
-    KKWEHeroBloodBar.lifeBaseFrame = DzCreateFrameByTagName("FRAME", "血条底层", lower as any, "", 0) as unknown as number;
+    KKWEHeroBloodBar.lifeBaseFrame = DzCreateFrameByTagName("FRAME", "血条底层", lower, "", 0);
     return KKWEHeroBloodBar.lifeBaseFrame;
   }
 

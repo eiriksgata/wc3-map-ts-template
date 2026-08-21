@@ -14,7 +14,8 @@
     "test:map": "dev_lib/KKWE/bin/YDWEConfig.exe -launchwar3 -loadfile \"./dist/map.w3x\"",
     "ui:pull": "node scripts/ui-codegen.mjs pull",
     "ui:check": "node scripts/ui-codegen.mjs check",
-    "ui:push": "node scripts/ui-codegen.mjs push"
+    "ui:push": "node scripts/ui-codegen.mjs push",
+    "convert:blp": "ts-node --project tsconfig.node.json scripts/convert-blp.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "@types/node": "^24.5.2",
     "@typescript-to-lua/language-extensions": "^1.19.0",
     "lua-types": "^2.13.1",
+    "sharp": "^0.35.3",
     "ts-node": "^10.9.2",
     "typescript": "5.8.2",
     "typescript-to-lua": "^1.34.0"

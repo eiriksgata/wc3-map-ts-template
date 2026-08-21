@@ -87,7 +87,7 @@ dev_lib/w3x2lni/w2l.exe obj ./maps ./dist/map.w3x
 | **自定义 FDF（Frame 资源）** | — | 直接放 `maps/resource/fdf/*.fdf` + 更新 `maps/resource/fdf/path.toc` | `maps/resource/fdf/` | **是**，登记为 `"resource\\fdf\\your.fdf"`（**保留** `resource\` 前缀，见下文映射规则） |
 | **自定义 TTF 字体** | — | — | `maps/resource/<anywhere>/Font.ttf` | **是**，保留 `resource\` 前缀 |
 | **自定义模型** | — | — | `maps/resource/<MyDir>/your.mdx`（或根） | **是**，登记为 `"<MyDir>\\your.mdx"`（**剥离** `resource\` 前缀） |
-| **自定义贴图** | — | — | `maps/resource/Texture/**/*.blp` 或 `.tga` | **是**，登记为 `"Texture\\...\\x.blp"`（剥离 `resource\`） |
+| **自定义贴图** | — | — | `maps/resource/Texture/**/*.blp` 或 `.tga`（JPG/PNG 先 `yarn convert:blp`，见 `wc3-blp-convert`） | **是**，登记为 `"Texture\\...\\x.blp"`（剥离 `resource\`） |
 | **地形贴图覆写** | — | — | `maps/resource/Terrain/TerrainArt/...` | **是**，登记为 `"Terrain\\TerrainArt\\...\\x.blp"`（剥离） |
 | **自定义 SLK / TXT 覆写** | — | — | `maps/resource/map/.../x.slk` | 是，登记为 `"resource\\map\\...\\x.slk"`（**不**剥离） |
 | **载入画面 / 预览图** | `MiscTable` 里 `[载入图]`/`[预览]` 或 `w3i` | `maps/table/w3i.ini`、`maps/resource/war3mapMap.blp` | — | 预览图不需要（固定名） |
@@ -200,7 +200,7 @@ w2l 在 lni 模式下并不按「统一前缀剥离」对所有文件一视同�
      // 每级字段按 w3x2lni 数组语法（构建期序列化成 { ... }）
    }
    ```
-3. 若有自定义图标/特效：把文件放入 `maps/resource/Texture/...` / `maps/resource/Model/...`，并在 `maps/table/imp.ini` 的 `import = { ... }` 里加上对应 MPQ 路径。
+3. 若有自定义图标/特效：JPG/PNG 先 `yarn convert:blp --import Texture/.../icon.blp`（见 `wc3-blp-convert`），模型放入 `maps/resource/Model/...`，并确认 `maps/table/imp.ini` 已有对应 MPQ 路径。
 4. 在 `src/` 里用 rawcode `A001` 接入逻辑（遵循 `system/buff`、`examples/` 等既有模式）。
 5. `yarn build:dev` → `yarn test:map` 验证。
 
@@ -234,10 +234,11 @@ w2l 在 lni 模式下并不按「统一前缀剥离」对所有文件一视同�
 - **打包报 `UNSUPPORTED_LNI_MARK`** → `maps/.w3x` 标记文件缺失 / 不是 lni 工程；最简修复：在 `maps/` 根目录保留一个空 `.w3x`（源码见 `script/share/check_lni_mark`）。
 - **想批量修改物编** → 写 w2l 地图内插件：`maps/w3x2lni/plugin/*.lua` + `plugin/.config`，事件见 `dev_lib/w3x2lni-src/docs/zh-cn/plugin.md`（`on_full` / `on_mark` / `on_convert` / `on_pack`）。
 
-## 与另外两个 skill 的分工
+## 与其它 skill 的分工
 
 - `wc3-map-ts-template`：TSTL 构建链 / `bootstrap.lua` / `war3map.j` 注入 / YDWE 运行时。
 - `wc3-map-ts-architecture`：`src/` 下 TS 模块、子系统、UI 组件「去哪找」。
+- `wc3-blp-convert`：JPG/PNG → BLP1（`yarn convert:blp`），进地图时用 `--import`。
 - **本技能**：**物编数据** 与 **MPQ 资源** 的落点、w2l 打包模型、w3x2lni Lni 格式规则。
 
 一句话：**数据改 `resource/object-data/*.ts`，资源放 `maps/resource/` 并登记到 `maps/table/imp.ini`，构建器在 `w2l obj ./maps ./dist/map.w3x` 时把一切合并进 `map.w3x`。**

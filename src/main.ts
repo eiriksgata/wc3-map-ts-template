@@ -17,6 +17,7 @@ import { buffBarTestExample } from "./test/BuffBarTestExample";
 import { runSpellCardBulletHellTest } from "./test/BulletHellTestExample";
 import { testAddShield } from "./test/HeroUnitSkillTestExample";
 import { createLogger } from "./utils/logger";
+import { rgeisterUnitSpellEffectEvent } from "./examples/UnitEventExample";
 
 const log = createLogger("Main");
 
@@ -30,10 +31,7 @@ function main(): void {
     return;
   }
   Timer.create().start(0.01, false, () => {
-    testAddShield();
-    relicSystemTestExample();
-    buffBarTestExample();
-    runSpellCardBulletHellTest();
+    rgeisterUnitSpellEffectEvent();
   });
 }
 

@@ -3,6 +3,7 @@
 
 library LBKKAPI initializer Init
 
+        type dzeffectgroup                              extends agent
         globals 
                 string MOVE_TYPE_NONE = "none" //没有（无视碰撞）  
                 string MOVE_TYPE_FOOT = "foot" //步行  
@@ -22,6 +23,7 @@ library LBKKAPI initializer Init
 		constant integer DEFENSE_TYPE_NONE = 7 
                 private integer array MonthDay
                 private hashtable Hash=InitHashtable()
+                dzeffectgroup bj_lastCreatedDzEffectGroup = null
         endglobals 
 
         native DzGetSelectedLeaderUnit takes nothing returns unit 
@@ -640,6 +642,223 @@ library LBKKAPI initializer Init
         native DzGetUnitAbilityMissileDamage takes unit u, integer abil_id returns real
         native DzGetUnitAbilityMissileMaxDamage takes unit u, integer abil_id returns real
         
+        
+
+        native DzSendKeyboard takes player p, integer key_code, integer is_down returns nothing
+        native DzForceUiKeyboard takes player p, integer key_code, integer is_down returns nothing
+        native DzDisableWindowKeyboard takes player p, integer key_code returns nothing 
+        native DzDisableGameUIKeyboard takes player p, integer key_code returns nothing 
+        native DzUnitCanPlaceAround takes widget obj, real x, real y returns boolean 
+
+        function KKUnitCanPlaceAroundLoc takes widget obj, location loc returns boolean 
+                return DzUnitCanPlaceAround(obj, GetLocationX(loc), GetLocationY(loc))
+        endfunction     
+
+        function kkUnitCanPlaceAroundItem takes widget obj, real x, real y returns boolean
+                return DzUnitCanPlaceAround(obj, x, y)
+        endfunction 
+
+        function KKUnitCanPlaceAroundLocItem takes widget obj, location loc returns boolean
+                return DzUnitCanPlaceAround(obj, GetLocationX(loc), GetLocationY(loc))
+        endfunction 
+
+        native DzPositionCanPlaceAround takes real x, real y, real collision_size, integer collision_type returns boolean 
+
+        function KKPositionCanPlaceAroundLoc takes location loc, real collision_size, integer collision_type returns boolean 
+                return DzPositionCanPlaceAround(GetLocationX(loc), GetLocationY(loc), collision_size, collision_type)
+        endfunction 
+
+        native DzGetTerrainZ takes real x, real y returns real 
+        native DzGetUnitZ takes unit u returns real 
+        native DzGetUnitOverheadOffset takes widget u returns real
+
+        native DzFrameSetModelEnableWideScreen takes integer frame, boolean is_enable returns nothing 
+
+        native DzSetUnitAbilityEnable takes unit u, integer abil_id returns boolean
+        native DzSetUnitAbilityDisable takes unit u, integer abil_id returns boolean
+        native DzGetUnitAbilityIsDisabled takes unit u, integer abil_id returns boolean
+        native DzGetUnitAbilityDisabledCount takes unit u, integer abil_id returns integer
+        native DzSetUnitAbilityTechReach takes unit u, integer abil_id, boolean reach returns boolean
+        native DzGetUnitAbilityTechReach takes unit u, integer abil_id returns boolean
+        native DzSetUnitAbilityTechReachTip takes unit u, integer abil_id, string tip returns boolean 
+
+        native DzAsyncGetCurrentBuildingAbilityId takes nothing returns integer 
+        native DzAsyncGetCurrentBuildingUnitId takes nothing returns integer 
+        native DzFrameUnlockMouseRectLimit takes boolean is_unlock returns nothing 
+        native KKSimpleFrameIsVisible takes integer simple_frame returns boolean
+        native DzFrameGetChatEditBar takes nothing returns integer
+
+        native DzGetLocalChatRecipient takes nothing returns integer 
+        native DzPlayerSendChat takes player p, string msg, integer recipient returns nothing 
+
+
+        native DzEnableHashtableSetNull takes boolean is_enable returns nothing 
+        native DzSetItemCollisionSize takes item it, real size returns nothing 
+        native DzGetItemCollisionSize takes item it returns real 
+        native DzSetUnitDisableLocalOrder takes unit u, boolean is_disable returns nothing 
+        native DzGetUnitDisableLocalOrder takes unit u returns boolean 
+        native DzSetUnitDisableControlOrder takes unit u, boolean is_disable returns nothing 
+        native DzGetUnitDisableControlOrder takes unit u returns boolean 
+        native DzSetUnitAttack1TargetType takes unit u, integer target_type returns nothing
+        native DzGetUnitAttack1TargetType takes unit u returns integer
+        native DzSetUnitAttack2TargetType takes unit u, integer target_type returns nothing
+        native DzGetUnitAttack2TargetType takes unit u returns integer
+        native DzSetUnitAsAttackTargetType takes unit u, integer target_type returns nothing
+        native DzGetUnitAsAttackTargetType takes unit u returns integer
+        native DzFrameBindAddHideRect takes integer frame, real left, real bottom, real right, real top, real width, real height returns nothing 
+        native DzFrameGetRealWidth takes integer frame returns real 
+        native DzFrameGetRealHeight takes integer frame returns real 
+        native DzSetUnitAbilitySpellBookAddAbility takes unit u, integer abil_id, integer add_abil_id returns boolean
+        native DzSetUnitAbilitySpellBookRemoveAbility takes unit u, integer abil_id, integer remove_abil_id returns boolean
+        native KKCommandButtonGetAbilityId takes integer command_button returns integer 
+        native KKCommandButtonGetOrderId takes integer command_button returns integer 
+        native DzFixUnitEventMemoryLeak takes nothing returns nothing
+        
+        function KKConvertStr2Targs takes string s returns integer 
+                return DzConvertStr2Targs(s)
+        endfunction
+
+        native DzGetUnitPojectileLaunchX takes unit u returns real
+        native DzGetUnitPojectileLaunchY takes unit u returns real
+        native DzGetUnitPojectileLaunchZ takes unit u returns real
+
+        native DzLaunchMissile takes unit source, widget target, string model, integer team_color, integer color, real x, real y, real z, real scale, real speed, attacktype attack_type, damagetype damage_type, weapontype weapon_type, real damage, real arc, boolean homing, boolean can_miss, boolean never_miss, boolean attack, integer flags returns boolean
+        native DzLaunchMissileBounce takes unit source, widget target, string model, integer team_color, integer color, real x, real y, real z, real scale, real speed, attacktype attack_type, damagetype damage_type, weapontype weapon_type, real damage, real arc, boolean homing, boolean can_miss, boolean never_miss, boolean attack, integer flags, integer target_flags, integer target_count, real bounce_range, real damage_loss returns boolean
+        native DzLaunchMissileLine takes unit source, widget target, string model, integer team_color, integer color, real x, real y, real z, real scale, real speed, attacktype attack_type, damagetype damage_type, weapontype weapon_type, real damage, real arc, boolean homing, boolean can_miss, boolean never_miss, boolean attack, integer flags, integer target_flags, real damage_loss, real distance, real range returns boolean
+        native DzLaunchMissileSplash takes unit source, widget target, string model, integer team_color, integer color, real x, real y, real z, real scale, real speed, attacktype attack_type, damagetype damage_type, weapontype weapon_type, real damage, real arc, boolean homing, boolean can_miss, boolean never_miss, boolean attack, integer flags, integer target_flags, real half_factor, real quar_factor, real full_area, real half_area, real quar_area returns boolean
+        native DzLaunchArtillery takes unit source, widget target, real target_x, real target_y, string model, integer team_color, integer color, real x, real y, real z, real scale, real speed, attacktype attack_type, damagetype damage_type, weapontype weapon_type, real damage, real arc, boolean attack, integer flags, real min_distance, integer target_flags, real half_factor, real quar_factor, real full_area, real half_area, real quar_area returns boolean
+        native DzLaunchArtilleryLine takes unit source, widget target, real target_x, real target_y, string model, integer team_color, integer color, real x, real y, real z, real scale, real speed, attacktype attack_type, damagetype damage_type, weapontype weapon_type, real damage, real arc, boolean attack, integer flags, real min_distance, integer target_flags, real half_factor, real quar_factor, real full_area, real half_area, real quar_area, real damage_loss, real distance, real range returns boolean
+        native DzLaunchMissileCarrionSwarmEx takes unit source, string model, integer team_color, integer color, real x, real y, real z, real facing, real distance, real scale, real speed, attacktype attack_type, damagetype damage_type, weapontype weapon_type, real damage, integer flags, integer target_flags, real start_radius, real end_radius, real max_damage, integer buffID returns boolean
+
+        native DzKillUnit takes unit whichUnit, unit killer returns boolean
+        native DzSetUnitXY takes unit whichUnit, real x, real y returns boolean
+        native DzSetUnitAbilityEngineeringUpgrade takes unit whichUnit, integer old_id, integer new_id, boolean update_hero_ability returns boolean 
+        native DzSetUnitAbilityEngineeringUpgradeCancel takes unit whichUnit, integer old_id returns boolean 
+        native DzGetUnitAbilityEngineeringUpgradeNewId takes unit whichUnit, integer old_id returns integer 
+        native DzGetUnitAbilityEngineeringUpgradeOldId takes unit whichUnit, integer new_id returns integer 
+
+
+        native DzSetUnitAbilityCastTime takes unit u, integer abil_id, real value returns boolean 
+        native DzGetUnitAbilityCastTime takes unit u, integer abil_id returns real 
+        native DzSetUnitAbilityDuration takes unit u, integer abil_id, real value returns boolean 
+        native DzGetUnitAbilityDuration takes unit u, integer abil_id returns real 
+        native DzSetUnitAbilityHeroDuration takes unit u, integer abil_id, real value returns boolean 
+        native DzGetUnitAbilityHeroDuration takes unit u, integer abil_id returns real 
+        native DzSetUnitAbilityCastPoint takes unit u, integer abil_id, real value returns boolean 
+        native DzGetUnitAbilityCastPoint takes unit u, integer abil_id returns real 
+        native DzSetUnitAbilityBackSwing takes unit u, integer abil_id, real value returns boolean 
+        native DzGetUnitAbilityBackSwing takes unit u, integer abil_id returns real 
+
+        
+        native DzSetUnitLifeRegen takes unit whichUnit, real regen returns boolean
+        native DzGetUnitLifeRegen takes unit whichUnit returns real
+        native DzSetUnitManaRegen takes unit whichUnit, real regen returns boolean
+        native DzGetUnitManaRegen takes unit whichUnit returns real
+        native DzSetUnitMinSpeed takes unit whichUnit, real speed, boolean ignore_polymorph returns boolean
+        native DzGetUnitMinSpeed takes unit whichUnit returns real
+        native DzSetUnitMaxSpeed takes unit whichUnit, real speed, boolean ignore_polymorph returns boolean
+        native DzGetUnitMaxSpeed takes unit whichUnit returns real
+        native DzSetUnitCastPoint takes unit whichUnit, real cast_point returns boolean
+        native DzGetUnitCastPoint takes unit whichUnit returns real
+        native DzSetUnitBackSwing takes unit whichUnit, real back_swing returns boolean
+        native DzGetUnitBackSwing takes unit whichUnit returns real
+        native DzSetUnitAttackTargetCount takes unit whichUnit, integer index, integer target_count returns boolean
+        native DzGetUnitAttackTargetCount takes unit whichUnit, integer index returns integer
+        native DzSetHeroPrimaryAttributeType takes unit whichUnit, integer attribute, boolean keep_primary_bonus returns boolean
+        native DzGetHeroPrimaryAttributeType takes unit whichUnit returns integer
+        native DzSetHeroPrimaryAttribute takes unit whichUnit, integer attribute returns boolean
+        native DzGetHeroPrimaryAttribute takes unit whichUnit, boolean include_bonus returns integer
+        native DzSetHeroPrimaryAttributePlus takes unit whichUnit, integer attreibute, real value, boolean keep_current_bonus returns boolean
+        native DzGetHeroPrimaryAttributePlus takes unit whichUnit, integer attribute returns real
+        native DzDisableAttackSpeedLimit takes nothing returns nothing
+        native DzSetMinMaxAttackSpeedFactor takes real min_factor, real max_factor returns nothing
+        native DzSetMoveSpeedBonusesStack takes boolean is_enable returns nothing
+        native DzSetGlobalUnitMinMaxMoveSpeed takes real building_min, real building_max, real unit_min, real unit_max, real GC_building_min, real GC_building_max, real GC_unit_min, real GC_unit_max, real harvest_min, real windwalk_max returns nothing
+
+        native DzSaveHandleId takes hashtable whichHashtable, integer parentKey, integer childKey, integer handleId returns boolean
+        native DzSaveHandleIdEx takes hashtable whichHashtable, integer parentKey, integer childKey, integer handleId, integer handleType returns boolean
+        native DzLoadHandleId takes hashtable whichHashtable, integer parentKey, integer childKey returns integer
+        native DzSetHashtableLimit takes integer maxCount returns nothing
+        native DzDisableRemoveExtraDeadHero takes nothing returns nothing
+        native DzSetPlayerPathFindingLimit takes player whichPlayer, integer limit1, integer limit2, integer limit3, integer limit4 returns boolean
+        native DzSetGameConstantFoodCeiling takes integer value returns nothing
+        native DzDisableLoadingPressAKey takes nothing returns nothing
+        native DzMultiboardGetFrame takes multiboard whichMultiboard returns integer
+        native DzTimerDialogGetFrame takes timerdialog whichTimerDialog returns integer
+        native DzFrameAddTextShadow takes integer whichFrame, real offsetX, real offsetY, integer color returns boolean
+        native DzFrameDuplicateTextShadow takes integer whichFrame, integer count returns boolean
+        native DzSetCommandButtonShowCooldown takes boolean showAbility, boolean showItem returns nothing
+        native DzSetCommandButtonShowHotkey takes boolean showAbility, boolean showItem returns nothing
+        native DzSetCommandButtonHotkeyBackground takes string filepath returns nothing
+
+        native DzEffectGroupCreate                      takes nothing returns dzeffectgroup
+        native DzEffectGroupGetSize                     takes dzeffectgroup whichEffectGroup returns integer
+        native DzEffectGroupAt                          takes dzeffectgroup whichEffectGroup, integer index returns effect
+        native DzEffectGroupClear                       takes dzeffectgroup whichEffectGroup returns integer
+        native DzEffectGroupAdd                         takes dzeffectgroup whichEffectGroup, effect whichEffect, boolean allowDuplicate returns integer
+        native DzEffectGroupRemove                      takes dzeffectgroup whichEffectGroup, effect whichEffect, boolean firstOnly returns boolean
+        native DzEffectGroupEnumRange                   takes dzeffectgroup whichEffectGroup, real x, real y, real range, boolean clear, boolean allowDuplicate returns integer
+        native DzEffectGroupEnumRect                    takes dzeffectgroup whichEffectGroup, rect whichRect, boolean clear, boolean allowDuplicate returns integer
+        native DzEffectGroupContains                    takes dzeffectgroup whichEffectGroup, effect whichEffect returns boolean
+        native DzEffectGroupDestroy                     takes dzeffectgroup whichEffectGroup returns boolean
+        native DzGetEnumEffect                          takes nothing returns effect
+        native DzForEffectGroup                         takes dzeffectgroup whichEffectGroup, code callback returns integer
+        native DzHandle2EffectGroup                     takes integer handleID returns dzeffectgroup
+        native SaveDzEffectGroupHandle                  takes hashtable table, integer parentKey, integer childKey, dzeffectgroup g returns boolean
+        native LoadDzEffectGroupHandle                  takes hashtable table, integer parentKey, integer childKey returns dzeffectgroup
+
+        native DzUpdateEffectSmartPosition              takes effect whichEffect returns boolean
+        native DzRemoveEffect                           takes effect whichEffect returns boolean
+        native DzRemoveEffectTimed                      takes effect whichEffect, real time returns boolean
+        native DzSetEffectAlwaysRender                  takes effect whichEffect, boolean flag returns boolean
+        native DzDieEffectTimed                         takes effect whichEffect, real time returns boolean
+        native DzSetEffectGroupBlacklist                takes effect whichEffect, boolean flag returns boolean
+        native DzSetEffectAttachedModelScale            takes effect whichEffect, real scaleX, real scaleY, real scaleZ returns boolean
+        native DzFrameSetAttachedModelScale             takes integer frame, real scaleX, real scaleY, real scaleZ returns boolean
+        native DzEffectReplayBirth                      takes effect whichEffect returns nothing
+        
+
+        function DzEffectGroupCreateBJ takes nothing returns dzeffectgroup
+                set bj_lastCreatedDzEffectGroup = DzEffectGroupCreate()
+                return bj_lastCreatedDzEffectGroup
+        endfunction
+
+        function DzEffectGroupCreateEnumRangeBJ takes real x, real y, real range returns dzeffectgroup
+                set bj_lastCreatedDzEffectGroup = DzEffectGroupCreate()
+                call DzEffectGroupEnumRange(bj_lastCreatedDzEffectGroup, x, y, range, false, false)
+                return bj_lastCreatedDzEffectGroup
+        endfunction
+
+        function DzEffectGroupCreateEnumRectBJ takes rect whichRect returns dzeffectgroup
+                set bj_lastCreatedDzEffectGroup = DzEffectGroupCreate()
+                call DzEffectGroupEnumRect(bj_lastCreatedDzEffectGroup, whichRect, false, false)
+                return bj_lastCreatedDzEffectGroup
+        endfunction
+
+        function DzEffectGroupAddBJ takes effect whichEffect, dzeffectgroup whichEffectGroup, boolean allowDuplicate returns integer
+                return DzEffectGroupAdd(whichEffectGroup, whichEffect, allowDuplicate)
+        endfunction
+
+        function DzEffectGroupEnumRangeBJ takes real x, real y, real range, dzeffectgroup whichEffectGroup, boolean clear, boolean allowDuplicate returns integer
+                return DzEffectGroupEnumRange(whichEffectGroup, x, y, range, clear, allowDuplicate)
+        endfunction 
+
+        function DzEffectGroupEnumRectBJ takes rect whichRect, dzeffectgroup whichEffectGroup, boolean clear, boolean allowDuplicate returns integer
+                return DzEffectGroupEnumRect(whichEffectGroup, whichRect, clear, allowDuplicate)
+        endfunction
+
+        function DzRemoveEffectTimedBJ takes real time, effect whichEffect returns boolean
+                return DzRemoveEffectTimed(whichEffect, time)
+        endfunction
+
+        function DzDieEffectTimedBJ takes real time, effect whichEffect returns boolean
+                return DzDieEffectTimed(whichEffect, time)
+        endfunction
+
+        function DzGetEffectGroupIdBJ takes dzeffectgroup g returns integer
+                return GetHandleId(g)
+        endfunction
+
 
 endlibrary
 
@@ -649,7 +868,7 @@ endlibrary
 // title = "设置单位移动类型[NEW]"  
 // description = "设置 ${单位} 的移动类型：${movetype} "  
 // comment = ""  
-// category = TC_KKPRE  
+// category = TC_KKAPI  
 // [[.args]]  
 // type = unit  
 // [[.args]]  

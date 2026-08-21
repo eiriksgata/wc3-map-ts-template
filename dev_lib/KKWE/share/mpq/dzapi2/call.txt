@@ -40,6 +40,17 @@ type = player
 [[.args]]
 type = string
 
+[DzAPI_Map_SystemArchive]
+title = "仅只读存档[new]"
+description = "只读存档: 读取玩家 ${player} 名称 ${key} 的数据"
+comment = "只能读取只读存档，不可读取可写存档"
+category = TC_DZAPI
+returns = string
+[[.args]]
+type = player
+[[.args]]
+type = string
+
 [DzAPI_Map_IsPlatformVIP]
 title = "玩家是否平台尊享会员"
 description = "玩家 ${player} 是平台尊享会员"
@@ -928,5 +939,23 @@ description = " ${whichPlayer} 当前地图在游戏大厅置顶状态"
 comment = "玩家在游戏大厅首页置顶该地图后返回true"
 category = TC_DZAPI
 returns = boolean
+[[.args]]
+type = player
+
+[KKApiBountyRank]
+title = "获取玩家赏金助力榜排名"
+description = "获取 ${whichPlayer} 赏金助力榜排名"
+comment = "0=未上榜，1=第一名，依此类推"
+category = TC_DZAPI
+returns = integer
+[[.args]]
+type = player
+
+[KKApiBountyValue]
+title = "获取玩家赏金助力值"
+description = "获取 ${whichPlayer} 赏金助力值"
+comment = "获取玩家赏金助力值"
+category = TC_DZAPI
+returns = integer
 [[.args]]
 type = player

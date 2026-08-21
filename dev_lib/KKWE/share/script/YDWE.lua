@@ -40,5 +40,6 @@ require "ydwe_on_test"
 require "ydwe_on_startup"
 require "ydwe_on_dialog_message"
 require "ydwe_on_new_object_id"
+require "ydwe_on_quickmenu"
 
 log.debug("********************* ydwe initialize end *********************")

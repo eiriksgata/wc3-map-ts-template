@@ -754,6 +754,21 @@ library DzAPI
         return RequestExtraBooleanData(117, whichPlayer, null, null, false, 0, 0, 0)
     endfunction
 
+    // SystemArchive,                 //系统存档
+    function DzAPI_Map_SystemArchive takes player whichPlayer, string key returns string
+        return RequestExtraStringData(35, whichPlayer, key, null, false, 0, 0, 0)
+    endfunction
+
+    //  BountyRank, // 获取玩家赏金助力榜排名（0=未上榜，1=第一名，依此类推）
+    function KKApiBountyRank takes player whichPlayer returns integer
+        return RequestExtraIntegerData(120, whichPlayer, null, null, false, 0, 0, 0)
+    endfunction
+
+    //  BountyValue, // 获取玩家赏金助力值
+    function KKApiBountyValue takes player whichPlayer returns integer
+        return RequestExtraIntegerData(121, whichPlayer, null, null, false, 0, 0, 0)
+    endfunction
+
 endlibrary
 
 #endif

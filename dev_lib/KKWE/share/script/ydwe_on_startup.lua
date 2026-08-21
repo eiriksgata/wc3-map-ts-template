@@ -183,6 +183,9 @@ function show_credit()
 	we.message_show("    ...")
 	we.message_show("    And all users & supporters, including")
 	we.message_show("    YOU")
+	if global_config["ThirdPartyPlugin"]["EnableMCPPlugin"] == "1" then
+		we.message_show("    KKWE MCP Tool Enabled, Listen on: http://127.0.0.1:" .. global_config["ThirdPartyPlugin"]["MCPPort"])
+	end
 end
 
 

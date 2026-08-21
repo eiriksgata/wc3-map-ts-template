@@ -67,6 +67,7 @@
 #  define YDTRIGGER_ANY2I_imagefile(any)                    YDTRIGGERS2I(any)
 #  define YDTRIGGER_ANY2I_modelfile(any)                    YDTRIGGERS2I(any)
 #  define YDTRIGGER_ANY2I_xlsxworksheet(any)                any
+#  define YDTRIGGER_ANY2I_dzeffectgroup(any)                YDHashH2I(any)
 #
 #
 #endif

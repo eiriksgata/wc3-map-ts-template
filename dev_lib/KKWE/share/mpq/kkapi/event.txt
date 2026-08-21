@@ -1,0 +1,9 @@
+﻿[DzTriggerRegisterPlayerUnitSwapItemSlotEvent]
+title = "玩家单位事件 - 移动物品栏里的物品"
+description = "${whichPlayer} 的单位移动物品栏里的物品"
+comment = "注册玩家的移动物品事件 支持超过6格物品栏"
+category = TC_KKPRE
+[[.args]]
+type = player
+default = "PlayerALL"
+

@@ -1,0 +1,6 @@
+[Info]
+PluginName = MCPPlugin
+[Load]
+Enable = 1
+Loader = MCPPlugin.lua
+Dll = MCPPlugin.dll

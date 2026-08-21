@@ -1,0 +1,13 @@
+[OperatorCompareDzEffectGroup]
+title = "特效组"
+description = "${Value} ${Operator} ${特效组}"
+comment = ""
+category = TC_CONDITION
+[[.args]]
+type = dzeffectgroup
+[[.args]]
+type = EqualNotEqualOperator
+default = "OperatorEqualENE"
+[[.args]]
+type = dzeffectgroup
+default = "DzEffectGroupNull"

@@ -46,7 +46,7 @@ YDTRIGGER_GET_PROC(lightning)
 YDTRIGGER_GET_PROC(image)
 YDTRIGGER_GET_PROC(fogstate)
 YDTRIGGER_GET_PROC(fogmodifier)
- 
+YDTRIGGER_GET_PROC(dzeffectgroup)
 #undef YDTRIGGER_GET_PROC
 
 #endif

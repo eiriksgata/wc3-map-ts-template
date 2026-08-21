@@ -12,11 +12,56 @@ function mt:stringify_section(str, t, section)
     table.insert(str, '')
 end
 
+local function split(str)
+    local r = {}
+    str = str:gsub(' %- ', '@')
+    str:gsub('[^@]+', function (w) r[#r+1] = w end)
+    return r
+end
+
+
+--不带前缀的置顶, 带前缀排序到一起 
+local function similaritySort(t)
+    local map = {}
+    local res = {}
+    for _, u in ipairs(t) do 
+        local keys = split(u.title)
+        local name = keys[#keys] 
+        local pre = ''
+        table.remove(keys, #keys)
+        if #keys > 0 then 
+            pre = table.concat(keys)
+
+            local list = map[pre] or {}
+            map[pre] = list 
+            list[#list + 1] = {name, u}
+        else 
+            res[#res + 1] = u
+        end
+    end 
+    local pre_list = {}
+    for pre, list in pairs(map) do 
+        table.sort(list, function (a, b) return a[1] < b[1] end)
+        pre_list[#pre_list + 1] = pre
+    end 
+
+    table.sort(pre_list, function (a, b) return a < b end)
+    for _, pre in ipairs(pre_list) do 
+        for _, info in ipairs(map[pre]) do 
+            res[#res + 1] = info[2]
+        end 
+    end 
+    return res 
+end
+
 function mt:stringify_ui(data_title, string_title, t)
     table.insert(self.data, ('[%s]'):format(data_title))
     table.insert(self.string, ('[%s]'):format(string_title))
 
     for _, category in ipairs(t) do
+        if category == 'TC_KKAPI' then 
+            t[category] = similaritySort(t[category])
+        end 
         for _, u in ipairs(t[category]) do
             table.insert(self.string, ('%s=%q'):format(u.name, u.title))
             table.insert(self.string, ('%s="%s"'):format(u.name, u.description:gsub('${(.-)}', '",~%1,"')))

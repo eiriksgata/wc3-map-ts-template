@@ -72,6 +72,7 @@
 #  define YDTRIGGER_HC_imagefile(HC)                        YDTRIGGER_##HC##(String)
 #  define YDTRIGGER_HC_modelfile(HC)                        YDTRIGGER_##HC##(String)
 #  define YDTRIGGER_HC_xlsxworksheet(HC)                    YDTRIGGER_##HC##(Integer)
+#  define YDTRIGGER_HC_dzeffectgroup(HC)                    YDTRIGGER_##HC##(HandleDummy)
 #
 #
 #endif

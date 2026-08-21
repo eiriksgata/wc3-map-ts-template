@@ -828,8 +828,8 @@ returns = string
 type = string
 
 [DzStringReplace]
-title = "替换字符串 [NEW]"
-description = "替换 ${targetStr} 里的 ${searchStr} 为 ${newStr} "
+title = "字符串全局替换 [NEW]"
+description = "将字符串 ${targetStr} 中所有 ${oldStr} 替换为 ${newStr}，${caseSensitive} 区分大小写"
 comment = ""
 category = TC_KKAPI
 returns = string
@@ -839,6 +839,8 @@ type = string
 type = string
 [[.args]]
 type = string
+[[.args]]
+type = boolean
 
 [DzStringInsert]
 title = "插入字符串 [NEW]"
@@ -1190,7 +1192,7 @@ type = sound
 
 
 [DzGetUnitAbilityRange]
-title = "技能 - 获取技能施法距离（通魔）"
+title = "技能 - 获取技能施法距离"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的施法距离"
 comment = ""
 category = TC_KKAPI
@@ -1201,7 +1203,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityArea]
-title = "技能 - 获取技能施法范围（通魔）"
+title = "技能 - 获取技能施法范围"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的施法范围"
 comment = ""
 category = TC_KKAPI
@@ -1212,7 +1214,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityCool]
-title = "技能 - 获取技能当前冷却时间（通魔）"
+title = "技能 - 获取技能当前冷却时间"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的当前冷却时间"
 comment = ""
 category = TC_KKAPI
@@ -1223,7 +1225,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityMaxCool]
-title = "技能 - 获取技能最大冷却时间（通魔）"
+title = "技能 - 获取技能最大冷却时间"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的最大冷却时间"
 comment = ""
 category = TC_KKAPI
@@ -1234,7 +1236,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityDataA]
-title = "技能 - 获取技能数据A（通魔）"
+title = "技能 - 获取技能数据A"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据A"
 comment = ""
 category = TC_KKAPI
@@ -1245,7 +1247,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityDataB]
-title = "技能 - 获取技能数据B（通魔）"
+title = "技能 - 获取技能数据B"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据B"
 comment = ""
 category = TC_KKAPI
@@ -1256,7 +1258,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityDataC]
-title = "技能 - 获取技能数据C（通魔）"
+title = "技能 - 获取技能数据C"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据C"
 comment = ""
 category = TC_KKAPI
@@ -1268,7 +1270,7 @@ type = abilcode
 
 
 [DzGetUnitAbilityDataD]
-title = "技能 - 获取技能数据D（通魔）"
+title = "技能 - 获取技能数据D"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据D"
 comment = ""
 category = TC_KKAPI
@@ -1279,10 +1281,54 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityDataE]
-title = "技能 - 获取技能数据E（通魔）"
+title = "技能 - 获取技能数据E"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据E"
 comment = ""
 category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+[DzGetUnitAbilityDataF]
+title = "技能 - 获取技能数据F"
+description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据F"
+comment = ""
+category = TC_KKPRE
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+[DzGetUnitAbilityDataG]
+title = "技能 - 获取技能数据G"
+description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据G"
+comment = ""
+category = TC_KKPRE
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+[DzGetUnitAbilityDataH]
+title = "技能 - 获取技能数据H"
+description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据H"
+comment = ""
+category = TC_KKPRE
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+[DzGetUnitAbilityDataI]
+title = "技能 - 获取技能数据I"
+description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的数据I"
+comment = ""
+category = TC_KKPRE
 returns = real
 [[.args]]
 type = unit
@@ -1307,6 +1353,18 @@ returns = integer
 [[.args]]
 type = string
 
+
+[KKConvertStr2Targs]
+title = "转化 - 字符串转目标允许"
+description = "转换 ${字符串} 为目标允许"
+comment = "例如“ground,friend,vuln,invu”"
+category = TC_KKAPI
+script_name = DzConvertStr2Targs
+returns = TargetFlags
+[[.args]]
+type = string
+
+
 [KKConvertInt2AbilId]
 title = "转化 - 整数为技能ID"
 description = "转换 ${整数} 为技能ID"
@@ -1327,7 +1385,7 @@ type = abilcode
 
 
 [DzGetUnitAbilityTargs]
-title = "技能 - 获取技能目标允许（通魔）"
+title = "技能 - 获取技能目标允许"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的目标允许"
 comment = ""
 category = TC_KKAPI
@@ -1338,7 +1396,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityCost]
-title = "技能 - 获取技能魔法消耗（通魔）"
+title = "技能 - 获取技能魔法消耗"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的魔法消耗"
 comment = ""
 category = TC_KKAPI
@@ -1349,7 +1407,7 @@ type = unit
 type = abilcode
 
 [DzGetUnitAbilityReqLevel]
-title = "技能 - 获取技能等级要求（通魔）"
+title = "技能 - 获取技能等级要求"
 description = "获取 单位 ${unit} 当前拥有的技能 ${id} 的等级要求"
 comment = ""
 category = TC_KKAPI
@@ -1668,7 +1726,7 @@ returns = integer
 title = "技能 - 获取技能图标"
 description = "获取单位 ${单位} 当前的技能 ${技能id} 的技能图标"
 comment = "返回当前技能图标"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = string
 [[.args]]
 type = unit
@@ -1679,7 +1737,7 @@ type = abilcode
 title = "技能 - 获取技能提示"
 description = "获取单位 ${单位} 当前的技能 ${技能id} 的技能提示"
 comment = "返回当前技能提示tip"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = string
 [[.args]]
 type = unit
@@ -1691,7 +1749,7 @@ type = abilcode
 title = "技能 - 获取技能提示扩展"
 description = "获取单位 ${单位} 当前的技能 ${技能id} 的技能提示扩展"
 comment = "返回当前技能提示扩展ubertip"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = string
 [[.args]]
 type = unit
@@ -1704,7 +1762,7 @@ type = abilcode
 title = "技能 - 获取技能命令ID"
 description = "获取单位 ${单位} 当前的技能 ${技能id} 的当前的命令ID"
 comment = "返回当前使用的命令ID"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = integer
 [[.args]]
 type = unit
@@ -1716,7 +1774,7 @@ type = abilcode
 title = "技能 - 获取魔法书的技能列表"
 description = "获取单位 ${单位} 的魔法书技能 ${技能id} 的技能列表"
 comment = "返回当前魔法书的技能列表"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = string
 [[.args]]
 type = unit
@@ -1727,7 +1785,7 @@ type = abilcode
 title = "技能 - 获取技能投射物模型"
 description = "获取单位 ${单位} 的技能 ${技能id} 的投射物模型"
 comment = "返回技能投射物的路径"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = string
 [[.args]]
 type = unit
@@ -1738,7 +1796,7 @@ type = abilcode
 title = "技能 - 获取技能投射物速度"
 description = "获取单位 ${单位} 的技能 ${技能id} 的投射物速度"
 comment = "返回技能投射物的速度"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = real
 [[.args]]
 type = unit
@@ -1749,7 +1807,7 @@ type = abilcode
 title = "技能 - 获取技能投射物弧度"
 description = "获取单位 ${单位} 的技能 ${技能id} 的投射物弧度"
 comment = "返回技能投射物的弧度"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = real
 [[.args]]
 type = unit
@@ -1761,7 +1819,7 @@ type = abilcode
 title = "技能 - 获取技能投射物允许自导"
 description = "获取单位 ${单位} 的技能 ${技能id} 的投射物允许自导"
 comment = "返回技能投射物是否允许自导"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = boolean
 [[.args]]
 type = unit
@@ -1772,7 +1830,7 @@ type = abilcode
 title = "技能 - 获取技能投射物数量 (弹幕攻击)"
 description = "获取单位 ${单位} 的弹幕攻击技能 ${技能id} 的投射物数量"
 comment = "返回Aroc弹幕攻击的技能投射物数量"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = integer
 [[.args]]
 type = unit
@@ -1783,7 +1841,7 @@ type = abilcode
 title = "技能 - 获取技能投射物伤害 (弹幕攻击)"
 description = "获取单位 ${单位} 的弹幕攻击技能 ${技能id} 的投射物伤害"
 comment = "返回Aroc弹幕攻击的技能投射物伤害"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = real
 [[.args]]
 type = unit
@@ -1794,7 +1852,7 @@ type = abilcode
 title = "技能 - 获取技能投射物最大伤害 (弹幕攻击)"
 description = "获取单位 ${单位} 的弹幕攻击技能 ${技能id} 的投射物最大伤害"
 comment = "返回Aroc弹幕攻击的技能投射物最大伤害"
-category = TC_KKPRE
+category = TC_KKAPI
 returns = real
 [[.args]]
 type = unit
@@ -1999,3 +2057,556 @@ returns = ChatRecipient
 
 
 
+[DzGetItemCollisionSize]
+title = "物品 - 获取物品的碰撞体积"
+description = "获取 ${物品} 的碰撞体积"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = item
+
+
+
+[DzGetUnitDisableLocalOrder]
+title = "单位 - 获取单位本地命令是否被屏蔽"
+description = "获取单位 ${单位} 本地命令是否被屏蔽"
+comment = "判断该单位当前是否失控状态"
+category = TC_KKAPI
+returns = boolean
+[[.args]]
+type = unit
+
+
+[DzGetUnitDisableControlOrder]
+title = "单位 - 获取单位控制命令是否被屏蔽"
+description = "获取单位 ${单位} 控制命令是否被屏蔽"
+comment = "判断该单位当前是否失控状态"
+category = TC_KKAPI
+returns = boolean
+[[.args]]
+type = unit
+
+[DzGetUnitAttack1TargetType]
+title = "单位 - 获取单位攻击1目标允许"
+description = "获取单位 ${单位} 攻击1目标允许"
+comment = "返回值可使用“转化 - 目标允许整数转字符串”"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = unit
+
+[DzGetUnitAttack2TargetType]
+title = "单位 - 获取单位攻击2目标允许"
+description = "获取单位 ${单位} 攻击2目标允许"
+comment = "返回值可使用“转化 - 目标允许整数转字符串”"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = unit
+
+
+[DzGetUnitAsAttackTargetType]
+title = "单位 - 获取单位作为目标类型"
+description = "获取单位 ${单位} 作为目标类型"
+comment = "返回值可使用“转化 - 目标允许整数转字符串”"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = unit
+
+
+[DzFrameGetRealWidth]
+title = "界面 - 获取控件实际宽度"
+description = "获取控件 ${控件} 实际宽度"
+comment = "自适应文本控件等特殊情况要在改变文字内容后延迟1帧之后才能获取到正确的值"
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = frame
+
+
+[DzFrameGetRealHeight]
+title = "界面 - 获取控件实际高度"
+description = "获取控件 ${控件} 实际高度"
+comment = "自适应文本控件等特殊情况要在改变文字内容后延迟1帧之后才能获取到正确的值"
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = frame
+
+
+[KKCommandButtonGetAbilityId]
+title = "技能按钮 - 获取按钮上的技能ID"
+description = "获取按钮 ${按钮} 上的技能ID"
+comment = "参数是原生或自己创建的技能按钮、物品按钮、 返回值是异步的, 当按钮有绑定技能时 会返回正确的ID"
+category = TC_KKAPI
+returns = abilcode
+[[.args]]
+type = frame
+
+
+[KKCommandButtonGetOrderId]
+title = "技能按钮 - 获取按钮上的命令ID"
+description = "获取按钮 ${按钮} 上的命令ID"
+comment = "参数是原生或自己创建的技能按钮、物品按钮、 返回值是异步的, 当按钮有绑定时 会返回正确的ID"
+category = TC_KKAPI
+returns = ordercode
+[[.args]]
+type = frame
+
+
+[DzGetUnitPojectileLaunchX]
+title = "单位 - 获取投射物发射坐标X"
+description = "获取 ${单位} 的投射物发射坐标X"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+[DzGetUnitPojectileLaunchY]
+title = "单位 - 获取投射物发射坐标Y"
+description = "获取 ${单位} 的投射物发射坐标Y"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+[DzGetUnitPojectileLaunchZ]
+title = "单位 - 获取投射物发射坐标Z"
+description = "获取 ${单位} 的投射物发射坐标Z"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+
+[DzGetUnitAbilityEngineeringUpgradeNewId]
+title = "技能 - 工程升级 - 获取替换后的技能ID"
+description = "获取单位 ${unit} 的技能 ${old_id} 工程升级替换后的技能ID"
+comment = "输入旧的id 获取 新的id"
+category = TC_KKAPI
+returns = abilcode
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+[DzGetUnitAbilityEngineeringUpgradeOldId]
+title = "技能 - 工程升级 - 获取替换前的技能ID"
+description = "获取单位 ${unit} 的技能 ${new_id} 工程升级替换前的技能ID"
+comment = "输入新的id 获取 旧的id"
+category = TC_KKAPI
+returns = abilcode
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+
+
+[DzGetUnitAbilityCastTime]
+title = "技能 - 获取技能魔法施法时间"
+description = "获取单位 ${unit} 当前拥有的技能 ${id} 的魔法施法时间"
+comment = [[开始施法前的准备时间.暗影突袭的此项为伤害间隔.暴风雪和火焰雨的此项为每波间隔;]]
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+
+[DzGetUnitAbilityDuration]
+title = "技能 - 获取技能持续时间(普通)"
+description = "获取单位 ${unit} 当前拥有的技能 ${id} 的持续时间(普通) "
+comment = [[普通持续时间;烈焰风暴的此项为燃烧持续时间.变身(恶魔猎手)的此项为完成变身前暂停时间]]
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+
+[DzGetUnitAbilityHeroDuration]
+title = "技能 - 获取技能持续时间(英雄)"
+description = "获取单位 ${unit} 当前拥有的技能 ${id} 的持续时间(英雄)"
+comment = [[英雄持续时间;技能对英雄或具有抗性皮肤的单位的持续时间.烈焰风暴的此项为熄灭持续时间.静止陷阱的此项是眩晕时间]]
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+
+[DzGetUnitAbilityCastPoint]
+title = "技能 - 获取技能魔法施放点(前摇)"
+description = "获取单位 ${unit} 当前拥有的技能 ${id} 的魔法施放点(前摇)"
+comment = [[即施法前摇;]]
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+
+[DzGetUnitAbilityBackSwing]
+title = "技能 - 设置技能魔法施放回复(后摇)"
+description = "获取单位 ${unit} 当前拥有的技能 ${id} 的魔法施放回复(后摇)"
+comment = [[即施法后摇;]]
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = abilcode
+
+
+[DzGetUnitLifeRegen]
+title = "单位 - 获取每秒生命恢复"
+description = "获取 ${单位} 的每秒生命恢复"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+[DzGetUnitManaRegen]
+title = "单位 - 获取每秒魔法恢复"
+description = "获取 ${单位} 的每秒魔法恢复"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+
+[DzGetUnitMinSpeed]
+title = "单位 - 获取最低移动速度"
+description = "获取 ${单位} 的最低移动速度"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+[DzGetUnitMaxSpeed]
+title = "单位 - 获取最高移动速度"
+description = "获取 ${单位} 的最高移动速度"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+
+[DzGetUnitCastPoint]
+title = "单位 - 获取魔法施放点(前摇)"
+description = "获取 ${单位} 的魔法施放点(前摇)"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+[DzGetUnitBackSwing]
+title = "单位 - 获取魔法施放回复(后摇)"
+description = "获取 ${单位} 的魔法施放回复(后摇)"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+
+
+[DzGetUnitAttackTargetCount]
+title = "单位 - 获取攻击最大目标数"
+description = "设置单位 ${unit} 的攻击 ${index} 最大目标数"
+comment = "第二个参数index 为0的时候 代表攻击1   1的时候代表攻击2"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = integer
+
+
+[DzGetHeroPrimaryAttributeType]
+title = "英雄 - 获取主属性类型"
+description = "获取英雄 ${hero} 的主属性类型"
+comment = ""
+category = TC_KKAPI
+returns = AttributeType
+[[.args]]
+type = unit
+
+[DzGetHeroPrimaryAttribute]
+title = "英雄 - 获取主属性"
+description = "获取英雄 ${hero} 的主属性 包括加成 ${flag}"
+comment = "加成指的是绿字"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = unit
+[[.args]]
+type = boolean
+default = "true"
+
+[DzGetHeroPrimaryAttributePlus]
+title = "英雄 - 获取属性成长"
+description = "获取英雄 ${hero} 的 ${attribute} 属性成长"
+comment = ""
+category = TC_KKAPI
+returns = real
+[[.args]]
+type = unit
+[[.args]]
+type = AttributeType
+
+[DzLoadHandleId]
+title = "哈希表 - 读取Handle ID"
+description = "从哈希表 ${哈希表} 主Key ${主Key} 子Key ${子Key} 读取Handle ID"
+comment = "从哈希表中读取保存的Handle ID"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = hashtable
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+[DzMultiboardGetFrame]
+title = "界面 - 获取多面板Frame"
+description = "获取多面板 ${多面板} 的Frame"
+comment = "返回多面板的Frame句柄"
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = multiboard
+
+[DzTimerDialogGetFrame]
+title = "界面 - 获取计时器对话框Frame"
+description = "获取计时器对话框 ${计时器对话框} 的Frame"
+comment = "返回计时器对话框的Frame句柄"
+category = TC_KKAPI
+returns = frame
+[[.args]]
+type = timerdialog
+
+[DzEffectGroupCreateBJ]
+title = "特效组 - 创建空的特效组"
+description = "创建空的特效组"
+comment = "会创建特效组,需要排泄,可以用最后创建的特效组"
+category = TC_KKAPI
+returns = dzeffectgroup
+
+
+[DzEffectGroupCreateEnumRangeBJ]
+title = "特效组 - 选取范围内的特效"
+description = "选取 X:${x} Y:${y} 范围:${range} 内的特效"
+comment = "会创建特效组,需要排泄,可以用最后创建的特效组"
+category = TC_KKAPI
+returns = dzeffectgroup
+[[.args]]
+type = real
+[[.args]]
+type = real
+[[.args]]
+type = real
+
+
+[DzEffectGroupCreateEnumRectBJ]
+title = "特效组 - 选取区域内的特效"
+description = "选取 ${rect} 内的特效到新建特效组"
+comment = "会创建特效组,需要排泄,可以用最后创建的特效组"
+category = TC_KKAPI
+returns = dzeffectgroup
+[[.args]]
+type = rect
+
+
+[DzHandle2EffectGroup]
+title = "特效组 - 转换 handle ID 为特效组"
+description = "转换 handle ID ${handleID} 为特效组"
+comment = "整数地址转换为特效组"
+category = TC_KKAPI
+returns = dzeffectgroup
+[[.args]]
+type = integer
+
+[DzEffectGroupGetSize]
+title = "特效组 - 获取特效数量"
+description = "获取 ${特效组} 里的特效数量"
+comment = "包括删除了但没移出的特效"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = dzeffectgroup
+
+[DzEffectGroupAt]
+title = "特效组 - 第N个特效"
+description = "获取 ${特效组} 里的第 ${N} 个特效"
+comment = "从1开始  循环1到特效组数量"
+category = TC_KKAPI
+returns = effect
+[[.args]]
+type = dzeffectgroup
+[[.args]]
+type = integer
+default = "1"
+
+[DzEffectGroupContains]
+title = "特效组 - 是否包含特效"
+description = "${特效组} 是否包含 ${特效} "
+comment = ""
+category = TC_KKAPI
+returns = boolean
+[[.args]]
+type = dzeffectgroup
+[[.args]]
+type = effect
+
+[DzGetEnumEffect]
+title = "特效组 - 选取特效"
+description = "选取特效"
+comment = "选取做动作里获取当前选取的特效"
+category = TC_KKAPI
+returns = effect
+
+[DzSetEffectAttachedModelScale]
+title = "特效 - 设置绑定特效的缩放大小"
+description = "设置 ${特效} 绑定模型的缩放 X: ${scaleX} Y: ${scaleY} Z: ${scaleZ}"
+comment = "修改特效模型作为附着模型渲染时的缩放, 设为1.0还原"
+category = TC_KKAPI
+returns = boolean
+[[.args]]
+type = effect
+[[.args]]
+type = real
+default = "1.0"
+[[.args]]
+type = real
+default = "1.0"
+[[.args]]
+type = real
+default = "1.0"
+
+[DzFrameSetAttachedModelScale]
+title = "界面 - 设置UI模型绑定特效的缩放大小"
+description = "设置 ${frame} UI模型绑定特效的缩放 X: ${scaleX} Y: ${scaleY} Z: ${scaleZ}"
+comment = "修改UI模型控件的模型作为附着模型渲染时的缩放, 设为1.0还原"
+category = TC_KKAPI
+returns = boolean
+[[.args]]
+type = integer
+[[.args]]
+type = real
+default = "1.0"
+[[.args]]
+type = real
+default = "1.0"
+[[.args]]
+type = real
+default = "1.0"
+
+[DzGetBuffBar]
+title = "界面 - 获取 Buff 栏"
+description = "获取 Buff 栏"
+comment = "返回控制面板单位详情中的 Buff 栏 frame"
+category = TC_KKPRE
+returns = frame
+
+[DzGetBuffBarButton]
+title = "界面 - 获取 Buff 栏按钮"
+description = "获取 Buff 栏第 ${row} 行第 ${col} 列按钮"
+comment = "返回控制面板单位详情中的 Buff 按钮 frame"
+category = TC_KKPRE
+returns = frame
+[[.args]]
+type = integer
+default = "0"
+[[.args]]
+type = integer
+default = "0"
+
+[LoadDzEffectGroupHandle]
+title = "哈希表 - 读取特效组"
+description = "从哈希表 ${哈希表} 主Key ${主Key} 子Key ${子Key} 读取特效组"
+comment = "从哈希表中读取保存的特效组句柄"
+category = TC_KKAPI
+returns = dzeffectgroup
+[[.args]]
+type = hashtable
+[[.args]]
+type = integer
+[[.args]]
+type = integer
+
+
+[DzGetEffectGroupIdBJ]
+title = "特效组 - 获取 特效组 的整数地址"
+description = "获取 ${特效组} 的整数地址"
+comment = "可以把一个特效组转成整数，方便存入缓存或Hash表。"
+category = TC_KKAPI
+returns = integer
+[[.args]]
+type = dzeffectgroup
+default = bj_lastCreatedDzEffectGroup
+
+[DzGetInventoryMaxSize]
+title = "物品栏 - 获取物品栏最大格数"
+description = "获取物品栏最大格数"
+comment = ""
+category = TC_KKPRE
+returns = integer
+
+[DzGetInventoryDropSlotOrderID]
+title = "物品栏 - 获取 移动物品 的命令ID"
+description = "获取 移动物品到第 ${n} 格的命令ID"
+comment = ""
+category = TC_KKPRE
+returns = ordercode
+[[.args]]
+type = integer
+
+
+[DzGetInventoryUseSlotOrderID]
+title = "物品栏 - 获取 使用物品 的命令ID"
+description = "获取 使用第 ${n} 格物品 的命令ID"
+comment = ""
+category = TC_KKPRE
+returns = ordercode
+[[.args]]
+type = integer
+default = "0"
+
+[DzGetInventoryBarButton]
+title = "物品栏 - 获取物品栏按钮"
+description = "获取物品栏第 ${i} 个按钮"
+comment = "索引从0开始, 扩展的物品栏需要用这个获取 UI (因为 DzFrameGetItemBarButton 只允许获取前6个)"
+category = TC_KKPRE
+returns = frame
+[[.args]]
+type = integer
+default = "0"
+
+[DzGetSwapItemSlotEventFromSlotID]
+title = "移动物品栏物品事件 - 获取来源格子ID"
+description = "移动物品栏物品事件 - 获取来源格子ID"
+comment = "索引从0开始"
+category = TC_KKPRE
+returns = integer
+
+[DzGetSwapItemSlotEventToSlotID]
+title = "移动物品栏物品事件 - 获取目标格子ID"
+description = "移动物品栏物品事件 - 获取目标格子ID"
+comment = "索引从0开始"
+category = TC_KKPRE
+returns = integer

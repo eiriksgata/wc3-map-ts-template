@@ -42,11 +42,14 @@ local tbl_index = {
         EnableYDTrigger = "1",
         EnableMapHelper = "0",
         EnableDarkMode = "0",
+        EnableMCPPlugin = "1",
+        MCPPort = "19816",
     },
     FeatureToggle = {
         EnableManualNewId = "0",
         EnableTriggerCopyEncodingAutoConversion = "1",
         EnableShowInternalAttributeId = "0",
+        EnableQuickMenu = "0",
     },
     Font = {
         FontEnable = "0",
@@ -59,6 +62,11 @@ function global_config_reload()
     local tbl = sys.ini_load(file)
     if not tbl then
         tbl = {}
+    end
+    for section, defaults in pairs(tbl_index) do
+        if tbl[section] then
+            setmetatable(tbl[section], { __index = defaults })
+        end
     end
     tbl = setmetatable(tbl, { __index = tbl_index })
     global_config = tbl

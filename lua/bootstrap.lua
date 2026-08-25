@@ -6,17 +6,131 @@
 local console = require("jass.console")
 
 
+local function try_require(name)
+  local ok, mod = pcall(require, name)
+  if ok and type(mod) == "table" then
+    return mod
+  end
+  return nil
+end
+
+local function copy_module_to_g(mod, overwrite)
+  if type(mod) ~= "table" then
+    return
+  end
+  for key, value in pairs(mod) do
+    if overwrite or _G[key] == nil then
+      _G[key] = value
+    end
+  end
+end
+
 local ydcommon = require("jass.common")
 local ydjapi = require("jass.japi")
 
--- register jass.common
-for key, value in pairs(ydcommon) do
-  _G[key] = value
-end
+-- register jass.common natives
+copy_module_to_g(ydcommon, true)
 
 -- register jass.japi
-for key, value in pairs(ydjapi) do
-  _G[key] = value
+copy_module_to_g(ydjapi, true)
+
+-- BJ / blizzard.j: JASS InitBlizzard() does not put these on Lua _G.
+-- KKWE yd_lua_engine exposes script functions as jass.code (no jass.blizzard).
+-- Try YDWE-style names first, then KKWE's jass.code.
+local bj_source
+local bj_funcs
+do
+  local candidates = { "jass.blizzard", "blizzard", "jass.code" }
+  for i = 1, #candidates do
+    local mod = try_require(candidates[i])
+    if mod then
+      bj_source = candidates[i]
+      bj_funcs = mod
+      copy_module_to_g(mod, false)
+      print(">>> Bootstrap: registered BJ functions from " .. bj_source)
+      break
+    end
+  end
+  if not bj_funcs then
+    print(">>> Bootstrap: WARNING no BJ module (tried jass.blizzard / blizzard / jass.code)")
+  end
+end
+
+-- BJ globals (bj_FORCE_ALL_PLAYERS, bj_lastCreatedUnit, ...). war3map.j already
+-- called InitBlizzard() so these exist in the JASS VM.
+local ydglobals = try_require("jass.globals")
+if ydglobals then
+  copy_module_to_g(ydglobals, false)
+end
+
+-- jass.code / jass.globals are often empty tables with __index (and maybe __pairs).
+-- Keep a _G fallback so TSTL global calls still resolve if pairs() copied nothing.
+do
+  local mt = getmetatable(_G)
+  if mt == nil then
+    mt = {}
+    setmetatable(_G, mt)
+  end
+  local prev_index = mt.__index
+  local prev_newindex = mt.__newindex
+  mt.__index = function(t, key)
+    if bj_funcs ~= nil then
+      local v = bj_funcs[key]
+      if v ~= nil then
+        return v
+      end
+    end
+    if ydglobals ~= nil then
+      local v = ydglobals[key]
+      if v ~= nil then
+        return v
+      end
+    end
+    if prev_index ~= nil then
+      if type(prev_index) == "function" then
+        return prev_index(t, key)
+      end
+      return prev_index[key]
+    end
+  end
+  mt.__newindex = function(t, key, value)
+    -- Only known JASS names go to the VM. Writing every new _G key into
+    -- jass.globals, then reading it back, native-crashes on load (handle_ref
+    -- / skipped rawset). Lua-only names must still land on _G.
+    if ydglobals ~= nil and type(key) == "string" then
+      local p3 = string.sub(key, 1, 3)
+      if p3 == "bj_" or p3 == "gg_" or string.sub(key, 1, 4) == "udg_" then
+        ydglobals[key] = value
+        return
+      end
+    end
+    if type(prev_newindex) == "function" then
+      prev_newindex(t, key, value)
+      return
+    end
+    rawset(t, key, value)
+  end
+end
+
+-- Re-running InitBlizzard leaks timers/forces/rects. Skip when JASS already did it.
+do
+  local already = nil
+  if ydglobals ~= nil then
+    already = ydglobals.bj_FORCE_ALL_PLAYERS or ydglobals.bj_mapInitialPlayableArea
+  end
+  if already == nil then
+    already = _G.bj_FORCE_ALL_PLAYERS or _G.bj_mapInitialPlayableArea
+  end
+  if already == nil then
+    local init = _G.InitBlizzard
+    if type(init) ~= "function" and bj_funcs ~= nil then
+      init = bj_funcs.InitBlizzard
+    end
+    if type(init) == "function" then
+      print(">>> Bootstrap: InitBlizzard() from Lua (JASS globals were nil)")
+      init()
+    end
+  end
 end
 
 -- 自动检测模式：如果存在 PROJECT_PATH 则为 dev 模式，否则为 prod 模式

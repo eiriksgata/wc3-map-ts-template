@@ -75,7 +75,7 @@ yarn build
 ```
 ├── src/                # TypeScript 源代码
 │   ├── main.ts         # 入口文件
-│   ├── system/         # 系统模块（UI、热重载等）
+│   ├── system/         # 系统模块（事件、伤害、护盾、Buff、遗物、血条、热重载等）
 │   ├── config/         # 配置文件
 │   └── examples/       # 示例代码
 ├── maps/               # w3x2lni LNI 工程（KKWE 直接打开/保存）
@@ -88,6 +88,40 @@ yarn build
 ├── scripts/            # 构建脚本
 └── config.json         # 环境配置
 ```
+
+## 🧩 内置系统模块
+
+下列系统面向 **main 分支**完整框架；simple 分支不保证齐套。
+
+### 战斗与数值
+
+| 模块 | 说明 | 路径 |
+|------|------|------|
+| 事件系统 | `EventBus`、鼠标 / 键盘，以及单位受伤、死亡、召唤等游戏事件；护盾、伤害飘字都挂在这条链上。 | [`src/system/event/`](src/system/event/)、[`docs/event-system.md`](docs/event-system.md) |
+| Actor | 单位运行时包装（血条、`BuffManager`、护盾查询），全局 `Actor.allActors`。 | [`src/system/actor.ts`](src/system/actor.ts) |
+| 伤害系统 | 全图受伤触发，转成 `UNIT_DAMAGED` 事件；入口在 `initialize()`。 | [`src/system/damage.ts`](src/system/damage.ts) |
+| 护盾系统 | 护盾是 Buff 的一种：高优先级订阅受伤事件，先扣护盾再写回剩余伤害。 | [`src/system/ShieldSystem.ts`](src/system/ShieldSystem.ts) |
+| Buff 系统 | 每单位 `BuffManager`、0.1s 全局 tick、护盾 Buff 与展示注册表。 | [`src/system/buff/`](src/system/buff/) |
+| 遗物系统 | 定义注册、抽取池、单位库存与增减事件。 | [`src/system/relic/`](src/system/relic/) |
+| 召唤系统 | 英雄召唤物继承召唤者生命与攻击。 | [`src/system/SummoningSystem.ts`](src/system/SummoningSystem.ts) |
+| 弹幕 / 符卡 | 对象池弹幕、碰撞与伤害，适合演示向技能卡。 | [`src/system/bullethell/`](src/system/bullethell/) |
+
+### 表现与 HUD
+
+| 模块 | 说明 | 路径 |
+|------|------|------|
+| 单位血条 | 世界坐标跟随的血 / 蓝 / 护盾条（`UnitBlood`）；另有 KKWE 风格英雄条 `KKWEHeroBloodBar`。 | [`UnitBlood.ts`](src/system/ui/component/UnitBlood.ts)、[`KKWEHeroBloodBar.ts`](src/system/ui/component/KKWEHeroBloodBar.ts) |
+| Buff 栏 / 遗物栏 | 本地玩家 HUD，图标 + Tips。 | [`BuffBarUI.ts`](src/system/ui/component/BuffBarUI.ts)、[`RelicBarUI.ts`](src/system/ui/component/RelicBarUI.ts) |
+| 伤害飘字 | 世界坐标伤害数字，对象池。 | [`src/system/ui/DamageTexttag.ts`](src/system/ui/DamageTexttag.ts) |
+
+### UI 组件与开发
+
+| 模块 | 说明 | 路径 |
+|------|------|------|
+| UI 组件 | `Button`、`FDFButton`、`Panel`、`Dialog`、`Tips`、`Text`、`MessageList` 等，继承 `UIComponentBase`。 | [`docs/Button-Usage.md`](docs/Button-Usage.md)、[`docs/Dialog-Usage.md`](docs/Dialog-Usage.md)、[`docs/panel-usage.md`](docs/panel-usage.md)、[`docs/tips-usage.md`](docs/tips-usage.md) |
+| 热重载 / 模块管理 | 开发态模块热替换与生命周期；生产构建会关闭热重载。 | [`docs/hot-reload-usage.md`](docs/hot-reload-usage.md) |
+
+运行时入口是 [`src/main.ts`](src/main.ts) 的 `initialize()`：已依次注册默认遗物与抽取池、创建 Buff / 遗物栏、注册单位血条绘制，以及伤害 / Buff / 护盾 / 召唤的 `init`。对照示例在 `src/examples/`、`src/test/`（如护盾 `HeroUnitSkillTestExample`、Buff 栏 / 遗物 / 弹幕测试）。
 
 ## 🔧 配置说明
 
@@ -133,8 +167,8 @@ yarn test:map
 - [x] 热重载系统
 - [x] UI 组件系统（Button、FDFButton）
 - [x] 血条 UI
+- [x] 伤害系统
 - [ ] 属性面板 UI
-- [ ] 伤害系统
 - [ ] Excel 物编转换
 - [ ] 技能系统模板
 

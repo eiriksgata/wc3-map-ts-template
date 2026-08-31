@@ -43,7 +43,8 @@ $ErrorActionPreference = 'SilentlyContinue'
 async function isPidAlive(pid: number): Promise<boolean> {
   const script = `
 $ErrorActionPreference = 'SilentlyContinue'
-if (Get-Process -Id ${pid}) { '1' } else { '0' }
+$proc = Get-Process -Id ${pid} -ErrorAction SilentlyContinue
+if ($null -ne $proc) { Write-Output '1' } else { Write-Output '0' }
 `.trim();
   try {
     const { stdout } = await execFileAsync(

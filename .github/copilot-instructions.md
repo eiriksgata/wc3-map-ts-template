@@ -156,8 +156,15 @@ const titleBarHitFrame = Frame.createType("PanelTitleBarHit", titleBarFrame, 0, 
 **常见错误信息**:
 - `War3Func::GetLayoutFrameTypeTagID, wrong tag=wj(1892)` - typeName 参数错误或为空字符串
 - `JAPI::GUI::DzCreateFrameByTagName, err tag` - 类型名称无效
-2. w3x2lni packages LNI project files from `maps/` into final `.w3x`
-3. KKWE launches Warcraft III with the compiled map
+## KKWE LNI And Terrain (Do Not Unpack)
+
+`maps/` is the live **LNI project**. KKWE opens and saves this directory natively; save writes `maps/map/*` and `maps/table/*.ini` in place.
+
+- Edit terrain / doodads / placed units / editor object data in KKWE by opening **`maps/`**, not `dist/map.w3x`.
+- After KKWE save, **do not** unpack any `.w3x` with w2l. Unpack is not part of the daily loop.
+- `w2l` here is **pack only**: LNI `maps/` → `dist/map.w3x`. Re-pack only when play-testing (`yarn build:map` / `yarn build:dev` / `yarn test:map`).
+- Never tell the user: “save in KKWE, then unpack with w2l”.
+- Packed `dist/map.w3x` **requires KKWE** (Lua + JAPI). Do not launch it with stock Warcraft III.exe, by double-clicking the `.w3x`, or via the official client. Use `yarn test:map`.
 
 ## Project Structure
 
@@ -470,7 +477,8 @@ Environment paths configured in `config.json`:
 - Use `ydconsole` for debugging output in KKWE
 
 ### Map Testing
-- Maps launch via `YDWEConfig.exe -launchwar3 -loadfile`
+- Maps launch via `YDWEConfig.exe -launchwar3 -loadfile` (`yarn test:map`)
+- Packed maps **will not work** in vanilla Warcraft III; KKWE runtime is required
 - Ensure Warcraft III is properly associated with KKWE
 - Check KKWE plugin configuration for JAPI support
 
@@ -479,8 +487,8 @@ Environment paths configured in `config.json`:
 - Entry point: `src/index.ts` 
 - JAPI integration: `src/ydlua/`
 - Build scripts: `scripts/` directory
-- Map data: `maps/` directory (LNI format)
-- Output: `dist/map.w3x`
+- Map data: `maps/` directory (LNI project; KKWE opens/saves this and rewrites `table/*.ini`)
+- Output: `dist/map.w3x` (pack artifact only; do not edit or unpack it after KKWE save)
 
 ## Referencing @eiriksgata/wc3ts Source Code
 

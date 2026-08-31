@@ -34,7 +34,7 @@ yarn install
 # 开发模式（支持热重载）
 yarn dev
 
-# 运行地图测试
+# 运行地图测试（必须经 KKWE 启动，原版魔兽打不开本图）
 yarn test:map
 ```
 
@@ -59,7 +59,7 @@ yarn build
 | `yarn test` | 编译并自动运行地图 |
 | `yarn watch` | 仅监听 TypeScript 文件变化 |
 | `yarn build:map` | 仅打包地图（不编译） |
-| `yarn test:map` | 仅运行地图（不编译） |
+| `yarn test:map` | 仅运行地图（经 KKWE 启动，不编译） |
 
 ## ⚡ 开发模式 vs 生产模式
 
@@ -78,8 +78,9 @@ yarn build
 │   ├── system/         # 系统模块（UI、热重载等）
 │   ├── config/         # 配置文件
 │   └── examples/       # 示例代码
-├── maps/               # w3x2lni 地图项目文件
-│   ├── map/            # 地图数据
+├── maps/               # w3x2lni LNI 工程（KKWE 直接打开/保存）
+│   ├── map/            # 地形与地图数据
+│   ├── table/          # LNI 物编 / 地图信息（KKWE 保存时自动更新）
 │   └── resource/       # 资源文件
 ├── lua/                # Lua 启动脚本
 ├── dist/               # 构建输出目录
@@ -101,9 +102,23 @@ yarn build
 
 ### 地形编辑
 
-1. 用 KKWE 打开 `maps/` 目录下的 `.w3x` 文件
-2. 编辑地形后保存
-3. 日常验证运行 `yarn build:dev` 或 `yarn dev`，发布前再运行 `yarn build`
+`maps/` 是 **LNI 工程**（根目录的 `.w3x` 只是 LNI 标记，不是打包后的 MPQ）。KKWE 原生打开并保存 LNI，保存后会直接写回 `maps/map/` 与 `maps/table/*.ini`。
+
+1. 用 KKWE 打开 `maps/` 目录（或该目录下的 LNI 标记 `.w3x`），**不要**打开 `dist/map.w3x` 来改地形
+2. 编辑地形 / 装饰物 / 单位摆放后保存即可，**不需要**再用 w2l 解包 `.w3x`
+3. 若要进游戏验证，再运行 `yarn build:dev` 或 `yarn dev` 把 LNI **打包**成 `dist/map.w3x`；发布前再运行 `yarn build`
+
+### 运行地图（必须经 KKWE）
+
+打包后的 `dist/map.w3x` **不能**用原版魔兽争霸 III（`Warcraft III.exe`、双击 `.w3x`、战网客户端）打开。本图依赖 KKWE 提供的 Lua 运行时与 JAPI，原版客户端里脚本不会生效。
+
+正确启动方式：
+
+```bash
+yarn test:map
+```
+
+在 Cursor / VS Code 里按 **F5** 也会执行同一条命令（见 `.vscode/launch.json`）。内部走 `YDWEConfig.exe -launchwar3 -loadfile`。测图无脚本 / JAPI 报错时，先确认是否误用了原版魔兽启动。
 
 ## 📦 主要依赖
 

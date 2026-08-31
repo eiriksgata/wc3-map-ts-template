@@ -19,8 +19,9 @@ This repository is a Warcraft III 1.27a map development template using TypeScrip
 - scripts/dev.ts: development watch and hot-reload notification pipeline.
 - scripts/common.ts: shared build helpers.
 - lua/bootstrap.lua: Lua bootstrap entry, handles dev and prod loading differences.
-- maps/: w3x2lni LNI map project sources.
+- maps/: w3x2lni **LNI** map project sources (KKWE opens this directory directly).
 - maps/map/: map data including generated Lua main.lua in production mode.
+- maps/table/: LNI object-editor / map-info ini files; KKWE rewrites these on save.
 - dist/: generated build outputs, including dist/map.w3x and dev-mode Lua outputs.
 - dev_lib/: local tool binaries (KKWE, w3x2lni).
 - config.json: paths for w3x2lni and KKWE.
@@ -39,6 +40,26 @@ Use only scripts that exist in package.json.
 - yarn test:map: launch Warcraft III with dist/map.w3x via KKWE.
 
 If a command fails because tools are missing, verify config.json paths and local binaries under dev_lib.
+
+## KKWE LNI And Terrain Editing
+
+`maps/` is the live **LNI project**, not a packed MPQ. KKWE (with the bundled w3x2lni plugin) opens and saves this directory natively.
+
+- Edit terrain / doodads / placed units / editor-side object data: open `maps/` in KKWE (the empty `maps/.w3x` mark identifies LNI). Save. KKWE writes `maps/map/*` and `maps/table/*.ini` in place.
+- Do **not** open `dist/map.w3x` to edit the map. That file is a build artifact.
+- Do **not** tell the user to unpack a `.w3x` with w2l after KKWE save. Unpack (`w2l lni …`) is **not** part of the daily loop and can overwrite `maps/`.
+- `w2l` in this repo is **pack only**: `maps/` (LNI) → `dist/map.w3x`. Use `yarn build:map` / `yarn build:dev` / `yarn test:map` when the user needs to play-test.
+- Unpack an external `.w3x` into `maps/` only when first importing a foreign packed map. Never as a follow-up to KKWE save.
+
+When talking to the user, never invent steps like “save in KKWE, then unpack with w2l” or “extract dist/map.w3x back into maps”.
+
+## Map Launch Requires KKWE
+
+Packed `dist/map.w3x` is **not** a vanilla Warcraft III map. It depends on KKWE’s Lua runtime and JAPI. Launching it with the original `Warcraft III.exe`, by double-clicking the `.w3x`, or via the official Battle.net client **will not work**.
+
+- Play-test only through KKWE: `yarn test:map` / `yarn test` (internally `YDWEConfig.exe -launchwar3 -loadfile`). F5 in Cursor/VS Code runs `yarn test:map` via `.vscode/launch.json`.
+- Do **not** tell the user to open the packed map with stock 1.27a Warcraft III.
+- If the map “does nothing”, scripts fail, or JAPI/Lua is missing, the first check is whether it was launched outside KKWE.
 
 ## TypeScript-To-Lua Constraints
 
@@ -96,7 +117,9 @@ For routine AI-agent verification, default to yarn build:dev first, then use yar
 ## Common Failure Checks
 
 - test:map fails: ensure dist/map.w3x exists and KKWE path is valid.
+- Packed map does nothing in vanilla WC3: expected. Launch via KKWE, not the original Warcraft III.exe.
 - build:map fails: ensure w3x2lni path is valid and maps structure is intact.
+- After KKWE terrain save: source is already in `maps/`; do not unpack. Re-pack only if play-testing `dist/map.w3x`.
 - hot reload does not trigger: verify dist/hot-reload.json generation and module registration consistency.
 - frame-related runtime errors: verify createType arguments and unique names.
 - jass/japi missing symbols: verify noResolvePaths config and ydlua initialization.

@@ -12,7 +12,7 @@ description: >-
 
 ## 与本仓库另一技能的关系
 
-- **`wc3-map-ts-template`**：构建链、YDWE/KKWE、`bootstrap.lua`、`war3map.j`、w3x2lni、`maps/table/*.ini`。
+- **`wc3-map-ts-template`**：构建链、YDWE/KKWE、`bootstrap.lua`、`war3map.j`、w3x2lni LNI（KKWE 直接保存 `maps/`，不解包）、`maps/table/*.ini`。
 - **本技能（wc3-map-ts-architecture）**：应用层 **TypeScript 源码结构**、各目录职责、常见功能「去哪找」。
 
 二者同时适用时：改打包/物编/载入先看前者；改游戏逻辑与 UI 先看本技能。
@@ -26,7 +26,7 @@ description: >-
 | 路径 | 职责 |
 |------|------|
 | `src/` | 全部 TS 业务与系统代码；TSTL 输出到 `dist/` |
-| `maps/` | w3x2lni 工程（`map/`、`resource/`、`table/` 等） |
+| `maps/` | w3x2lni **LNI** 工程（KKWE 直接打开/保存；`map/`、`resource/`、`table/` 等） |
 | `lua/` | `bootstrap.lua` 源，构建时复制到 `maps/map/` |
 | `scripts/` | Node 构建：`build.ts`、`dev.ts`、`common.ts`（注入 Cheat、bootstrap 等） |
 | `docs/` | 组件与系统说明（Tips、Panel、热重载、事件等） |
@@ -86,3 +86,4 @@ description: >-
 - 说明「某功能在哪里」时，给出 **目录 + 关键文件名**，必要时引用 `docs/` 中的专题文档。
 - 修改子系统时 **对齐现有命名与单例/init 模式**（与 `main.ts` 中各 `getInstance().init()` 风格一致）。
 - 不重复展开 **w2l / bootstrap / ini 物编** 细节，除非任务涉及；该部分以 `wc3-map-ts-template` 技能为准。
+- 测图必须经 KKWE（`yarn test:map`）。打包后的 `dist/map.w3x` 用原版魔兽打开无效。

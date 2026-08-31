@@ -1,22 +1,39 @@
 ---
 name: wc3-w3x2lni-workflow
 description: >-
-  w3x2lni (w2l) 工作流：如何用 maps/ 作为 obj 工程根来打包 map.w3x，maps/table/*.ini
-  如何承载物编（物体编辑器数据），maps/resource/ 如何承载进 MPQ 的资源文件，以及
-  resource/object-data/*（TS 侧）作为物编唯一数据源与 maps/table 的分工。参考
-  dev_lib/w3x2lni-src 源码。新增技能/单位/物品/Buff/模型/贴图时用本技能决定数据与资源落点。
+  w3x2lni (w2l) 工作流：maps/ 是 LNI 工程（KKWE 直接打开/保存，写回 table ini），
+  日常只用 w2l 把 maps/ 打包成 dist/map.w3x，不要在 KKWE 保存后再解包 .w3x。
+  maps/table/*.ini 承载物编，maps/resource/ 承载进 MPQ 的资源，
+  resource/object-data/*（TS 侧）作为物编唯一数据源与 maps/table 的分工。
+  参考 dev_lib/w3x2lni-src 源码。新增技能/单位/物品/Buff/模型/贴图/改地形时用本技能。
 ---
 
 # w3x2lni (w2l) 工作流与数据放置约定
 
 本技能 **与** `wc3-map-ts-template`（构建链总览）及 `wc3-map-ts-architecture`（`src/` 代码结构）并列：
-**何时看本技能** = 改/加 **物编**、**资源（mdl/blp/tga/fdf/toc）**、**imp.ini 引用**、**w2l 打包问题**，或要向 AI 解释「应该把数据/资源放在哪里」。
+**何时看本技能** = 改/加 **物编**、**地形（KKWE）**、**资源（mdl/blp/tga/fdf/toc）**、**imp.ini 引用**、**w2l 打包问题**，或要向 AI 解释「应该把数据/资源放在哪里」。
+
+## KKWE 直接编辑 LNI：禁止解包回写
+
+`maps/` 是 **LNI 工程**（根上有空的 `.w3x` 标记）。KKWE 内置 w3x2lni 插件，**原生打开并保存这个目录**：
+
+| 在 KKWE 里改什么 | 保存后写到哪里 | 还要不要 w2l 解包 |
+|------------------|----------------|-------------------|
+| 地形 / 装饰物 / 单位摆放 | `maps/map/`（`war3map.w3e` / `.doo` / `.wpm` …） | **不要** |
+| 物体编辑器 / 地图信息 | `maps/table/*.ini` | **不要** |
+
+对用户说话时的硬规则：
+
+- 打开 **`maps/`** 改图，**不要**打开 `dist/map.w3x`。
+- KKWE 保存后源码已更新。**禁止**再说「保存后再用 w2l 解包 `.w3x`」「把 `dist/map.w3x` 解回 `maps/`」。
+- 本仓库日常 `w2l` **只打包**：`w2l.exe obj ./maps ./dist/map.w3x`。进游戏测图才需要打包。
+- `w2l lni` 解包只用于**第一次**把外部独立 `.w3x` 导入成 LNI 工程，不是地形编辑的后续步骤。
 
 ## 一句话心智模型
 
-- `maps/` 是 **w2l 的 obj 工程根**（对应 w3x2lni 的 "Obj" 储存形式 = 解包后的 w3x 目录）。
-- `w2l.exe obj ./maps ./dist/map.w3x` 把整个 `maps/` 打包为标准 `map.w3x`（MPQ）。
-- `maps/table/*.ini` 是 **w3x2lni 特有的 Lni 文本物编**，打包时会被 w2l 当作补丁与 `_parent` 所继承的 Slk 默认数据合并，再以 `war3map.w3u/w3a/w3t/w3b/w3d/w3h/w3q` + `war3mapMisc.txt`/`war3mapSkin.txt` 等形式写入 `map.w3x`。
+- `maps/` 是 **w2l 的 LNI 工程根**（目录化源码，不是「解包出来的临时目录」）。KKWE 读写的就是它。
+- `w2l.exe obj ./maps ./dist/map.w3x` 把整个 `maps/` **打包**为标准 `map.w3x`（MPQ）。输入是 LNI，输出是 obj/MPQ。
+- `maps/table/*.ini` 是 **w3x2lni 特有的 Lni 文本物编**，打包时会被 w2l 当作补丁与 `_parent` 所继承的 Slk 默认数据合并，再以 `war3map.w3u/w3a/w3t/w3b/w3d/w3h/w3q` + `war3mapMisc.txt`/`war3mapSkin.txt` 等形式写入 `map.w3x`。 KKWE 保存物编时也会直接改这些 ini。
 - `maps/resource/**/*` 是要随地图进入 MPQ 的 **美术/UI 资源**（模型、贴图、FDF、TOC 等）；**必须** 在 `maps/table/imp.ini` 里登记 MPQ 内路径才会进包并被 WAR3 寻址。
 - ⚠ **路径映射有陷阱**：w2l 按扩展名分类，`blp/tga/mdx/mdl/dds/tif` 打包时会被 **剥掉 `resource\` 前缀**（引擎路径不带 resource），而 `fdf/toc/ttf/slk` 等 **保留 `resource\` 前缀**。详见下文「关键规则」章节。
 - `resource/object-data/*.ts` 是 **TS 侧物编数据源**（`UnitTable` / `AbilityTable` / `ItemTable` / `BuffTable` / `MiscTable` / `TxtTable` …）。约定：构建期 `scripts/prepack` 把它们序列化为 `maps/table/*.ini`，**然后** 再跑 w2l。运行时禁止修改。
@@ -25,9 +42,9 @@ description: >-
 
 | 路径 | 角色 | 写入时机 | 进不进 MPQ |
 |------|------|----------|------------|
-| `maps/` | **w2l obj 工程根** | 手写 + 构建时注入（bootstrap.lua / war3map.j） | 整体被打进 `map.w3x` |
-| `maps/map/` | 地形/触发/`war3map.j`/`bootstrap.lua` | 由 WE 或构建脚本写 | ✅（MPQ 根） |
-| `maps/table/*.ini` | 物编（Lni 文本，w3x2lni 专用） | `resource/object-data/*.ts` → prepack 生成；也可手写 | 转换为 w3u/w3a/... 后进 MPQ |
+| `maps/` | **w2l LNI 工程根** | KKWE 保存 + 手写 + 构建时注入（bootstrap.lua / war3map.j） | 打包时整体进 `map.w3x` |
+| `maps/map/` | 地形/触发/`war3map.j`/`bootstrap.lua` | **KKWE 保存**或构建脚本写 | ✅（MPQ 根） |
+| `maps/table/*.ini` | 物编（Lni 文本，w3x2lni 专用） | **KKWE 保存**会自动更新；也可由 `resource/object-data/*.ts` → prepack 生成或手写 | 转换为 w3u/w3a/... 后进 MPQ |
 | `maps/resource/**` | 随地图进 MPQ 的资源（.mdl/.mdx/.blp/.tga/.fdf/.toc …） | 人工放置 | ✅（需登记到 `imp.ini`） |
 | `maps/trigger/` | 触发相关工程文件 | WE / w2l | 视 w2l 规则 |
 | `maps/w3x2lni/` | 地图内插件目录（可选） | 手写 | w2l 会应用其中 `plugin/*` |
@@ -183,11 +200,18 @@ w2l 在 lni 模式下并不按「统一前缀剥离」对所有文件一视同�
 | `yarn build:dev` | TSTL → `injectLuaExecutionCall` → `handleBootstrapLua(true)` → `buildW3x`（= `w2l obj ./maps ./dist/map.w3x`） |
 | `yarn build` / `build:prod` | TSTL 单文件 → 注入 Cheat → `handleBootstrapLua(false)` → 可选 luamin → `buildW3x` |
 | `yarn build:map` | 只跑 `w2l obj`（跳过 TS 编译） |
-| `yarn test:map` | KKWE 加载 `./dist/map.w3x` |
+| `yarn test:map` | **经 KKWE** 加载 `./dist/map.w3x`（原版魔兽打不开本图） |
 
 > 加物编后一定要 **重新打包**（`yarn build:map` 最快），仅重编 TS 不会同步到 MPQ 内的物编二进制。
 
 ## 典型任务流（给 AI 的行动清单）
+
+### 改地形 / 在 KKWE 里改物编
+
+1. 让用户用 KKWE 打开 **`maps/`**（LNI 工程），不要打开 `dist/map.w3x`。
+2. 编辑后保存。告诉用户：KKWE 已把变更写回 `maps/map/` 与 `maps/table/*.ini`。
+3. **不要**给出「保存后再用 w2l 解包」的步骤。
+4. 只有用户要进游戏看效果时，才跑 `yarn build:map` 或 `yarn build:dev`（这是 **打包**，不是解包），再用 `yarn test:map` **经 KKWE** 启动。不要让用户用原版魔兽打开 `dist/map.w3x`。
 
 ### 新增一个技能
 
@@ -231,6 +255,9 @@ w2l 在 lni 模式下并不按「统一前缀剥离」对所有文件一视同�
 - **游戏里看到绿盒 / 缺模型** → 99% 是 `maps/table/imp.ini` 没登记该资源，或路径分隔符/大小写不一致。
 - **某单位/技能字段不生效** → 字段名没对齐 `template/Custom/<type>.ini`；或 `_parent` 写错导致合并落到错误默认值。
 - **只改 TS 没打包** → `map.w3x` 里的物编来自 `maps/table/*.ini`，必须跑 `yarn build:map` 以上的命令。
+- **KKWE 保存后还让用户解包** → 错误。LNI 工程已被 KKWE 写回；再 `w2l lni` 会多余，且可能覆盖 `maps/`。
+- **打开 `dist/map.w3x` 改地形** → 错误。那是打包产物；改图只打开 `maps/`。
+- **用原版魔兽运行 `dist/map.w3x`** → 无效。缺 KKWE 的 Lua/JAPI；只能 `yarn test:map`。
 - **打包报 `UNSUPPORTED_LNI_MARK`** → `maps/.w3x` 标记文件缺失 / 不是 lni 工程；最简修复：在 `maps/` 根目录保留一个空 `.w3x`（源码见 `script/share/check_lni_mark`）。
 - **想批量修改物编** → 写 w2l 地图内插件：`maps/w3x2lni/plugin/*.lua` + `plugin/.config`，事件见 `dev_lib/w3x2lni-src/docs/zh-cn/plugin.md`（`on_full` / `on_mark` / `on_convert` / `on_pack`）。
 
@@ -241,4 +268,4 @@ w2l 在 lni 模式下并不按「统一前缀剥离」对所有文件一视同�
 - `wc3-blp-convert`：JPG/PNG → BLP1（`yarn convert:blp`），进地图时用 `--import`。
 - **本技能**：**物编数据** 与 **MPQ 资源** 的落点、w2l 打包模型、w3x2lni Lni 格式规则。
 
-一句话：**数据改 `resource/object-data/*.ts`，资源放 `maps/resource/` 并登记到 `maps/table/imp.ini`，构建器在 `w2l obj ./maps ./dist/map.w3x` 时把一切合并进 `map.w3x`。**
+一句话：**KKWE 直接改 `maps/`（LNI，保存即写回 table ini，不解包）；TS 物编改 `resource/object-data/*.ts`；资源放 `maps/resource/` 并登记到 `maps/table/imp.ini`；`w2l obj ./maps ./dist/map.w3x` 只负责打包。**

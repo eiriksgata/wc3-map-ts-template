@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "yarn test:map",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "yarn test:map",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

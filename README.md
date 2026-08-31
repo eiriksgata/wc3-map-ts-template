@@ -118,7 +118,7 @@ yarn build
 yarn test:map
 ```
 
-在 Cursor / VS Code 里按 **F5** 也会执行同一条命令（见 `.vscode/launch.json`）。内部走 `YDWEConfig.exe -launchwar3 -loadfile`。测图无脚本 / JAPI 报错时，先确认是否误用了原版魔兽启动。
+在 Cursor / VS Code 里按 **F5** 会启动 `scripts/test.ts`：经 KKWE 拉起地图，并等到 `war3` 退出后结束调试会话。测图无脚本 / JAPI 报错时，先确认是否误用了原版魔兽启动。
 
 ## 📦 主要依赖
 

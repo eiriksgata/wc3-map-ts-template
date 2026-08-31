@@ -57,7 +57,7 @@ When talking to the user, never invent steps like “save in KKWE, then unpack w
 
 Packed `dist/map.w3x` is **not** a vanilla Warcraft III map. It depends on KKWE’s Lua runtime and JAPI. Launching it with the original `Warcraft III.exe`, by double-clicking the `.w3x`, or via the official Battle.net client **will not work**.
 
-- Play-test only through KKWE: `yarn test:map` / `yarn test` (internally `YDWEConfig.exe -launchwar3 -loadfile`). F5 in Cursor/VS Code runs `yarn test:map` via `.vscode/launch.json`.
+- Play-test only through KKWE: `yarn test:map` / `yarn test` (`scripts/test.ts` → `YDWEConfig.exe -launchwar3 -loadfile`, then wait until war3 exits). F5 launches that same script so the debug session ends when the game exits.
 - Do **not** tell the user to open the packed map with stock 1.27a Warcraft III.
 - If the map “does nothing”, scripts fail, or JAPI/Lua is missing, the first check is whether it was launched outside KKWE.
 
